@@ -1,4 +1,4 @@
-package repository
+package goscoperepository
 
 import (
 	"database/sql"
@@ -6,9 +6,8 @@ import (
 	"log"
 	"time"
 
+	"github.com/averageflow/goscope/v2/src/goscopeutils"
 	uuid "github.com/nu7hatch/gouuid"
-
-	"github.com/averageflow/goscope/src/utils"
 )
 
 func QuerySearchLogs(db *sql.DB, connection, searchWildcard string, offset int) (*sql.Rows, error) {
@@ -39,9 +38,9 @@ func QuerySearchLogs(db *sql.DB, connection, searchWildcard string, offset int) 
 
 	return db.Query(
 		query,
-		utils.Config.ApplicationID,
+		goscopeutils.Config.ApplicationID,
 		searchWildcard, searchWildcard, searchWildcard, searchWildcard,
-		utils.Config.GoScopeEntriesPerPage,
+		goscopeutils.Config.GoScopeEntriesPerPage,
 		offset,
 	)
 }
@@ -71,8 +70,8 @@ func QueryGetLogs(db *sql.DB, connection string, offset int) (*sql.Rows, error) 
 
 	return db.Query(
 		query,
-		utils.Config.ApplicationID,
-		utils.Config.GoScopeEntriesPerPage,
+		goscopeutils.Config.ApplicationID,
+		goscopeutils.Config.GoScopeEntriesPerPage,
 		offset,
 	)
 }
@@ -86,10 +85,10 @@ func DumpLog(message string) {
 		(?, ?, ?, ?);
 	`
 
-	_, err := utils.DB.Exec(
+	_, err := goscopeutils.DB.Exec(
 		query,
 		uid.String(),
-		utils.Config.ApplicationID,
+		goscopeutils.Config.ApplicationID,
 		message,
 		time.Now().Unix(),
 	)

@@ -1,4 +1,4 @@
-package repository
+package goscoperepository
 
 const (
 	MySQL      = "mysql"

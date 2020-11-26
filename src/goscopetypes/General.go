@@ -1,4 +1,4 @@
-package types
+package goscopetypes
 
 import (
 	"bytes"
@@ -115,4 +115,24 @@ type SystemInformationResponseHost struct {
 	KernelArch    string `json:"kernelArch"`
 	KernelVersion string `json:"kernelVersion"`
 	Uptime        string `json:"uptime"`
+}
+
+// Required application environment variables.
+type GoScopeApplicationEnvironment struct {
+	ApplicationID                     string
+	ApplicationName                   string
+	ApplicationTimezone               string
+	GoScopeDatabaseConnection         string
+	GoScopeDatabaseType               string
+	GoScopeEntriesPerPage             int
+	HasFrontendDisabled               bool
+	GoScopeDatabaseMaxOpenConnections int
+	GoScopeDatabaseMaxIdleConnections int
+	GoScopeDatabaseMaxConnLifetime    int
+}
+
+type GoScopeInitData struct {
+	Router     *gin.Engine
+	RouteGroup *gin.RouterGroup
+	Config     *GoScopeApplicationEnvironment
 }

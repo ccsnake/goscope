@@ -1,4 +1,4 @@
-package repository
+package goscoperepository
 
 import (
 	"database/sql"
@@ -7,12 +7,10 @@ import (
 	"log"
 	"time"
 
-	"github.com/averageflow/goscope/src/types"
-
+	"github.com/averageflow/goscope/v2/src/goscopetypes"
+	"github.com/averageflow/goscope/v2/src/goscopeutils"
 	"github.com/gin-gonic/gin"
 	uuid "github.com/nu7hatch/gouuid"
-
-	"github.com/averageflow/goscope/src/utils"
 )
 
 func QueryDetailedRequest(db *sql.DB, requestUID string) *sql.Row {
@@ -54,14 +52,14 @@ func QueryGetRequests(db *sql.DB, offset int) (*sql.Rows, error) {
 
 	return db.Query(
 		query,
-		utils.Config.ApplicationID,
-		utils.Config.GoScopeEntriesPerPage,
+		goscopeutils.Config.ApplicationID,
+		goscopeutils.Config.GoScopeEntriesPerPage,
 		offset,
 	)
 }
 
 func QuerySearchRequests(db *sql.DB, connection, search string, //nolint:gocognit,funlen,gocyclo
-	filter *types.RequestFilter, offset int) (*sql.Rows, error) { //nolint:gocognit,funlen,gocyclo
+	filter *goscopetypes.RequestFilter, offset int) (*sql.Rows, error) { //nolint:gocognit,funlen,gocyclo
 	var query string
 
 	var methodQuery string
@@ -178,7 +176,7 @@ func QuerySearchRequests(db *sql.DB, connection, search string, //nolint:gocogni
 	}
 
 	var args []interface{}
-	args = append(args, utils.Config.ApplicationID)
+	args = append(args, goscopeutils.Config.ApplicationID)
 
 	if hasMethodFilter && filter != nil {
 		for i := range methodSQL {
@@ -214,7 +212,7 @@ func QuerySearchRequests(db *sql.DB, connection, search string, //nolint:gocogni
 
 	args = append(
 		args,
-		utils.Config.GoScopeEntriesPerPage,
+		goscopeutils.Config.GoScopeEntriesPerPage,
 		offset)
 
 	rows, err := db.Query(query, args...)
@@ -246,7 +244,7 @@ func QueryDetailedResponse(db *sql.DB, requestUID string) *sql.Row {
 	return row
 }
 
-func DumpRequestResponse(c *gin.Context, responsePayload types.DumpResponsePayload, body string) {
+func DumpRequestResponse(c *gin.Context, responsePayload goscopetypes.DumpResponsePayload, body string) {
 	now := time.Now().Unix()
 	requestUID, _ := uuid.NewV4()
 	headers, _ := json.Marshal(c.Request.Header)
@@ -262,10 +260,10 @@ func DumpRequestResponse(c *gin.Context, responsePayload types.DumpResponsePaylo
 		requestPath = c.Request.URL.String()
 	}
 
-	_, err := utils.DB.Exec(
+	_, err := goscopeutils.DB.Exec(
 		query,
 		requestUID.String(),
-		utils.Config.ApplicationID,
+		goscopeutils.Config.ApplicationID,
 		c.ClientIP(),
 		c.Request.Method,
 		requestPath,
@@ -289,11 +287,11 @@ func DumpRequestResponse(c *gin.Context, responsePayload types.DumpResponsePaylo
                        body, path, headers, size)
 		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 	`
-	_, err = utils.DB.Exec(
+	_, err = goscopeutils.DB.Exec(
 		query,
 		responseUID.String(),
 		requestUID.String(),
-		utils.Config.ApplicationID,
+		goscopeutils.Config.ApplicationID,
 		c.ClientIP(),
 		responsePayload.Status,
 		now,

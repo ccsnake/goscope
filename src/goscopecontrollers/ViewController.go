@@ -1,17 +1,17 @@
-package controllers
+package goscopecontrollers
 
 import (
 	"fmt"
 	"net/http"
 	"strings"
 
-	"github.com/averageflow/goscope/src/utils"
+	"github.com/averageflow/goscope/v2/src/goscopeutils"
 	"github.com/gin-gonic/gin"
 )
 
 // ShowDashboard returns the front-end's index.html.
 func ShowDashboard(c *gin.Context) {
-	file, _ := utils.Asset("../../frontend/dist/index.html")
+	file, _ := goscopeutils.Asset("../../frontend/dist/index.html")
 	reader := strings.NewReader(string(file))
 	c.DataFromReader(http.StatusOK, reader.Size(), "text/html", reader, nil)
 }
@@ -19,7 +19,7 @@ func ShowDashboard(c *gin.Context) {
 // GetStaticFile returns a static file that is requested by the front-end.
 func GetStaticFile(c *gin.Context) {
 	requestedFile := strings.ReplaceAll(c.Request.RequestURI, "/goscope/", "")
-	file, _ := utils.Asset(fmt.Sprintf("../../frontend/dist/%s", requestedFile))
+	file, _ := goscopeutils.Asset(fmt.Sprintf("../../frontend/dist/%s", requestedFile))
 	reader := strings.NewReader(string(file))
 	c.DataFromReader(http.StatusOK, reader.Size(), GetMimeType(requestedFile), reader, nil)
 }

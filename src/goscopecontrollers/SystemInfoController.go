@@ -1,4 +1,4 @@
-package controllers
+package goscopecontrollers
 
 import (
 	"fmt"
@@ -6,9 +6,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/averageflow/goscope/src/types"
-
-	"github.com/averageflow/goscope/src/utils"
+	"github.com/averageflow/goscope/v2/src/goscopetypes"
+	"github.com/averageflow/goscope/v2/src/goscopeutils"
 	"github.com/gin-gonic/gin"
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/shirou/gopsutil/disk"
@@ -24,7 +23,7 @@ const (
 func GetAppName(c *gin.Context) {
 	c.Header("Access-Control-Allow-Origin", "*")
 	c.JSON(http.StatusOK, gin.H{
-		"applicationName": utils.Config.ApplicationName,
+		"applicationName": goscopeutils.Config.ApplicationName,
 	})
 }
 
@@ -45,18 +44,18 @@ func ShowSystemInfo(c *gin.Context) {
 		environment[variable[0]] = variable[1]
 	}
 
-	responseBody := types.SystemInformationResponse{
-		ApplicationName: utils.Config.ApplicationName,
-		CPU: types.SystemInformationResponseCPU{
+	responseBody := goscopetypes.SystemInformationResponse{
+		ApplicationName: goscopeutils.Config.ApplicationName,
+		CPU: goscopetypes.SystemInformationResponseCPU{
 			CoreCount: fmt.Sprintf("%d Cores", firstCPU.Cores),
 			ModelName: firstCPU.ModelName,
 		},
-		Memory: types.SystemInformationResponseMemory{
+		Memory: goscopetypes.SystemInformationResponseMemory{
 			Available: fmt.Sprintf("%.2f GB", float64(memoryStatus.Available)/BytesInOneGigabyte),
 			Total:     fmt.Sprintf("%.2f GB", float64(memoryStatus.Total)/BytesInOneGigabyte),
 			UsedSwap:  fmt.Sprintf("%.2f%%", swapStatus.UsedPercent),
 		},
-		Host: types.SystemInformationResponseHost{
+		Host: goscopetypes.SystemInformationResponseHost{
 			HostOS:        hostStatus.OS,
 			HostPlatform:  hostStatus.Platform,
 			Hostname:      hostStatus.Hostname,
@@ -64,7 +63,7 @@ func ShowSystemInfo(c *gin.Context) {
 			KernelVersion: hostStatus.KernelVersion,
 			Uptime:        fmt.Sprintf("%.2f hours", float64(hostStatus.Uptime)/SecondsInOneMinute/SecondsInOneMinute),
 		},
-		Disk: types.SystemInformationResponseDisk{
+		Disk: goscopetypes.SystemInformationResponseDisk{
 			FreeSpace:     fmt.Sprintf("%.2f GB", float64(diskStatus.Free)/BytesInOneGigabyte),
 			MountPath:     diskStatus.Path,
 			PartitionType: diskStatus.Fstype,

@@ -1,21 +1,21 @@
-package repository
+package goscoperepository
 
 import (
 	"database/sql"
 	"fmt"
 	"log"
 
-	"github.com/averageflow/goscope/src/types"
-	"github.com/averageflow/goscope/src/utils"
+	"github.com/averageflow/goscope/v2/src/goscopetypes"
+	"github.com/averageflow/goscope/v2/src/goscopeutils"
 )
 
-func FetchDetailedLog(requestUID string) types.ExceptionRecord {
+func FetchDetailedLog(requestUID string) goscopetypes.ExceptionRecord {
 	row := QueryDetailedLog(
-		utils.DB,
+		goscopeutils.DB,
 		requestUID,
 	)
 
-	var request types.ExceptionRecord
+	var request goscopetypes.ExceptionRecord
 
 	err := row.Scan(&request.UID, &request.Error, &request.Time)
 	if err != nil {
@@ -26,12 +26,12 @@ func FetchDetailedLog(requestUID string) types.ExceptionRecord {
 	return request
 }
 
-func FetchSearchLogs(searchString string, offset int) []types.ExceptionRecord {
-	var result []types.ExceptionRecord
+func FetchSearchLogs(searchString string, offset int) []goscopetypes.ExceptionRecord {
+	var result []goscopetypes.ExceptionRecord
 
 	searchWildcard := fmt.Sprintf("%%%s%%", searchString)
 
-	rows, err := QuerySearchLogs(utils.DB, utils.Config.GoScopeDatabaseType, searchWildcard, offset)
+	rows, err := QuerySearchLogs(goscopeutils.DB, goscopeutils.Config.GoScopeDatabaseType, searchWildcard, offset)
 	if err != nil {
 		log.Println(err.Error())
 		return result
@@ -46,7 +46,7 @@ func FetchSearchLogs(searchString string, offset int) []types.ExceptionRecord {
 	defer rows.Close()
 
 	for rows.Next() {
-		var request types.ExceptionRecord
+		var request goscopetypes.ExceptionRecord
 
 		err := rows.Scan(&request.UID, &request.Error, &request.Time)
 		if err != nil {
@@ -61,10 +61,10 @@ func FetchSearchLogs(searchString string, offset int) []types.ExceptionRecord {
 }
 
 // Get a summarized list of application logs from the DB.
-func FetchLogs(offset int) []types.ExceptionRecord {
-	var result []types.ExceptionRecord
+func FetchLogs(offset int) []goscopetypes.ExceptionRecord {
+	var result []goscopetypes.ExceptionRecord
 
-	rows, err := QueryGetLogs(utils.DB, utils.Config.GoScopeDatabaseType, offset)
+	rows, err := QueryGetLogs(goscopeutils.DB, goscopeutils.Config.GoScopeDatabaseType, offset)
 	if err != nil {
 		log.Println(err.Error())
 		return result
@@ -79,7 +79,7 @@ func FetchLogs(offset int) []types.ExceptionRecord {
 	defer rows.Close()
 
 	for rows.Next() {
-		var request types.ExceptionRecord
+		var request goscopetypes.ExceptionRecord
 
 		err := rows.Scan(&request.UID, &request.Error, &request.Time)
 		if err != nil {
