@@ -24,7 +24,7 @@
 // ../../frontend/dist/mstile-70x70.png
 // ../../frontend/dist/site.webmanifest
 
-package utils
+package goscopeutils
 
 import (
 	"bytes"
