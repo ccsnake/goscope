@@ -29,7 +29,12 @@ In the .env file you can specify either the `mysql` driver, `postgres` driver, o
 The application expects a database with a setup that can be recreated by taking a look at the `setup` folder in the root of this repository.
 
 ### Example
-Example implementation code, using `viper` to obtain env variables, please note that you should use plain gin without middlewares, since GoScope will use Gin Gonic's logger and recovery middlewares, but with a customized twist, thus the requirement is that initially you have a clean `gin.Engine` instance.
+
+To understand more about the required variables to initialise GoScope, take a look at the [.env](.env) file in the source of this repository.
+
+The documentation of this package should also elucidate more on that matter. Take a look at the [type definition](src/goscopetypes/General.go) and see `GoScopeApplicationEnvironment`.
+
+Below is an example implementation code, using `viper` to obtain env variables, please note that you should use plain gin without middlewares, since GoScope will use Gin Gonic's logger and recovery middlewares, but with a customized twist, thus the requirement is that initially you have a clean `gin.Engine` instance.
 
 ```go
 package main

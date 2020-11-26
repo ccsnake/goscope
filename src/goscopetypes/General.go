@@ -117,22 +117,36 @@ type SystemInformationResponseHost struct {
 	Uptime        string `json:"uptime"`
 }
 
-// Required application environment variables.
+// GoScopeApplicationEnvironment is the required application environment variables.
 type GoScopeApplicationEnvironment struct {
-	ApplicationID                     string
-	ApplicationName                   string
-	ApplicationTimezone               string
-	GoScopeDatabaseConnection         string
-	GoScopeDatabaseType               string
-	GoScopeEntriesPerPage             int
-	HasFrontendDisabled               bool
+	// ApplicationID is a string used to identify your application.
+	// This allows having a single go_scope database for several applications.
+	ApplicationID string
+	// ApplicationName is the name to display in the header of the frontend and in API responses.
+	ApplicationName string
+	// ApplicationTimezone is the Go formatted timezone, e.g. Europe/Amsterdam
+	ApplicationTimezone string
+	// GoScopeDatabaseConnection is the string to connect to the desired database
+	GoScopeDatabaseConnection string
+	// GoScopeDatabaseType is the type of DB to connect to, e.g. the connector name, mysql
+	GoScopeDatabaseType string
+	// GoScopeEntriesPerPage is how many logs & requests to show per page
+	GoScopeEntriesPerPage int
+	// HasFrontendDisabled decides if the frontend should be accessible
+	HasFrontendDisabled bool
+	// GoScopeDatabaseMaxOpenConnections is the maximum open connections of the DB pool
 	GoScopeDatabaseMaxOpenConnections int
+	// GoScopeDatabaseMaxIdleConnections is the maximum idle connections of the DB pool
 	GoScopeDatabaseMaxIdleConnections int
-	GoScopeDatabaseMaxConnLifetime    int
+	// GoScopeDatabaseMaxConnLifetime is the maximum connection lifetime of each connection of the DB pool
+	GoScopeDatabaseMaxConnLifetime int
 }
 
 type GoScopeInitData struct {
-	Router     *gin.Engine
+	// Router represents the gin.Engine to attach the routes to
+	Router *gin.Engine
+	// RouteGroup represents the gin.RouterGroup to attach the GoScope routes to
 	RouteGroup *gin.RouterGroup
-	Config     *GoScopeApplicationEnvironment
+	// Config represents the required variables to initialize GoScope
+	Config *GoScopeApplicationEnvironment
 }
