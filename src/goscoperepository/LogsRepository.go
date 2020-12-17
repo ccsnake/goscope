@@ -7,7 +7,7 @@ import (
 	"time"
 
 	"github.com/averageflow/goscope/v2/src/goscopeutils"
-	uuid "github.com/nu7hatch/gouuid"
+	"github.com/google/uuid"
 )
 
 func QuerySearchLogs(db *sql.DB, connection, searchWildcard string, offset int) (*sql.Rows, error) {
@@ -79,7 +79,7 @@ func QueryGetLogs(db *sql.DB, connection string, offset int) (*sql.Rows, error) 
 func DumpLog(message string) {
 	fmt.Printf("%v", message)
 
-	uid, _ := uuid.NewV4()
+	uid := uuid.New().String()
 	query := `
 		INSERT INTO logs (uid, application, error, time) VALUES 
 		(?, ?, ?, ?);
@@ -87,7 +87,7 @@ func DumpLog(message string) {
 
 	_, err := goscopeutils.DB.Exec(
 		query,
-		uid.String(),
+		uid,
 		goscopeutils.Config.ApplicationID,
 		message,
 		time.Now().Unix(),

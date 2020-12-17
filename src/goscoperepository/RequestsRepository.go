@@ -10,7 +10,7 @@ import (
 	"github.com/averageflow/goscope/v2/src/goscopetypes"
 	"github.com/averageflow/goscope/v2/src/goscopeutils"
 	"github.com/gin-gonic/gin"
-	uuid "github.com/nu7hatch/gouuid"
+	"github.com/google/uuid"
 )
 
 func QueryDetailedRequest(db *sql.DB, requestUID string) *sql.Row {
@@ -246,7 +246,7 @@ func QueryDetailedResponse(db *sql.DB, requestUID string) *sql.Row {
 
 func DumpRequestResponse(c *gin.Context, responsePayload goscopetypes.DumpResponsePayload, body string) {
 	now := time.Now().Unix()
-	requestUID, _ := uuid.NewV4()
+	requestUID := uuid.New().String()
 	headers, _ := json.Marshal(c.Request.Header)
 	query := `
 		INSERT INTO requests (uid, application, client_ip, method, path, host, time,
@@ -262,7 +262,7 @@ func DumpRequestResponse(c *gin.Context, responsePayload goscopetypes.DumpRespon
 
 	_, err := goscopeutils.DB.Exec(
 		query,
-		requestUID.String(),
+		requestUID,
 		goscopeutils.Config.ApplicationID,
 		c.ClientIP(),
 		c.Request.Method,
@@ -280,7 +280,7 @@ func DumpRequestResponse(c *gin.Context, responsePayload goscopetypes.DumpRespon
 		log.Println(err.Error())
 	}
 
-	responseUID, _ := uuid.NewV4()
+	responseUID := uuid.New().String()
 	headers, _ = json.Marshal(responsePayload.Headers)
 	query = `
 		INSERT INTO responses (uid, request_uid, application, client_ip, status, time,
@@ -289,8 +289,8 @@ func DumpRequestResponse(c *gin.Context, responsePayload goscopetypes.DumpRespon
 	`
 	_, err = goscopeutils.DB.Exec(
 		query,
-		responseUID.String(),
-		requestUID.String(),
+		responseUID,
+		requestUID,
 		goscopeutils.Config.ApplicationID,
 		c.ClientIP(),
 		responsePayload.Status,
