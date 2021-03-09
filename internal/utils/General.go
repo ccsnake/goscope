@@ -17,6 +17,8 @@ func CheckExcludedPaths(path string) bool {
 		"/apple-touch-icon.png",
 		"/goscope/css/light.css.map",
 		"/goscope/css/dark.css.map",
+		"/favicon.ico",
+		"/site.webmanifest",
 	}
 
 	for i := range exactMatches {

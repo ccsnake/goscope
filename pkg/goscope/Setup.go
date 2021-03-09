@@ -1,11 +1,10 @@
 package goscope
 
 import (
-	"fmt"
+	"html/template"
 	"log"
-	"os"
-	"path/filepath"
-	"strings"
+
+	"github.com/averageflow/goscope/v3/web"
 
 	"github.com/averageflow/goscope/v3/internal/utils"
 
@@ -55,20 +54,9 @@ func Setup(config *InitData) {
 		return result
 	}
 
-	var files []string
+	templateEngine := template.Must(template.New("").Funcs(config.Router.FuncMap).ParseFS(web.TemplateFiles, "templates/components/*", "templates/views/*"))
 
-	templateLocation := fmt.Sprintf("%sweb/templates", "../../")
-
-	err := filepath.Walk(templateLocation, func(path string, info os.FileInfo, err error) error {
-		if strings.HasSuffix(path, ".gohtml") {
-			files = append(files, path)
-		}
-		return nil
-	})
-	if err != nil {
-		panic(err.Error())
-	}
-	config.Router.LoadHTMLFiles(files...)
+	config.Router.SetHTMLTemplate(templateEngine)
 
 	// SPA routes
 	if !Config.HasFrontendDisabled {
