@@ -45,6 +45,15 @@ func Setup(config *InitData) {
 
 	config.Router.FuncMap["EpochToTimeAgoHappened"] = utils.EpochToTimeAgoHappened
 	config.Router.FuncMap["EpochToHumanReadable"] = utils.EpochToHumanReadable
+	config.Router.FuncMap["Add"] = func(a, b int) int { return a + b }
+	config.Router.FuncMap["SubtractTillZero"] = func(a, b int) int {
+		result := a - b
+		if result < 0 {
+			return a
+		}
+
+		return result
+	}
 
 	var files []string
 

@@ -1,10 +1,28 @@
 {{ define "components/Header.gohtml" }}
   <header>
-    <nav role="navigation">
-      <a href="{{ .baseURL }}/">{{ .applicationName }}</a>
-      <a href="{{ .baseURL }}/">Requests</a>
-      <a href="{{ .baseURL }}/logs">Logs</a>
-      <a href="{{ .baseURL }}/info">System</a>
+    <nav class="navbar" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="{{ .baseURL }}/">{{ .applicationName }}</a>
+        <a
+          id="navbarBurger"
+          role="button"
+          class="navbar-burger"
+          aria-label="menu"
+          aria-expanded="false"
+          onclick="document.getElementById('navbarBasicExample').classList.toggle('is-active');document.getElementById('navbarBurger').classList.toggle('is-active')"
+        >
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-start">
+          <a class="navbar-item" href="{{ .baseURL }}/">Requests</a>
+          <a class="navbar-item" href="{{ .baseURL }}/logs">Logs</a>
+          <a class="navbar-item" href="{{ .baseURL }}/info">System</a>
+        </div>
+      </div>
     </nav>
   </header>
 {{ end }}

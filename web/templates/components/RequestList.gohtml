@@ -1,5 +1,5 @@
 {{ define "components/RequestList.gohtml" }}
-  <table>
+  <table class="table">
     <thead>
       <tr>
         <th>Status</th>
@@ -23,8 +23,10 @@
       {{ end }}
     </tbody>
   </table>
-  <nav>
-    <a>← prev</a>
-    <a>next →</a>
-  </nav>
+  <section>
+    <a href="{{ $.baseURL }}/?offset={{ SubtractTillZero $.offset 50 }}"
+      >← prev</a
+    >
+    <a href="{{ $.baseURL }}/?offset={{ Add $.offset 50 }}">next →</a>
+  </section>
 {{ end }}

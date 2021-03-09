@@ -18,6 +18,7 @@ func requestListPageHandler(c *gin.Context) {
 		"entriesPerPage":  Config.GoScopeEntriesPerPage,
 		"data":            repository.FetchRequestList(DB, Config.ApplicationID, Config.GoScopeEntriesPerPage, int(offset)),
 		"baseURL":         Config.BaseURL,
+		"offset":          int(offset),
 	}
 
 	c.HTML(http.StatusOK, "views/Requests.gohtml", variables)
@@ -38,6 +39,7 @@ func logListPageHandler(c *gin.Context) {
 			int(offset),
 		),
 		"baseURL": Config.BaseURL,
+		"offset":  int(offset),
 	}
 
 	c.HTML(http.StatusOK, "views/Logs.gohtml", variables)
