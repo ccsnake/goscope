@@ -93,6 +93,8 @@ type Environment struct {
 	GoScopeDatabaseMaxIdleConnections int
 	// GoScopeDatabaseMaxConnLifetime is the maximum connection lifetime of each connection of the DB pool
 	GoScopeDatabaseMaxConnLifetime int
+	// BaseURL determines where in the route group goscope is based on
+	BaseURL string
 }
 
 type InitData struct {

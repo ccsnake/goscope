@@ -12,10 +12,10 @@ func main() {
 		Router:     router,
 		RouteGroup: router.Group("/goscope"),
 		Config: &goscope.Environment{
-			ApplicationID:                     "",
-			ApplicationName:                   "",
+			ApplicationID:                     "go-scope",
+			ApplicationName:                   "go-scope",
 			ApplicationTimezone:               "Europe/Amsterdam",
-			GoScopeDatabaseConnection:         "",
+			GoScopeDatabaseConnection:         "root:root@tcp(127.0.0.1:3306)/go_scope",
 			GoScopeDatabaseType:               "mysql",
 			GoScopeEntriesPerPage:             50,
 			HasFrontendDisabled:               false,

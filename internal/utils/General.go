@@ -3,8 +3,10 @@ package utils
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"log"
 	"strings"
+	"time"
 )
 
 // Check the wanted path is not in the do not log list.
@@ -31,6 +33,10 @@ func CheckExcludedPaths(path string) bool {
 		".ttf",
 		".woff",
 		".svg",
+		".ico",
+		".png",
+		".jpg",
+		".webp",
 	}
 
 	for i := range partialMatches {
@@ -56,4 +62,21 @@ func PrettifyJSON(rawString string) string {
 	}
 
 	return prettyJSON.String()
+}
+
+func EpochToTimeAgoHappened(epoch int) string {
+	date := time.Unix(int64(epoch), 0)
+	diff := time.Since(date)
+	if diff.Seconds() < 60 {
+		return fmt.Sprintf("%.2f s", diff.Seconds())
+	} else if diff.Minutes() < 60 {
+		return fmt.Sprintf("%.0f m", diff.Minutes())
+	}
+
+	return fmt.Sprintf("%.0f h", diff.Hours())
+}
+
+func EpochToHumanReadable(epoch int) string {
+	date := time.Unix(int64(epoch), 0)
+	return date.Format(time.RFC1123Z)
 }

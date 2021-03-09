@@ -15,16 +15,16 @@ import (
 
 var DB *sql.DB //nolint:gochecknoglobals
 
-type DatabaseInformation struct {
-	Type                  string
+type databaseInformation struct {
+	databaseType          string
 	Connection            string
 	MaxOpenConnections    int
 	MaxIdleConnections    int
 	MaxConnectionLifetime int
 }
 
-func DatabaseSetup(d DatabaseInformation) {
-	db, err := sql.Open(d.Type, d.Connection)
+func databaseSetup(d databaseInformation) {
+	db, err := sql.Open(d.databaseType, d.Connection)
 	if err != nil {
 		log.Println(err.Error())
 		panic(err.Error())
