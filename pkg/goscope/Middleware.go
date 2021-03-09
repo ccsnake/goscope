@@ -50,7 +50,9 @@ func NoRouteResponseLogger(c *gin.Context) {
 		Status:  http.StatusNotFound,
 	}
 
-	go repository.DumpRequestResponse(c, Config.ApplicationID, DB, dumpPayload, readBody(details.Rdr))
+	if utils.CheckExcludedPaths(c.FullPath()) {
+		go repository.DumpRequestResponse(c, Config.ApplicationID, DB, dumpPayload, readBody(details.Rdr))
+	}
 
 	c.JSON(http.StatusNotFound, gin.H{
 		"code":    http.StatusNotFound,
