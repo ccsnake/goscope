@@ -1,0 +1,8 @@
+{{ define "goscope-views/Requests.gohtml" }}
+  {{ template "goscope-components/Head.gohtml" }}
+  {{ template "goscope-components/Header.gohtml" . }}
+  <div class="container section">
+    {{ template "goscope-components/RequestList.gohtml" . }}
+  </div>
+  {{ template "goscope-components/PageEnd.gohtml" }}
+{{ end }}

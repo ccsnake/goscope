@@ -12,20 +12,20 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// LoggerGoScope is the main logger for the application.
-type LoggerGoScope struct {
+// loggerGoScope is the main logger for the application.
+type loggerGoScope struct {
 	RoutingEngine *gin.Engine
 }
 
 // Write dumps the log to the database.
-func (logger LoggerGoScope) Write(p []byte) (n int, err error) {
+func (logger loggerGoScope) Write(p []byte) (n int, err error) {
 	go repository.DumpLog(DB, Config.ApplicationID, string(p))
 	return len(p), nil
 }
 
-// ResponseLogger logs an HTTP response to the DB and print to Stdout.
-func ResponseLogger(c *gin.Context) {
-	details := ObtainBodyLogWriter(c)
+// responseLogger logs an HTTP response to the DB and print to Stdout.
+func responseLogger(c *gin.Context) {
+	details := obtainBodyLogWriter(c)
 
 	c.Next()
 
@@ -40,9 +40,9 @@ func ResponseLogger(c *gin.Context) {
 	}
 }
 
-// NoRouteResponseLogger logs an HTTP response to the DB and prints to Stdout for requests that match no route.
-func NoRouteResponseLogger(c *gin.Context) {
-	details := ObtainBodyLogWriter(c)
+// noRouteResponseLogger logs an HTTP response to the DB and prints to Stdout for requests that match no route.
+func noRouteResponseLogger(c *gin.Context) {
+	details := obtainBodyLogWriter(c)
 
 	dumpPayload := repository.DumpResponsePayload{
 		Headers: details.Blw.Header(),
@@ -60,8 +60,8 @@ func NoRouteResponseLogger(c *gin.Context) {
 	})
 }
 
-// ObtainBodyLogWriter will read the request body and return a reader/writer.
-func ObtainBodyLogWriter(c *gin.Context) BodyLogWriterResponse {
+// obtainBodyLogWriter will read the request body and return a reader/writer.
+func obtainBodyLogWriter(c *gin.Context) BodyLogWriterResponse {
 	blw := &BodyLogWriter{Body: bytes.NewBufferString(""), ResponseWriter: c.Writer}
 
 	c.Writer = blw

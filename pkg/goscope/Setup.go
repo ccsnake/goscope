@@ -11,9 +11,23 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+var GoScopeFunctionMap = map[string]interface{}{
+	"EpochToTimeAgoHappened": utils.EpochToTimeAgoHappened,
+	"EpochToHumanReadable":   utils.EpochToHumanReadable,
+	"Add":                    func(a, b int) int { return a + b },
+	"SubtractTillZero": func(a, b int) int {
+		result := a - b
+		if result < 0 {
+			return a
+		}
+
+		return result
+	},
+}
+
 // Setup is the necessary step to enable GoScope in an application.
 // It will setup the necessary routes and middlewares for GoScope to work.
-func Setup(config *InitData) {
+func Setup(config *InitData) *template.Template {
 	if config == nil {
 		panic("Please provide a pointer to a valid and instantiated GoScopeInitData.")
 	}
@@ -30,33 +44,21 @@ func Setup(config *InitData) {
 	config.Router.Use(gin.Logger())
 	config.Router.Use(gin.Recovery())
 
-	logger := &LoggerGoScope{}
+	logger := &loggerGoScope{}
 	gin.DefaultErrorWriter = logger
 
 	log.SetFlags(log.Lshortfile)
 	log.SetOutput(logger)
 
 	// Use the logging middleware
-	config.Router.Use(ResponseLogger)
+	config.Router.Use(responseLogger)
 
 	// Catch 404s
-	config.Router.NoRoute(NoRouteResponseLogger)
+	config.Router.NoRoute(noRouteResponseLogger)
 
-	config.Router.FuncMap["EpochToTimeAgoHappened"] = utils.EpochToTimeAgoHappened
-	config.Router.FuncMap["EpochToHumanReadable"] = utils.EpochToHumanReadable
-	config.Router.FuncMap["Add"] = func(a, b int) int { return a + b }
-	config.Router.FuncMap["SubtractTillZero"] = func(a, b int) int {
-		result := a - b
-		if result < 0 {
-			return a
-		}
-
-		return result
+	for i := range GoScopeFunctionMap {
+		config.Router.FuncMap[i] = GoScopeFunctionMap[i]
 	}
-
-	templateEngine := template.Must(template.New("").Funcs(config.Router.FuncMap).ParseFS(web.TemplateFiles, "templates/components/*", "templates/views/*"))
-
-	config.Router.SetHTMLTemplate(templateEngine)
 
 	// SPA routes
 	if !Config.HasFrontendDisabled {
@@ -75,4 +77,10 @@ func Setup(config *InitData) {
 	apiGroup.POST("/search/requests", searchRequestHandler)
 	apiGroup.POST("/search/logs", searchLogHandler)
 	apiGroup.GET("/info", getSystemInfoHandler)
+
+	templateEngineNew := template.Must(template.New("").
+		Funcs(config.Router.FuncMap).
+		ParseFS(web.TemplateFiles, "templates/goscope-components/*", "templates/goscope-views/*"))
+
+	return templateEngineNew
 }

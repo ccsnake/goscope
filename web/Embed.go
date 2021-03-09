@@ -2,5 +2,5 @@ package web
 
 import "embed"
 
-//go:embed templates/components/*.gohtml templates/views/*.gohtml
+//go:embed templates/goscope-components/*.gohtml templates/goscope-views/*.gohtml
 var TemplateFiles embed.FS

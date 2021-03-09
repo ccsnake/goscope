@@ -21,7 +21,7 @@ func requestListPageHandler(c *gin.Context) {
 		"offset":          int(offset),
 	}
 
-	c.HTML(http.StatusOK, "views/Requests.gohtml", variables)
+	c.HTML(http.StatusOK, "goscope-views/Requests.gohtml", variables)
 }
 
 func logListPageHandler(c *gin.Context) {
@@ -42,5 +42,5 @@ func logListPageHandler(c *gin.Context) {
 		"offset":  int(offset),
 	}
 
-	c.HTML(http.StatusOK, "views/Logs.gohtml", variables)
+	c.HTML(http.StatusOK, "goscope-views/Logs.gohtml", variables)
 }

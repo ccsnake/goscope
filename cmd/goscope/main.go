@@ -1,6 +1,8 @@
 package main
 
 import (
+	"net/http"
+
 	"github.com/averageflow/goscope/v3/pkg/goscope"
 	"github.com/gin-gonic/gin"
 )
@@ -8,7 +10,7 @@ import (
 func main() {
 	router := gin.New()
 
-	goscope.Setup(&goscope.InitData{
+	templateEngineNew := goscope.Setup(&goscope.InitData{
 		Router:     router,
 		RouteGroup: router.Group("/goscope"),
 		Config: &goscope.Environment{
@@ -25,5 +27,17 @@ func main() {
 		},
 	})
 
+	if templateEngineNew != nil {
+		_, err := templateEngineNew.ParseFiles("../../web/example.gohtml")
+		if err != nil {
+			panic(err.Error())
+		}
+
+		router.SetHTMLTemplate(templateEngineNew)
+	}
+
+	router.GET("/test", func(context *gin.Context) {
+		context.HTML(http.StatusOK, "example.gohtml", nil)
+	})
 	_ = router.Run(":7011")
 }
