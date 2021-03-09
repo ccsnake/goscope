@@ -3,19 +3,17 @@ package goscope
 import (
 	"log"
 
-	"github.com/averageflow/goscope/v3/internal/controllers"
-
 	"github.com/gin-gonic/gin"
 )
 
 // Setup is the necessary step to enable GoScope in an application.
 // It will setup the necessary routes and middlewares for GoScope to work.
-func Setup(settings *InitData) {
-	if settings == nil {
+func Setup(config *InitData) {
+	if config == nil {
 		panic("Please provide a pointer to a valid and instantiated GoScopeInitData.")
 	}
 
-	ConfigSetup(settings.Config)
+	ConfigSetup(config.Config)
 	DatabaseSetup(DatabaseInformation{
 		Type:                  Config.GoScopeDatabaseType,
 		Connection:            Config.GoScopeDatabaseConnection,
@@ -24,20 +22,20 @@ func Setup(settings *InitData) {
 		MaxConnectionLifetime: Config.GoScopeDatabaseMaxConnLifetime,
 	})
 
-	settings.Router.Use(gin.Logger())
-	settings.Router.Use(gin.Recovery())
+	config.Router.Use(gin.Logger())
+	config.Router.Use(gin.Recovery())
 
-	logger := &controllers.LoggerGoScope{}
+	logger := &LoggerGoScope{}
 	gin.DefaultErrorWriter = logger
 
 	log.SetFlags(log.Lshortfile)
 	log.SetOutput(logger)
 
 	// Use the logging middleware
-	settings.Router.Use(controllers.ResponseLogger)
+	config.Router.Use(ResponseLogger)
 
 	// Catch 404s
-	settings.Router.NoRoute(controllers.NoRouteResponseLogger)
+	config.Router.NoRoute(NoRouteResponseLogger)
 
 	// SPA routes
 	if !Config.HasFrontendDisabled {
@@ -45,15 +43,13 @@ func Setup(settings *InitData) {
 	}
 
 	// GoScope API
-	apiGroup := settings.RouteGroup.Group("/api")
-	apiGroup.GET("/application-name", controllers.GetAppName)
-	apiGroup.GET("/logs", controllers.LogList)
-	apiGroup.GET("/requests/:id", controllers.ShowRequest)
-	apiGroup.GET("/logs/:id", controllers.ShowLog)
-	apiGroup.GET("/requests", controllers.RequestList)
-	apiGroup.POST("/search/requests", controllers.SearchRequest)
-	apiGroup.OPTIONS("/search/requests", controllers.SearchRequestOptions)
-	apiGroup.POST("/search/logs", controllers.SearchLog)
-	apiGroup.OPTIONS("/search/logs", controllers.SearchLogOptions)
-	apiGroup.GET("/info", controllers.ShowSystemInfo)
+	apiGroup := config.RouteGroup.Group("/api")
+	apiGroup.GET("/application-name", GetAppName)
+	apiGroup.GET("/logs", getLogListHandler)
+	apiGroup.GET("/requests/:id", showRequestDetailsHandler)
+	apiGroup.GET("/logs/:id", showLogDetailsHandler)
+	apiGroup.GET("/requests", getRequestListHandler)
+	apiGroup.POST("/search/requests", searchRequestHandler)
+	apiGroup.POST("/search/logs", searchLogHandler)
+	apiGroup.GET("/info", getSystemInfoHandler)
 }

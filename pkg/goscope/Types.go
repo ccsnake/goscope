@@ -4,8 +4,51 @@ import (
 	"bytes"
 	"io"
 
+	"github.com/averageflow/goscope/v3/internal/repository"
+
 	"github.com/gin-gonic/gin"
 )
+
+const (
+	BytesInOneGigabyte = 1073741824
+	SecondsInOneMinute = 60
+)
+
+type systemInformationResponse struct {
+	ApplicationName string                          `json:"applicationName"`
+	CPU             systemInformationResponseCPU    `json:"cpu"`
+	Disk            systemInformationResponseDisk   `json:"disk"`
+	Host            systemInformationResponseHost   `json:"host"`
+	Memory          systemInformationResponseMemory `json:"memory"`
+	Environment     map[string]string               `json:"environment"`
+}
+
+type systemInformationResponseCPU struct {
+	CoreCount string `json:"coreCount"`
+	ModelName string `json:"modelName"`
+}
+
+type systemInformationResponseDisk struct {
+	FreeSpace     string `json:"freeSpace"`
+	MountPath     string `json:"mountPath"`
+	PartitionType string `json:"partitionType"`
+	TotalSpace    string `json:"totalSpace"`
+}
+
+type systemInformationResponseMemory struct {
+	Available string `json:"availableMemory"`
+	Total     string `json:"totalMemory"`
+	UsedSwap  string `json:"usedSwap"`
+}
+
+type systemInformationResponseHost struct {
+	HostOS        string `json:"hostOS"`
+	HostPlatform  string `json:"hostPlatform"`
+	Hostname      string `json:"hostname"`
+	KernelArch    string `json:"kernelArch"`
+	KernelVersion string `json:"kernelVersion"`
+	Uptime        string `json:"uptime"`
+}
 
 type BodyLogWriterResponse struct {
 	Blw *BodyLogWriter
@@ -59,4 +102,9 @@ type InitData struct {
 	RouteGroup *gin.RouterGroup
 	// Config represents the required variables to initialize GoScope
 	Config *Environment
+}
+
+type SearchRequestPayload struct {
+	Query  string                   `json:"query"`
+	Filter repository.RequestFilter `json:"filter"`
 }

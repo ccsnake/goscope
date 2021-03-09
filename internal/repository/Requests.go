@@ -71,10 +71,10 @@ func FetchDetailedResponse(db *sql.DB, responseUUID string) detailedResponse {
 }
 
 // FetchRequestList fetches a list of summarized requests.
-func FetchRequestList(db *sql.DB, offset int) []summarizedRequest {
+func FetchRequestList(db *sql.DB, appID string, entriesPerPage int, offset int) []summarizedRequest {
 	var result []summarizedRequest
 
-	rows, err := QueryGetRequests(db, offset)
+	rows, err := QueryGetRequests(db, appID, entriesPerPage, offset)
 	if err != nil {
 		log.Println(err.Error())
 
@@ -111,10 +111,10 @@ func FetchRequestList(db *sql.DB, offset int) []summarizedRequest {
 }
 
 // FetchSearchRequests fetches a list of summarized requests that match the input parameters of search.
-func FetchSearchRequests(db *sql.DB, databaseType string, search string, filter *RequestFilter, offset int) []summarizedRequest {
+func FetchSearchRequests(db *sql.DB, appID string, entriesPerPage int, databaseType string, search string, filter *RequestFilter, offset int) []summarizedRequest {
 	var result []summarizedRequest
 
-	rows, err := QuerySearchRequests(db, databaseType, search, filter, offset)
+	rows, err := QuerySearchRequests(db, appID, entriesPerPage, databaseType, search, filter, offset)
 	if err != nil {
 		log.Println(err.Error())
 		return result

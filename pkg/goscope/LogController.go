@@ -1,4 +1,4 @@
-package controllers
+package goscope
 
 import (
 	"log"
@@ -6,24 +6,22 @@ import (
 	"strconv"
 
 	"github.com/averageflow/goscope/v3/internal/repository"
-	"github.com/averageflow/goscope/v3/pkg/goscope"
-
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 )
 
-func LogList(c *gin.Context) {
+func getLogListHandler(c *gin.Context) {
 	offsetQuery := c.DefaultQuery("offset", "0")
 	offset, _ := strconv.ParseInt(offsetQuery, 10, 32)
 
 	variables := gin.H{
-		"applicationName": goscope.Config.ApplicationName,
-		"entriesPerPage":  goscope.Config.GoScopeEntriesPerPage,
+		"applicationName": Config.ApplicationName,
+		"entriesPerPage":  Config.GoScopeEntriesPerPage,
 		"data": repository.FetchLogs(
-			goscope.DB,
-			goscope.Config.ApplicationID,
-			goscope.Config.GoScopeEntriesPerPage,
-			goscope.Config.GoScopeDatabaseType,
+			DB,
+			Config.ApplicationID,
+			Config.GoScopeEntriesPerPage,
+			Config.GoScopeDatabaseType,
 			int(offset),
 		),
 	}
@@ -32,18 +30,18 @@ func LogList(c *gin.Context) {
 	c.JSON(http.StatusOK, variables)
 }
 
-func ShowLog(c *gin.Context) {
-	var request goscope.RecordByURI
+func showLogDetailsHandler(c *gin.Context) {
+	var request RecordByURI
 
 	err := c.ShouldBindUri(&request)
 	if err != nil {
 		log.Println(err.Error())
 	}
 
-	logDetails := repository.FetchDetailedLog(goscope.DB, request.UID)
+	logDetails := repository.FetchDetailedLog(DB, request.UID)
 
 	variables := gin.H{
-		"applicationName": goscope.Config.ApplicationName,
+		"applicationName": Config.ApplicationName,
 		"data": gin.H{
 			"logDetails": logDetails,
 		},
@@ -53,7 +51,7 @@ func ShowLog(c *gin.Context) {
 	c.JSON(http.StatusOK, variables)
 }
 
-func SearchLog(c *gin.Context) {
+func searchLogHandler(c *gin.Context) {
 	var request SearchRequestPayload
 
 	err := c.ShouldBindBodyWith(&request, binding.JSON)
@@ -64,26 +62,20 @@ func SearchLog(c *gin.Context) {
 	offsetQuery := c.DefaultQuery("offset", "0")
 	offset, _ := strconv.ParseInt(offsetQuery, 10, 32)
 	result := repository.FetchSearchLogs(
-		goscope.DB,
-		goscope.Config.ApplicationID,
-		goscope.Config.GoScopeEntriesPerPage,
-		goscope.Config.GoScopeDatabaseType,
+		DB,
+		Config.ApplicationID,
+		Config.GoScopeEntriesPerPage,
+		Config.GoScopeDatabaseType,
 		request.Query,
 		int(offset),
 	)
 
 	variables := gin.H{
-		"applicationName": goscope.Config.ApplicationName,
-		"entriesPerPage":  goscope.Config.GoScopeEntriesPerPage,
+		"applicationName": Config.ApplicationName,
+		"entriesPerPage":  Config.GoScopeEntriesPerPage,
 		"data":            result,
 	}
 
 	c.Header("Access-Control-Allow-Origin", "*")
 	c.JSON(http.StatusOK, variables)
-}
-
-func SearchLogOptions(c *gin.Context) {
-	c.Header("Access-Control-Allow-Origin", "*")
-	c.Header("Access-Control-Allow-Headers", "*")
-	c.JSON(http.StatusOK, nil)
 }
