@@ -3,9 +3,11 @@ package goscope
 import (
 	"log"
 
-	"github.com/averageflow/goscope/v2/src/goscopecontrollers"
-	"github.com/averageflow/goscope/v2/src/goscopetypes"
-	"github.com/averageflow/goscope/v2/src/goscopeutils"
+	"github.com/averageflow/goscope/v3/internal/utils"
+
+	"github.com/averageflow/goscope/v3/src/goscopecontrollers"
+	"github.com/averageflow/goscope/v3/src/goscopetypes"
+	"github.com/averageflow/goscope/v3/src/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -17,13 +19,13 @@ func Setup(settings *goscopetypes.GoScopeInitData) {
 		panic("Please provide a pointer to a valid and instantiated GoScopeInitData.")
 	}
 
-	goscopeutils.ConfigSetup(settings.Config)
-	goscopeutils.DatabaseSetup(goscopeutils.DatabaseInformation{
-		Type:                  goscopeutils.Config.GoScopeDatabaseType,
-		Connection:            goscopeutils.Config.GoScopeDatabaseConnection,
-		MaxOpenConnections:    goscopeutils.Config.GoScopeDatabaseMaxOpenConnections,
-		MaxIdleConnections:    goscopeutils.Config.GoScopeDatabaseMaxIdleConnections,
-		MaxConnectionLifetime: goscopeutils.Config.GoScopeDatabaseMaxConnLifetime,
+	utils.ConfigSetup(settings.Config)
+	utils.DatabaseSetup(utils.DatabaseInformation{
+		Type:                  utils.Config.GoScopeDatabaseType,
+		Connection:            utils.Config.GoScopeDatabaseConnection,
+		MaxOpenConnections:    utils.Config.GoScopeDatabaseMaxOpenConnections,
+		MaxIdleConnections:    utils.Config.GoScopeDatabaseMaxIdleConnections,
+		MaxConnectionLifetime: utils.Config.GoScopeDatabaseMaxConnLifetime,
 	})
 
 	settings.Router.Use(gin.Logger())
@@ -42,7 +44,7 @@ func Setup(settings *goscopetypes.GoScopeInitData) {
 	settings.Router.NoRoute(goscopecontrollers.NoRouteResponseLogger)
 
 	// SPA routes
-	if !goscopeutils.Config.HasFrontendDisabled {
+	if !utils.Config.HasFrontendDisabled {
 		settings.RouteGroup.GET("/", goscopecontrollers.ShowDashboard)
 		settings.RouteGroup.GET("/logo.svg", goscopecontrollers.GetStaticFile)
 		settings.RouteGroup.GET("/js/app.js", goscopecontrollers.GetStaticFile)

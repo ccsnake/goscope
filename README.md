@@ -40,8 +40,8 @@ Below is an example implementation code, using `viper` to obtain env variables, 
 package main
 import (
     "github.com/gin-gonic/gin"
-    "github.com/averageflow/goscope/v2/src/goscope"
-    "github.com/averageflow/goscope/v2/src/goscopetypes"
+    "github.com/averageflow/goscope/v3/src/goscope"
+    "github.com/averageflow/goscope/v3/src/goscopetypes"
     "github.com/spf13/viper"
 )
 

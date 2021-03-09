@@ -1,21 +1,21 @@
-package goscoperepository
+package repository
 
 import (
 	"log"
 
-	"github.com/averageflow/goscope/v2/src/goscopetypes"
-	"github.com/averageflow/goscope/v2/src/goscopeutils"
+	"github.com/averageflow/goscope/v3/internal/utils"
+	"github.com/averageflow/goscope/v3/pkg/goscope"
 )
 
 // FetchDetailedRequest fetches all details from a request via its UUID.
-func FetchDetailedRequest(requestUID string) goscopetypes.DetailedRequest {
+func FetchDetailedRequest(requestUID string) goscope.DetailedRequest {
 	var body string
 
 	var headers string
 
-	var result goscopetypes.DetailedRequest
+	var result goscope.DetailedRequest
 
-	row := QueryDetailedRequest(goscopeutils.DB, requestUID)
+	row := QueryDetailedRequest(utils.DB, requestUID)
 
 	err := row.Scan(
 		&result.UID,
@@ -34,21 +34,21 @@ func FetchDetailedRequest(requestUID string) goscopetypes.DetailedRequest {
 		log.Println(err.Error())
 	}
 
-	result.Body = goscopeutils.PrettifyJSON(body)
-	result.Headers = goscopeutils.PrettifyJSON(headers)
+	result.Body = utils.PrettifyJSON(body)
+	result.Headers = utils.PrettifyJSON(headers)
 
 	return result
 }
 
 // FetchDetailedResponse fetches all details of a response via its UUID.
-func FetchDetailedResponse(responseUUID string) goscopetypes.DetailedResponse {
+func FetchDetailedResponse(responseUUID string) goscope.DetailedResponse {
 	var body string
 
 	var headers string
 
-	var result goscopetypes.DetailedResponse
+	var result goscope.DetailedResponse
 
-	row := QueryDetailedResponse(goscopeutils.DB, responseUUID)
+	row := QueryDetailedResponse(utils.DB, responseUUID)
 
 	err := row.Scan(
 		&result.UID,
@@ -64,17 +64,17 @@ func FetchDetailedResponse(responseUUID string) goscopetypes.DetailedResponse {
 		log.Println(err.Error())
 	}
 
-	result.Body = goscopeutils.PrettifyJSON(body)
-	result.Headers = goscopeutils.PrettifyJSON(headers)
+	result.Body = utils.PrettifyJSON(body)
+	result.Headers = utils.PrettifyJSON(headers)
 
 	return result
 }
 
 // FetchRequestList fetches a list of summarized requests.
-func FetchRequestList(offset int) []goscopetypes.SummarizedRequest {
-	var result []goscopetypes.SummarizedRequest
+func FetchRequestList(offset int) []goscope.SummarizedRequest {
+	var result []goscope.SummarizedRequest
 
-	rows, err := QueryGetRequests(goscopeutils.DB, offset)
+	rows, err := QueryGetRequests(utils.DB, offset)
 	if err != nil {
 		log.Println(err.Error())
 
@@ -90,7 +90,7 @@ func FetchRequestList(offset int) []goscopetypes.SummarizedRequest {
 	defer rows.Close()
 
 	for rows.Next() {
-		var request goscopetypes.SummarizedRequest
+		var request goscope.SummarizedRequest
 
 		err := rows.Scan(
 			&request.UID,
@@ -111,10 +111,10 @@ func FetchRequestList(offset int) []goscopetypes.SummarizedRequest {
 }
 
 // FetchSearchRequests fetches a list of summarized requests that match the input parameters of search.
-func FetchSearchRequests(search string, filter *goscopetypes.RequestFilter, offset int) []goscopetypes.SummarizedRequest {
-	var result []goscopetypes.SummarizedRequest
+func FetchSearchRequests(search string, filter *goscope.RequestFilter, offset int) []goscope.SummarizedRequest {
+	var result []goscope.SummarizedRequest
 
-	rows, err := QuerySearchRequests(goscopeutils.DB, goscopeutils.Config.GoScopeDatabaseType, search, filter, offset)
+	rows, err := QuerySearchRequests(utils.DB, utils.Config.GoScopeDatabaseType, search, filter, offset)
 	if err != nil {
 		log.Println(err.Error())
 		return result
@@ -129,7 +129,7 @@ func FetchSearchRequests(search string, filter *goscopetypes.RequestFilter, offs
 	defer rows.Close()
 
 	for rows.Next() {
-		var request goscopetypes.SummarizedRequest
+		var request goscope.SummarizedRequest
 
 		err := rows.Scan(
 			&request.UID,

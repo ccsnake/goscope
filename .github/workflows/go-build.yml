@@ -17,4 +17,4 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Build
-        run: go build -o app
+        run: cd cmd/goscope && go build -o app

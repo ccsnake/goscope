@@ -1,4 +1,4 @@
-package goscopeutils
+package utils
 
 import (
 	"bytes"
@@ -25,6 +25,12 @@ func CheckExcludedPaths(path string) bool {
 
 	partialMatches := []string{
 		"/goscope",
+		".manifest",
+		".css",
+		".js",
+		".ttf",
+		".woff",
+		".svg",
 	}
 
 	for i := range partialMatches {

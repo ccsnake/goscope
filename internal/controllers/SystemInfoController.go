@@ -1,4 +1,4 @@
-package goscopecontrollers
+package controllers
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/averageflow/goscope/v2/src/goscopetypes"
-	"github.com/averageflow/goscope/v2/src/goscopeutils"
+	"github.com/averageflow/goscope/v3/internal/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/shirou/gopsutil/disk"
@@ -23,7 +23,7 @@ const (
 func GetAppName(c *gin.Context) {
 	c.Header("Access-Control-Allow-Origin", "*")
 	c.JSON(http.StatusOK, gin.H{
-		"applicationName": goscopeutils.Config.ApplicationName,
+		"applicationName": utils.Config.ApplicationName,
 	})
 }
 
@@ -45,7 +45,7 @@ func ShowSystemInfo(c *gin.Context) {
 	}
 
 	responseBody := goscopetypes.SystemInformationResponse{
-		ApplicationName: goscopeutils.Config.ApplicationName,
+		ApplicationName: utils.Config.ApplicationName,
 		CPU: goscopetypes.SystemInformationResponseCPU{
 			CoreCount: fmt.Sprintf("%d Cores", firstCPU.Cores),
 			ModelName: firstCPU.ModelName,

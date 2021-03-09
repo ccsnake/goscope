@@ -1,8 +1,9 @@
-package goscopetypes
+package goscope
 
 import (
 	"bytes"
 	"io"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -117,8 +118,8 @@ type SystemInformationResponseHost struct {
 	Uptime        string `json:"uptime"`
 }
 
-// GoScopeApplicationEnvironment is the required application environment variables.
-type GoScopeApplicationEnvironment struct {
+// Environment is the required application environment variables.
+type Environment struct {
 	// ApplicationID is a string used to identify your application.
 	// This allows having a single go_scope database for several applications.
 	ApplicationID string
@@ -142,11 +143,22 @@ type GoScopeApplicationEnvironment struct {
 	GoScopeDatabaseMaxConnLifetime int
 }
 
-type GoScopeInitData struct {
+type InitData struct {
 	// Router represents the gin.Engine to attach the routes to
 	Router *gin.Engine
 	// RouteGroup represents the gin.RouterGroup to attach the GoScope routes to
 	RouteGroup *gin.RouterGroup
 	// Config represents the required variables to initialize GoScope
-	Config *GoScopeApplicationEnvironment
+	Config *Environment
+}
+
+type DumpResponsePayload struct {
+	Headers http.Header
+	Body    *bytes.Buffer
+	Status  int
+}
+
+type RequestFilter struct {
+	Method []string `json:"method"`
+	Status []int    `json:"status"`
 }

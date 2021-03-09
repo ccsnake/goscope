@@ -1,13 +1,14 @@
-package goscopecontrollers
+package controllers
 
 import (
 	"log"
 	"net/http"
 	"strconv"
 
-	"github.com/averageflow/goscope/v2/src/goscoperepository"
-	"github.com/averageflow/goscope/v2/src/goscopetypes"
-	"github.com/averageflow/goscope/v2/src/goscopeutils"
+	"github.com/averageflow/goscope/v3/pkg/goscope"
+
+	"github.com/averageflow/goscope/v3/internal/repository"
+	"github.com/averageflow/goscope/v3/internal/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 )
@@ -18,9 +19,9 @@ func RequestList(c *gin.Context) {
 	offset, _ := strconv.ParseInt(offsetQuery, 10, 32)
 
 	variables := gin.H{
-		"applicationName": goscopeutils.Config.ApplicationName,
-		"entriesPerPage":  goscopeutils.Config.GoScopeEntriesPerPage,
-		"data":            goscoperepository.FetchRequestList(int(offset)),
+		"applicationName": utils.Config.ApplicationName,
+		"entriesPerPage":  utils.Config.GoScopeEntriesPerPage,
+		"data":            repository.FetchRequestList(int(offset)),
 	}
 
 	c.Header("Access-Control-Allow-Origin", "*")
@@ -29,18 +30,18 @@ func RequestList(c *gin.Context) {
 
 // ShowRequest is the controller for a detailed request/response page in GoScope API.
 func ShowRequest(c *gin.Context) {
-	var request goscopetypes.RecordByURI
+	var request goscope.RecordByURI
 
 	err := c.ShouldBindUri(&request)
 	if err != nil {
 		log.Println(err.Error())
 	}
 
-	requestDetails := goscoperepository.FetchDetailedRequest(request.UID)
-	responseDetails := goscoperepository.FetchDetailedResponse(request.UID)
+	requestDetails := repository.FetchDetailedRequest(request.UID)
+	responseDetails := repository.FetchDetailedResponse(request.UID)
 
 	variables := gin.H{
-		"applicationName": goscopeutils.Config.ApplicationName,
+		"applicationName": utils.Config.ApplicationName,
 		"data": gin.H{
 			"request":  requestDetails,
 			"response": responseDetails,
@@ -53,7 +54,7 @@ func ShowRequest(c *gin.Context) {
 
 // SearchRequest is the controller for the search requests list page in GoScope API.
 func SearchRequest(c *gin.Context) {
-	var request goscopetypes.SearchRequestPayload
+	var request goscope.SearchRequestPayload
 	err := c.ShouldBindBodyWith(&request, binding.JSON)
 
 	if err != nil {
@@ -62,11 +63,11 @@ func SearchRequest(c *gin.Context) {
 
 	offsetQuery := c.DefaultQuery("offset", "0")
 	offset, _ := strconv.ParseInt(offsetQuery, 10, 32)
-	result := goscoperepository.FetchSearchRequests(request.Query, &request.Filter, int(offset))
+	result := repository.FetchSearchRequests(request.Query, &request.Filter, int(offset))
 
 	variables := gin.H{
-		"applicationName": goscopeutils.Config.ApplicationName,
-		"entriesPerPage":  goscopeutils.Config.GoScopeEntriesPerPage,
+		"applicationName": utils.Config.ApplicationName,
+		"entriesPerPage":  utils.Config.GoScopeEntriesPerPage,
 		"data":            result,
 	}
 

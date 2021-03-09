@@ -1,4 +1,4 @@
-package goscoperepository
+package repository
 
 import (
 	"database/sql"
@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/averageflow/goscope/v2/src/goscopetypes"
-	"github.com/averageflow/goscope/v2/src/goscopeutils"
+	"github.com/averageflow/goscope/v3/internal/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )
@@ -52,8 +52,8 @@ func QueryGetRequests(db *sql.DB, offset int) (*sql.Rows, error) {
 
 	return db.Query(
 		query,
-		goscopeutils.Config.ApplicationID,
-		goscopeutils.Config.GoScopeEntriesPerPage,
+		utils.Config.ApplicationID,
+		utils.Config.GoScopeEntriesPerPage,
 		offset,
 	)
 }
@@ -176,7 +176,7 @@ func QuerySearchRequests(db *sql.DB, connection, search string, //nolint:gocogni
 	}
 
 	var args []interface{}
-	args = append(args, goscopeutils.Config.ApplicationID)
+	args = append(args, utils.Config.ApplicationID)
 
 	if hasMethodFilter && filter != nil {
 		for i := range methodSQL {
@@ -212,7 +212,7 @@ func QuerySearchRequests(db *sql.DB, connection, search string, //nolint:gocogni
 
 	args = append(
 		args,
-		goscopeutils.Config.GoScopeEntriesPerPage,
+		utils.Config.GoScopeEntriesPerPage,
 		offset)
 
 	rows, err := db.Query(query, args...)
@@ -260,10 +260,10 @@ func DumpRequestResponse(c *gin.Context, responsePayload goscopetypes.DumpRespon
 		requestPath = c.Request.URL.String()
 	}
 
-	_, err := goscopeutils.DB.Exec(
+	_, err := utils.DB.Exec(
 		query,
 		requestUID,
-		goscopeutils.Config.ApplicationID,
+		utils.Config.ApplicationID,
 		c.ClientIP(),
 		c.Request.Method,
 		requestPath,
@@ -287,11 +287,11 @@ func DumpRequestResponse(c *gin.Context, responsePayload goscopetypes.DumpRespon
                        body, path, headers, size)
 		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 	`
-	_, err = goscopeutils.DB.Exec(
+	_, err = utils.DB.Exec(
 		query,
 		responseUID,
 		requestUID,
-		goscopeutils.Config.ApplicationID,
+		utils.Config.ApplicationID,
 		c.ClientIP(),
 		responsePayload.Status,
 		now,

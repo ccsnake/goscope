@@ -1,19 +1,17 @@
 package main
 
 import (
-	"github.com/averageflow/goscope/v2/src/goscopetypes"
-
-	"github.com/averageflow/goscope/v2/src/goscope"
+	"github.com/averageflow/goscope/v3/pkg/goscope"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	router := gin.New()
 
-	goscope.Setup(&goscopetypes.GoScopeInitData{
+	goscope.Setup(&goscope.InitData{
 		Router:     router,
 		RouteGroup: router.Group("/goscope"),
-		Config: &goscopetypes.GoScopeApplicationEnvironment{
+		Config: &goscope.Environment{
 			ApplicationID:                     "",
 			ApplicationName:                   "",
 			ApplicationTimezone:               "Europe/Amsterdam",

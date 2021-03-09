@@ -1,4 +1,4 @@
-package goscopeutils
+package utils
 
 import (
 	"database/sql"
