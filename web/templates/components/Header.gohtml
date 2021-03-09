@@ -1,28 +1,10 @@
 {{ define "components/Header.gohtml" }}
   <header>
     <nav role="navigation">
-      <a href="/">{{ .applicationName }}</a>
-      <a href="/">Requests</a>
-      <a href="/logs">Logs</a>
-      <a href="/info">System</a>
-
-      {{/*
-      <router-link to="/">
-        <strong>{{ this.applicationDetails.applicationName }}</strong>
-      </router-link>
-
-      <router-link to="/">
-        <font-awesome-icon icon="sync" />
-        Requests
-      </router-link>
-      <router-link to="/logs">
-        <font-awesome-icon icon="clipboard-list" />
-        Logs
-      </router-link>
-      <router-link to="/info">
-        <font-awesome-icon icon="server" />
-        System </router-link
-      >*/}}
+      <a href="{{ .baseURL }}/">{{ .applicationName }}</a>
+      <a href="{{ .baseURL }}/">Requests</a>
+      <a href="{{ .baseURL }}/logs">Logs</a>
+      <a href="{{ .baseURL }}/info">System</a>
     </nav>
   </header>
 {{ end }}

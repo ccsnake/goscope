@@ -22,10 +22,10 @@ func Setup(config *InitData) {
 	configSetup(config.Config, config.RouteGroup.BasePath())
 	databaseSetup(databaseInformation{
 		databaseType:          Config.GoScopeDatabaseType,
-		Connection:            Config.GoScopeDatabaseConnection,
-		MaxOpenConnections:    Config.GoScopeDatabaseMaxOpenConnections,
-		MaxIdleConnections:    Config.GoScopeDatabaseMaxIdleConnections,
-		MaxConnectionLifetime: Config.GoScopeDatabaseMaxConnLifetime,
+		connection:            Config.GoScopeDatabaseConnection,
+		maxOpenConnections:    Config.GoScopeDatabaseMaxOpenConnections,
+		maxIdleConnections:    Config.GoScopeDatabaseMaxIdleConnections,
+		maxConnectionLifetime: Config.GoScopeDatabaseMaxConnLifetime,
 	})
 
 	config.Router.Use(gin.Logger())
@@ -65,6 +65,7 @@ func Setup(config *InitData) {
 	if !Config.HasFrontendDisabled {
 		config.RouteGroup.GET("/", requestListPageHandler)
 		config.RouteGroup.GET("", requestListPageHandler)
+		config.RouteGroup.GET("/logs", logListPageHandler)
 	}
 
 	// GoScope API

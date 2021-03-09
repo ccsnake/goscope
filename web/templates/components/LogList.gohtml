@@ -1,0 +1,26 @@
+{{ define "components/LogList.gohtml" }}
+  <table>
+    <thead>
+      <tr>
+        <th>Message</th>
+        <th>Happened</th>
+        <th>Date</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {{ range .data }}
+        <tr>
+          <td>{{ .Error }}</td>
+          <td><small>{{ EpochToTimeAgoHappened .Time }} ago</small></td>
+          <td><small>{{ EpochToHumanReadable .Time }}</small></td>
+          <td><a href="{{ $.baseURL }}/logs/{{ .UID }}">View</a></td>
+        </tr>
+      {{ end }}
+    </tbody>
+  </table>
+  <nav>
+    <a>← prev</a>
+    <a>next →</a>
+  </nav>
+{{ end }}
