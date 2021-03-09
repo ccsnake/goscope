@@ -5,18 +5,16 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/averageflow/goscope/v3/pkg/goscope"
-
 	"github.com/averageflow/goscope/v3/internal/utils"
 )
 
-func FetchDetailedLog(requestUID string) goscope.ExceptionRecord {
+func FetchDetailedLog(requestUID string) exceptionRecord {
 	row := QueryDetailedLog(
 		utils.DB,
 		requestUID,
 	)
 
-	var request goscope.ExceptionRecord
+	var request exceptionRecord
 
 	err := row.Scan(&request.UID, &request.Error, &request.Time)
 	if err != nil {
@@ -27,8 +25,8 @@ func FetchDetailedLog(requestUID string) goscope.ExceptionRecord {
 	return request
 }
 
-func FetchSearchLogs(searchString string, offset int) []goscope.ExceptionRecord {
-	var result []goscope.ExceptionRecord
+func FetchSearchLogs(searchString string, offset int) []exceptionRecord {
+	var result []exceptionRecord
 
 	searchWildcard := fmt.Sprintf("%%%s%%", searchString)
 
@@ -47,7 +45,7 @@ func FetchSearchLogs(searchString string, offset int) []goscope.ExceptionRecord 
 	defer rows.Close()
 
 	for rows.Next() {
-		var request goscope.ExceptionRecord
+		var request exceptionRecord
 
 		err := rows.Scan(&request.UID, &request.Error, &request.Time)
 		if err != nil {
@@ -62,8 +60,8 @@ func FetchSearchLogs(searchString string, offset int) []goscope.ExceptionRecord 
 }
 
 // Get a summarized list of application logs from the DB.
-func FetchLogs(offset int) []goscope.ExceptionRecord {
-	var result []goscope.ExceptionRecord
+func FetchLogs(offset int) []exceptionRecord {
+	var result []exceptionRecord
 
 	rows, err := QueryGetLogs(utils.DB, utils.Config.GoScopeDatabaseType, offset)
 	if err != nil {
@@ -80,7 +78,7 @@ func FetchLogs(offset int) []goscope.ExceptionRecord {
 	defer rows.Close()
 
 	for rows.Next() {
-		var request goscope.ExceptionRecord
+		var request exceptionRecord
 
 		err := rows.Scan(&request.UID, &request.Error, &request.Time)
 		if err != nil {

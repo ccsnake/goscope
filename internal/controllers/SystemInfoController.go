@@ -6,7 +6,6 @@ import (
 	"os"
 	"strings"
 
-	"github.com/averageflow/goscope/v2/src/goscopetypes"
 	"github.com/averageflow/goscope/v3/internal/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/shirou/gopsutil/cpu"
@@ -19,6 +18,42 @@ const (
 	BytesInOneGigabyte = 1073741824
 	SecondsInOneMinute = 60
 )
+
+type SystemInformationResponse struct {
+	ApplicationName string                          `json:"applicationName"`
+	CPU             SystemInformationResponseCPU    `json:"cpu"`
+	Disk            SystemInformationResponseDisk   `json:"disk"`
+	Host            SystemInformationResponseHost   `json:"host"`
+	Memory          SystemInformationResponseMemory `json:"memory"`
+	Environment     map[string]string               `json:"environment"`
+}
+
+type SystemInformationResponseCPU struct {
+	CoreCount string `json:"coreCount"`
+	ModelName string `json:"modelName"`
+}
+
+type SystemInformationResponseDisk struct {
+	FreeSpace     string `json:"freeSpace"`
+	MountPath     string `json:"mountPath"`
+	PartitionType string `json:"partitionType"`
+	TotalSpace    string `json:"totalSpace"`
+}
+
+type SystemInformationResponseMemory struct {
+	Available string `json:"availableMemory"`
+	Total     string `json:"totalMemory"`
+	UsedSwap  string `json:"usedSwap"`
+}
+
+type SystemInformationResponseHost struct {
+	HostOS        string `json:"hostOS"`
+	HostPlatform  string `json:"hostPlatform"`
+	Hostname      string `json:"hostname"`
+	KernelArch    string `json:"kernelArch"`
+	KernelVersion string `json:"kernelVersion"`
+	Uptime        string `json:"uptime"`
+}
 
 func GetAppName(c *gin.Context) {
 	c.Header("Access-Control-Allow-Origin", "*")
@@ -44,18 +79,18 @@ func ShowSystemInfo(c *gin.Context) {
 		environment[variable[0]] = variable[1]
 	}
 
-	responseBody := goscopetypes.SystemInformationResponse{
+	responseBody := SystemInformationResponse{
 		ApplicationName: utils.Config.ApplicationName,
-		CPU: goscopetypes.SystemInformationResponseCPU{
+		CPU: SystemInformationResponseCPU{
 			CoreCount: fmt.Sprintf("%d Cores", firstCPU.Cores),
 			ModelName: firstCPU.ModelName,
 		},
-		Memory: goscopetypes.SystemInformationResponseMemory{
+		Memory: SystemInformationResponseMemory{
 			Available: fmt.Sprintf("%.2f GB", float64(memoryStatus.Available)/BytesInOneGigabyte),
 			Total:     fmt.Sprintf("%.2f GB", float64(memoryStatus.Total)/BytesInOneGigabyte),
 			UsedSwap:  fmt.Sprintf("%.2f%%", swapStatus.UsedPercent),
 		},
-		Host: goscopetypes.SystemInformationResponseHost{
+		Host: SystemInformationResponseHost{
 			HostOS:        hostStatus.OS,
 			HostPlatform:  hostStatus.Platform,
 			Hostname:      hostStatus.Hostname,
@@ -63,7 +98,7 @@ func ShowSystemInfo(c *gin.Context) {
 			KernelVersion: hostStatus.KernelVersion,
 			Uptime:        fmt.Sprintf("%.2f hours", float64(hostStatus.Uptime)/SecondsInOneMinute/SecondsInOneMinute),
 		},
-		Disk: goscopetypes.SystemInformationResponseDisk{
+		Disk: SystemInformationResponseDisk{
 			FreeSpace:     fmt.Sprintf("%.2f GB", float64(diskStatus.Free)/BytesInOneGigabyte),
 			MountPath:     diskStatus.Path,
 			PartitionType: diskStatus.Fstype,

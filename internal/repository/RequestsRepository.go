@@ -7,7 +7,8 @@ import (
 	"log"
 	"time"
 
-	"github.com/averageflow/goscope/v2/src/goscopetypes"
+	"github.com/averageflow/goscope/v3/pkg/goscope"
+
 	"github.com/averageflow/goscope/v3/internal/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
@@ -59,7 +60,7 @@ func QueryGetRequests(db *sql.DB, offset int) (*sql.Rows, error) {
 }
 
 func QuerySearchRequests(db *sql.DB, connection, search string, //nolint:gocognit,funlen,gocyclo
-	filter *goscopetypes.RequestFilter, offset int) (*sql.Rows, error) { //nolint:gocognit,funlen,gocyclo
+	filter *goscope.RequestFilter, offset int) (*sql.Rows, error) { //nolint:gocognit,funlen,gocyclo
 	var query string
 
 	var methodQuery string
@@ -244,7 +245,7 @@ func QueryDetailedResponse(db *sql.DB, requestUID string) *sql.Row {
 	return row
 }
 
-func DumpRequestResponse(c *gin.Context, responsePayload goscopetypes.DumpResponsePayload, body string) {
+func DumpRequestResponse(c *gin.Context, responsePayload goscope.DumpResponsePayload, body string) {
 	now := time.Now().Unix()
 	requestUID := uuid.New().String()
 	headers, _ := json.Marshal(c.Request.Header)

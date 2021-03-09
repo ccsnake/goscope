@@ -8,12 +8,12 @@ import (
 )
 
 // FetchDetailedRequest fetches all details from a request via its UUID.
-func FetchDetailedRequest(requestUID string) goscope.DetailedRequest {
+func FetchDetailedRequest(requestUID string) detailedRequest {
 	var body string
 
 	var headers string
 
-	var result goscope.DetailedRequest
+	var result detailedRequest
 
 	row := QueryDetailedRequest(utils.DB, requestUID)
 
@@ -41,12 +41,12 @@ func FetchDetailedRequest(requestUID string) goscope.DetailedRequest {
 }
 
 // FetchDetailedResponse fetches all details of a response via its UUID.
-func FetchDetailedResponse(responseUUID string) goscope.DetailedResponse {
+func FetchDetailedResponse(responseUUID string) detailedResponse {
 	var body string
 
 	var headers string
 
-	var result goscope.DetailedResponse
+	var result detailedResponse
 
 	row := QueryDetailedResponse(utils.DB, responseUUID)
 
@@ -71,8 +71,8 @@ func FetchDetailedResponse(responseUUID string) goscope.DetailedResponse {
 }
 
 // FetchRequestList fetches a list of summarized requests.
-func FetchRequestList(offset int) []goscope.SummarizedRequest {
-	var result []goscope.SummarizedRequest
+func FetchRequestList(offset int) []summarizedRequest {
+	var result []summarizedRequest
 
 	rows, err := QueryGetRequests(utils.DB, offset)
 	if err != nil {
@@ -90,7 +90,7 @@ func FetchRequestList(offset int) []goscope.SummarizedRequest {
 	defer rows.Close()
 
 	for rows.Next() {
-		var request goscope.SummarizedRequest
+		var request summarizedRequest
 
 		err := rows.Scan(
 			&request.UID,
@@ -111,8 +111,8 @@ func FetchRequestList(offset int) []goscope.SummarizedRequest {
 }
 
 // FetchSearchRequests fetches a list of summarized requests that match the input parameters of search.
-func FetchSearchRequests(search string, filter *goscope.RequestFilter, offset int) []goscope.SummarizedRequest {
-	var result []goscope.SummarizedRequest
+func FetchSearchRequests(search string, filter *goscope.RequestFilter, offset int) []summarizedRequest {
+	var result []summarizedRequest
 
 	rows, err := QuerySearchRequests(utils.DB, utils.Config.GoScopeDatabaseType, search, filter, offset)
 	if err != nil {
@@ -129,7 +129,7 @@ func FetchSearchRequests(search string, filter *goscope.RequestFilter, offset in
 	defer rows.Close()
 
 	for rows.Next() {
-		var request goscope.SummarizedRequest
+		var request summarizedRequest
 
 		err := rows.Scan(
 			&request.UID,
