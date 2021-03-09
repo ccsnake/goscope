@@ -21,7 +21,7 @@ type LoggerGoScope struct {
 
 // Write dumps the log to the database.
 func (logger LoggerGoScope) Write(p []byte) (n int, err error) {
-	go repository.DumpLog(string(p))
+	go repository.DumpLog(goscope.DB, goscope.Config.ApplicationID, string(p))
 	return len(p), nil
 }
 
@@ -31,14 +31,14 @@ func ResponseLogger(c *gin.Context) {
 
 	c.Next()
 
-	dumpPayload := goscope.DumpResponsePayload{
+	dumpPayload := repository.DumpResponsePayload{
 		Headers: details.Blw.Header(),
 		Body:    details.Blw.Body,
 		Status:  c.Writer.Status(),
 	}
 
 	if utils.CheckExcludedPaths(c.FullPath()) {
-		go repository.DumpRequestResponse(c, dumpPayload, readBody(details.Rdr))
+		go repository.DumpRequestResponse(c, goscope.Config.ApplicationID, goscope.DB, dumpPayload, readBody(details.Rdr))
 	}
 }
 
@@ -46,13 +46,13 @@ func ResponseLogger(c *gin.Context) {
 func NoRouteResponseLogger(c *gin.Context) {
 	details := ObtainBodyLogWriter(c)
 
-	dumpPayload := goscope.DumpResponsePayload{
+	dumpPayload := repository.DumpResponsePayload{
 		Headers: details.Blw.Header(),
 		Body:    details.Blw.Body,
 		Status:  http.StatusNotFound,
 	}
 
-	go repository.DumpRequestResponse(c, dumpPayload, readBody(details.Rdr))
+	go repository.DumpRequestResponse(c, goscope.Config.ApplicationID, goscope.DB, dumpPayload, readBody(details.Rdr))
 
 	c.JSON(http.StatusNotFound, gin.H{
 		"code":    http.StatusNotFound,

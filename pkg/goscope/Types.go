@@ -3,7 +3,6 @@ package goscope
 import (
 	"bytes"
 	"io"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -26,11 +25,6 @@ type BodyLogWriter struct {
 func (w BodyLogWriter) Write(b []byte) (int, error) {
 	w.Body.Write(b)
 	return w.ResponseWriter.Write(b)
-}
-
-type SearchRequestPayload struct {
-	Query  string        `json:"query"`
-	Filter RequestFilter `json:"filter"`
 }
 
 // Environment is the required application environment variables.
@@ -65,15 +59,4 @@ type InitData struct {
 	RouteGroup *gin.RouterGroup
 	// Config represents the required variables to initialize GoScope
 	Config *Environment
-}
-
-type DumpResponsePayload struct {
-	Headers http.Header
-	Body    *bytes.Buffer
-	Status  int
-}
-
-type RequestFilter struct {
-	Method []string `json:"method"`
-	Status []int    `json:"status"`
 }

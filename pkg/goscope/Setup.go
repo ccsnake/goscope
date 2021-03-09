@@ -5,8 +5,6 @@ import (
 
 	"github.com/averageflow/goscope/v3/internal/controllers"
 
-	"github.com/averageflow/goscope/v3/internal/utils"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -17,13 +15,13 @@ func Setup(settings *InitData) {
 		panic("Please provide a pointer to a valid and instantiated GoScopeInitData.")
 	}
 
-	utils.ConfigSetup(settings.Config)
-	utils.DatabaseSetup(utils.DatabaseInformation{
-		Type:                  utils.Config.GoScopeDatabaseType,
-		Connection:            utils.Config.GoScopeDatabaseConnection,
-		MaxOpenConnections:    utils.Config.GoScopeDatabaseMaxOpenConnections,
-		MaxIdleConnections:    utils.Config.GoScopeDatabaseMaxIdleConnections,
-		MaxConnectionLifetime: utils.Config.GoScopeDatabaseMaxConnLifetime,
+	ConfigSetup(settings.Config)
+	DatabaseSetup(DatabaseInformation{
+		Type:                  Config.GoScopeDatabaseType,
+		Connection:            Config.GoScopeDatabaseConnection,
+		MaxOpenConnections:    Config.GoScopeDatabaseMaxOpenConnections,
+		MaxIdleConnections:    Config.GoScopeDatabaseMaxIdleConnections,
+		MaxConnectionLifetime: Config.GoScopeDatabaseMaxConnLifetime,
 	})
 
 	settings.Router.Use(gin.Logger())
@@ -42,7 +40,7 @@ func Setup(settings *InitData) {
 	settings.Router.NoRoute(controllers.NoRouteResponseLogger)
 
 	// SPA routes
-	if !utils.Config.HasFrontendDisabled {
+	if !Config.HasFrontendDisabled {
 
 	}
 

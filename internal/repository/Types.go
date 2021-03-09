@@ -1,5 +1,10 @@
 package repository
 
+import (
+	"bytes"
+	"net/http"
+)
+
 type exceptionRecord struct {
 	Error string `json:"error"`
 	Time  int    `json:"time"`
@@ -38,4 +43,15 @@ type detailedRequest struct {
 	UID       string `json:"uid"`
 	URL       string `json:"url"`
 	UserAgent string `json:"userAgent"`
+}
+
+type RequestFilter struct {
+	Method []string `json:"method"`
+	Status []int    `json:"status"`
+}
+
+type DumpResponsePayload struct {
+	Headers http.Header
+	Body    *bytes.Buffer
+	Status  int
 }

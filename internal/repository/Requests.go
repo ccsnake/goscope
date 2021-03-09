@@ -1,21 +1,21 @@
 package repository
 
 import (
+	"database/sql"
 	"log"
 
 	"github.com/averageflow/goscope/v3/internal/utils"
-	"github.com/averageflow/goscope/v3/pkg/goscope"
 )
 
 // FetchDetailedRequest fetches all details from a request via its UUID.
-func FetchDetailedRequest(requestUID string) detailedRequest {
+func FetchDetailedRequest(db *sql.DB, requestUID string) detailedRequest {
 	var body string
 
 	var headers string
 
 	var result detailedRequest
 
-	row := QueryDetailedRequest(utils.DB, requestUID)
+	row := QueryDetailedRequest(db, requestUID)
 
 	err := row.Scan(
 		&result.UID,
@@ -41,14 +41,14 @@ func FetchDetailedRequest(requestUID string) detailedRequest {
 }
 
 // FetchDetailedResponse fetches all details of a response via its UUID.
-func FetchDetailedResponse(responseUUID string) detailedResponse {
+func FetchDetailedResponse(db *sql.DB, responseUUID string) detailedResponse {
 	var body string
 
 	var headers string
 
 	var result detailedResponse
 
-	row := QueryDetailedResponse(utils.DB, responseUUID)
+	row := QueryDetailedResponse(db, responseUUID)
 
 	err := row.Scan(
 		&result.UID,
@@ -71,10 +71,10 @@ func FetchDetailedResponse(responseUUID string) detailedResponse {
 }
 
 // FetchRequestList fetches a list of summarized requests.
-func FetchRequestList(offset int) []summarizedRequest {
+func FetchRequestList(db *sql.DB, offset int) []summarizedRequest {
 	var result []summarizedRequest
 
-	rows, err := QueryGetRequests(utils.DB, offset)
+	rows, err := QueryGetRequests(db, offset)
 	if err != nil {
 		log.Println(err.Error())
 
@@ -111,10 +111,10 @@ func FetchRequestList(offset int) []summarizedRequest {
 }
 
 // FetchSearchRequests fetches a list of summarized requests that match the input parameters of search.
-func FetchSearchRequests(search string, filter *goscope.RequestFilter, offset int) []summarizedRequest {
+func FetchSearchRequests(db *sql.DB, databaseType string, search string, filter *RequestFilter, offset int) []summarizedRequest {
 	var result []summarizedRequest
 
-	rows, err := QuerySearchRequests(utils.DB, utils.Config.GoScopeDatabaseType, search, filter, offset)
+	rows, err := QuerySearchRequests(db, databaseType, search, filter, offset)
 	if err != nil {
 		log.Println(err.Error())
 		return result

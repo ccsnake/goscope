@@ -6,7 +6,6 @@ import (
 	"strconv"
 
 	"github.com/averageflow/goscope/v3/internal/repository"
-	"github.com/averageflow/goscope/v3/internal/utils"
 	"github.com/averageflow/goscope/v3/pkg/goscope"
 
 	"github.com/gin-gonic/gin"
@@ -18,9 +17,15 @@ func LogList(c *gin.Context) {
 	offset, _ := strconv.ParseInt(offsetQuery, 10, 32)
 
 	variables := gin.H{
-		"applicationName": utils.Config.ApplicationName,
-		"entriesPerPage":  utils.Config.GoScopeEntriesPerPage,
-		"data":            repository.FetchLogs(int(offset)),
+		"applicationName": goscope.Config.ApplicationName,
+		"entriesPerPage":  goscope.Config.GoScopeEntriesPerPage,
+		"data": repository.FetchLogs(
+			goscope.DB,
+			goscope.Config.ApplicationID,
+			goscope.Config.GoScopeEntriesPerPage,
+			goscope.Config.GoScopeDatabaseType,
+			int(offset),
+		),
 	}
 
 	c.Header("Access-Control-Allow-Origin", "*")
@@ -35,10 +40,10 @@ func ShowLog(c *gin.Context) {
 		log.Println(err.Error())
 	}
 
-	logDetails := repository.FetchDetailedLog(request.UID)
+	logDetails := repository.FetchDetailedLog(goscope.DB, request.UID)
 
 	variables := gin.H{
-		"applicationName": utils.Config.ApplicationName,
+		"applicationName": goscope.Config.ApplicationName,
 		"data": gin.H{
 			"logDetails": logDetails,
 		},
@@ -49,7 +54,7 @@ func ShowLog(c *gin.Context) {
 }
 
 func SearchLog(c *gin.Context) {
-	var request goscope.SearchRequestPayload
+	var request SearchRequestPayload
 
 	err := c.ShouldBindBodyWith(&request, binding.JSON)
 	if err != nil {
@@ -58,11 +63,18 @@ func SearchLog(c *gin.Context) {
 
 	offsetQuery := c.DefaultQuery("offset", "0")
 	offset, _ := strconv.ParseInt(offsetQuery, 10, 32)
-	result := repository.FetchSearchLogs(request.Query, int(offset))
+	result := repository.FetchSearchLogs(
+		goscope.DB,
+		goscope.Config.ApplicationID,
+		goscope.Config.GoScopeEntriesPerPage,
+		goscope.Config.GoScopeDatabaseType,
+		request.Query,
+		int(offset),
+	)
 
 	variables := gin.H{
-		"applicationName": utils.Config.ApplicationName,
-		"entriesPerPage":  utils.Config.GoScopeEntriesPerPage,
+		"applicationName": goscope.Config.ApplicationName,
+		"entriesPerPage":  goscope.Config.GoScopeEntriesPerPage,
 		"data":            result,
 	}
 

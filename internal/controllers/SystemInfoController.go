@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/averageflow/goscope/v3/internal/utils"
+	"github.com/averageflow/goscope/v3/pkg/goscope"
 	"github.com/gin-gonic/gin"
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/shirou/gopsutil/disk"
@@ -58,7 +58,7 @@ type SystemInformationResponseHost struct {
 func GetAppName(c *gin.Context) {
 	c.Header("Access-Control-Allow-Origin", "*")
 	c.JSON(http.StatusOK, gin.H{
-		"applicationName": utils.Config.ApplicationName,
+		"applicationName": goscope.Config.ApplicationName,
 	})
 }
 
@@ -80,7 +80,7 @@ func ShowSystemInfo(c *gin.Context) {
 	}
 
 	responseBody := SystemInformationResponse{
-		ApplicationName: utils.Config.ApplicationName,
+		ApplicationName: goscope.Config.ApplicationName,
 		CPU: SystemInformationResponseCPU{
 			CoreCount: fmt.Sprintf("%d Cores", firstCPU.Cores),
 			ModelName: firstCPU.ModelName,

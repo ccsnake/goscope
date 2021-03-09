@@ -6,12 +6,10 @@ import (
 	"log"
 	"time"
 
-	"github.com/averageflow/goscope/v3/internal/utils"
-
 	"github.com/google/uuid"
 )
 
-func QuerySearchLogs(db *sql.DB, connection, searchWildcard string, offset int) (*sql.Rows, error) {
+func QuerySearchLogs(db *sql.DB, appID string, entriesPerPage int, connection, searchWildcard string, offset int) (*sql.Rows, error) {
 	var query string
 	if connection == MySQL || connection == PostgreSQL {
 		query = `
@@ -39,14 +37,14 @@ func QuerySearchLogs(db *sql.DB, connection, searchWildcard string, offset int) 
 
 	return db.Query(
 		query,
-		utils.Config.ApplicationID,
+		appID,
 		searchWildcard, searchWildcard, searchWildcard, searchWildcard,
-		utils.Config.GoScopeEntriesPerPage,
+		entriesPerPage,
 		offset,
 	)
 }
 
-func QueryGetLogs(db *sql.DB, connection string, offset int) (*sql.Rows, error) {
+func QueryGetLogs(db *sql.DB, appID string, entriesPerPage int, connection string, offset int) (*sql.Rows, error) {
 	var query string
 
 	if connection == MySQL || connection == PostgreSQL {
@@ -71,13 +69,13 @@ func QueryGetLogs(db *sql.DB, connection string, offset int) (*sql.Rows, error) 
 
 	return db.Query(
 		query,
-		utils.Config.ApplicationID,
-		utils.Config.GoScopeEntriesPerPage,
+		appID,
+		entriesPerPage,
 		offset,
 	)
 }
 
-func DumpLog(message string) {
+func DumpLog(db *sql.DB, appID string, message string) {
 	fmt.Printf("%v", message)
 
 	uid := uuid.New().String()
@@ -86,10 +84,10 @@ func DumpLog(message string) {
 		(?, ?, ?, ?);
 	`
 
-	_, err := utils.DB.Exec(
+	_, err := db.Exec(
 		query,
 		uid,
-		utils.Config.ApplicationID,
+		appID,
 		message,
 		time.Now().Unix(),
 	)

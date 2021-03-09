@@ -8,7 +8,6 @@ import (
 	"github.com/averageflow/goscope/v3/pkg/goscope"
 
 	"github.com/averageflow/goscope/v3/internal/repository"
-	"github.com/averageflow/goscope/v3/internal/utils"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 )
@@ -19,8 +18,8 @@ func RequestList(c *gin.Context) {
 	offset, _ := strconv.ParseInt(offsetQuery, 10, 32)
 
 	variables := gin.H{
-		"applicationName": utils.Config.ApplicationName,
-		"entriesPerPage":  utils.Config.GoScopeEntriesPerPage,
+		"applicationName": goscope.Config.ApplicationName,
+		"entriesPerPage":  goscope.Config.GoScopeEntriesPerPage,
 		"data":            repository.FetchRequestList(int(offset)),
 	}
 
@@ -41,7 +40,7 @@ func ShowRequest(c *gin.Context) {
 	responseDetails := repository.FetchDetailedResponse(request.UID)
 
 	variables := gin.H{
-		"applicationName": utils.Config.ApplicationName,
+		"applicationName": goscope.Config.ApplicationName,
 		"data": gin.H{
 			"request":  requestDetails,
 			"response": responseDetails,
@@ -54,7 +53,7 @@ func ShowRequest(c *gin.Context) {
 
 // SearchRequest is the controller for the search requests list page in GoScope API.
 func SearchRequest(c *gin.Context) {
-	var request goscope.SearchRequestPayload
+	var request SearchRequestPayload
 	err := c.ShouldBindBodyWith(&request, binding.JSON)
 
 	if err != nil {
@@ -66,8 +65,8 @@ func SearchRequest(c *gin.Context) {
 	result := repository.FetchSearchRequests(request.Query, &request.Filter, int(offset))
 
 	variables := gin.H{
-		"applicationName": utils.Config.ApplicationName,
-		"entriesPerPage":  utils.Config.GoScopeEntriesPerPage,
+		"applicationName": goscope.Config.ApplicationName,
+		"entriesPerPage":  goscope.Config.GoScopeEntriesPerPage,
 		"data":            result,
 	}
 

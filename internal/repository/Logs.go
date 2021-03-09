@@ -4,13 +4,11 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
-
-	"github.com/averageflow/goscope/v3/internal/utils"
 )
 
-func FetchDetailedLog(requestUID string) exceptionRecord {
+func FetchDetailedLog(db *sql.DB, requestUID string) exceptionRecord {
 	row := QueryDetailedLog(
-		utils.DB,
+		db,
 		requestUID,
 	)
 
@@ -25,12 +23,12 @@ func FetchDetailedLog(requestUID string) exceptionRecord {
 	return request
 }
 
-func FetchSearchLogs(searchString string, offset int) []exceptionRecord {
+func FetchSearchLogs(db *sql.DB, appID string, entriesPerPage int, databaseType string, searchString string, offset int) []exceptionRecord {
 	var result []exceptionRecord
 
 	searchWildcard := fmt.Sprintf("%%%s%%", searchString)
 
-	rows, err := QuerySearchLogs(utils.DB, utils.Config.GoScopeDatabaseType, searchWildcard, offset)
+	rows, err := QuerySearchLogs(db, appID, entriesPerPage, databaseType, searchWildcard, offset)
 	if err != nil {
 		log.Println(err.Error())
 		return result
@@ -60,10 +58,10 @@ func FetchSearchLogs(searchString string, offset int) []exceptionRecord {
 }
 
 // Get a summarized list of application logs from the DB.
-func FetchLogs(offset int) []exceptionRecord {
+func FetchLogs(db *sql.DB, appID string, entriesPerPage int, databaseType string, offset int) []exceptionRecord {
 	var result []exceptionRecord
 
-	rows, err := QueryGetLogs(utils.DB, utils.Config.GoScopeDatabaseType, offset)
+	rows, err := QueryGetLogs(db, appID, entriesPerPage, databaseType, offset)
 	if err != nil {
 		log.Println(err.Error())
 		return result
