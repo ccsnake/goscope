@@ -30,13 +30,36 @@
                                     class="
                                     has-text-centered has-text-weight-bold
                                 {{ if eq .ResponseStatus 200 }}badge-success{{ end }}
-                                {{ if eq .ResponseStatus 200 }}badge-success{{ end }}
+                                {{ if eq .ResponseStatus 201 }}badge-success{{ end }}
+                                {{ if eq .ResponseStatus 202 }}badge-success{{ end }}
+                                {{ if eq .ResponseStatus 203 }}badge-success{{ end }}
+                                {{ if eq .ResponseStatus 204 }}badge-success{{ end }}
+                                {{ if eq .ResponseStatus 300 }}badge-info{{ end }}
+                                {{ if eq .ResponseStatus 301 }}badge-info{{ end }}
+                                {{ if eq .ResponseStatus 302 }}badge-info{{ end }}
+                                {{ if eq .ResponseStatus 303 }}badge-info{{ end }}
+                                {{ if eq .ResponseStatus 304 }}badge-info{{ end }}
+                                {{ if eq .ResponseStatus 305 }}badge-info{{ end }}
+                                {{ if eq .ResponseStatus 306 }}badge-info{{ end }}
+                                {{ if eq .ResponseStatus 307 }}badge-info{{ end }}
+                                {{ if eq .ResponseStatus 308 }}badge-info{{ end }}
+                                {{ if eq .ResponseStatus 400 }}badge-warning{{ end }}
+                                {{ if eq .ResponseStatus 401 }}badge-warning{{ end }}
+                                {{ if eq .ResponseStatus 402 }}badge-warning{{ end }}
+                                {{ if eq .ResponseStatus 403 }}badge-warning{{ end }}
+                                {{ if eq .ResponseStatus 404 }}badge-warning{{ end }}
+                                {{ if eq .ResponseStatus 418 }}badge-warning{{ end }}
+                                {{ if eq .ResponseStatus 422 }}badge-warning{{ end }}
+                                {{ if eq .ResponseStatus 500 }}badge-danger{{ end }}
+                                {{ if eq .ResponseStatus 501 }}badge-danger{{ end }}
+                                {{ if eq .ResponseStatus 502 }}badge-danger{{ end }}
+                                {{ if eq .ResponseStatus 503 }}badge-danger{{ end }}
                                     "
                                 >
                                     {{ .ResponseStatus }}
                                 </p>
                             </td>
-                            <td>{{ .Method }}</td>
+                            <td class="has-text-weight-bold">{{ .Method }}</td>
                             <td class="is-family-monospace">{{ .Path }}</td>
                             <td>
                                 <small
