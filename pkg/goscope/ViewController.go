@@ -66,3 +66,26 @@ func logDetailsPageHandler(c *gin.Context) {
 
 	c.HTML(http.StatusOK, "goscope-views/LogDetails.gohtml", variables)
 }
+
+func requestDetailsPageHandler(c *gin.Context) {
+	var request RecordByURI
+
+	err := c.ShouldBindUri(&request)
+	if err != nil {
+		log.Println(err.Error())
+	}
+
+	requestDetails := repository.FetchDetailedRequest(DB, request.UID)
+	responseDetails := repository.FetchDetailedResponse(DB, request.UID)
+
+	variables := gin.H{
+		"applicationName": Config.ApplicationName,
+		"data": gin.H{
+			"request":  requestDetails,
+			"response": responseDetails,
+		},
+		"baseURL": Config.BaseURL,
+	}
+
+	c.HTML(http.StatusOK, "goscope-views/RequestDetails.gohtml", variables)
+}

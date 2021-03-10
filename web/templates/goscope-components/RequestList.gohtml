@@ -1,40 +1,51 @@
 {{ define "goscope-components/RequestList.gohtml" }}
-  <section class="has-text-centered">
-    <a
-      class="p-4"
-      href="{{ $.baseURL }}/?offset={{ SubtractTillZero $.offset 50 }}"
-      >← prev</a
-    >
-    <a class="p-4" href="{{ $.baseURL }}/?offset={{ Add $.offset 50 }}"
-      >next →</a
-    >
-  </section>
-  <section class="columns">
-    <div class="column is-full">
-      <table class="table">
-        <thead>
-          <tr>
-            <th>Status</th>
-            <th>Method</th>
-            <th>Path</th>
-            <th>Happened</th>
-            <th>Date</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {{ range .data }}
-            <tr>
-              <td>{{ .ResponseStatus }}</td>
-              <td>{{ .Method }}</td>
-              <td class="is-family-monospace">{{ .Path }}</td>
-              <td><small>{{ EpochToTimeAgoHappened .Time }} ago</small></td>
-              <td><small>{{ EpochToHumanReadable .Time }}</small></td>
-              <td><a href="{{ $.baseURL }}/requests/{{ .UID }}">View</a></td>
-            </tr>
-          {{ end }}
-        </tbody>
-      </table>
-    </div>
-  </section>
+    <section class="has-text-centered">
+        <a
+            class="p-4"
+            href="{{ $.baseURL }}/?offset={{ SubtractTillZero $.offset 50 }}"
+            >← prev</a
+        >
+        <a class="p-4" href="{{ $.baseURL }}/?offset={{ Add $.offset 50 }}"
+            >next →</a
+        >
+    </section>
+    <section class="columns">
+        <div class="column is-full">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Status</th>
+                        <th>Method</th>
+                        <th>Path</th>
+                        <th>Happened</th>
+                        <th>Date</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{ range .data }}
+                        <tr>
+                            <td>{{ .ResponseStatus }}</td>
+                            <td>{{ .Method }}</td>
+                            <td class="is-family-monospace">{{ .Path }}</td>
+                            <td>
+                                <small
+                                    >{{ EpochToTimeAgoHappened .Time }}
+                                    ago</small
+                                >
+                            </td>
+                            <td>
+                                <small>{{ EpochToHumanReadable .Time }}</small>
+                            </td>
+                            <td>
+                                <a href="{{ $.baseURL }}/requests/{{ .UID }}"
+                                    >View</a
+                                >
+                            </td>
+                        </tr>
+                    {{ end }}
+                </tbody>
+            </table>
+        </div>
+    </section>
 {{ end }}

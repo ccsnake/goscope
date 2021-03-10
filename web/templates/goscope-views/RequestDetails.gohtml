@@ -1,6 +1,154 @@
 {{ define "goscope-views/RequestDetails.gohtml" }}
-  {{ template "goscope-components/Head.gohtml" }}
-  {{ template "goscope-components/Header.gohtml" . }}
-  <div class="container section"></div>
-  {{ template "goscope-components/PageEnd.gohtml" }}
+    {{ template "goscope-components/Head.gohtml" }}
+    {{ template "goscope-components/Header.gohtml" . }}
+    <div class="container section">
+        <a href="{{ $.baseURL }}/requests">← Back</a>
+        <section class="mt-4">
+            <h3 class="title is-3">Request details</h3>
+            {{ if FieldHasContent .data.request.ClientIP }}
+                <div>
+                    <h5>Client IP</h5>
+                    <p class="is-family-monospace">
+                        {{ .data.request.ClientIP }}
+                    </p>
+                </div>
+            {{ end }}
+
+            {{ if FieldHasContent .data.request.Headers }}
+                <div>
+                    <h5>Headers</h5>
+                    <details>
+                        <summary>Click to view headers...</summary>
+                        <pre><code>{{ .data.request.Headers }}</code></pre>
+                    </details>
+                </div>
+            {{ end }}
+
+            {{ if FieldHasContent .data.request.Host }}
+                <div>
+                    <h5>Host</h5>
+                    <p>{{ .data.request.Host }}</p>
+                </div>
+            {{ end }}
+
+            {{ if FieldHasContent .data.request.Method }}
+                <div>
+                    <h5>Method</h5>
+                    <p>{{ .data.request.Method }}</p>
+                </div>
+            {{ end }}
+
+            {{ if FieldHasContent .data.request.Path }}
+                <div>
+                    <h5>Path</h5>
+                    <p>{{ .data.request.Path }}</p>
+                </div>
+            {{ end }}
+
+            {{ if FieldHasContent .data.request.Referrer }}
+                <div>
+                    <h5>Referrer</h5>
+                    <p>{{ .data.request.Referrer }}</p>
+                </div>
+            {{ end }}
+
+            <div>
+                <h5>Time</h5>
+                <p>{{ .data.request.Time }}</p>
+            </div>
+
+            {{ if FieldHasContent .data.request.UID }}
+                <div>
+                    <h5>UID</h5>
+                    <p>{{ .data.request.UID }}</p>
+                </div>
+            {{ end }}
+
+            {{ if FieldHasContent .data.request.URL }}
+                <div>
+                    <h5>URL</h5>
+                    <p>{{ .data.request.URL }}</p>
+                </div>
+            {{ end }}
+
+            {{ if FieldHasContent .data.request.UserAgent }}
+                <div>
+                    <h5>UserAgent</h5>
+                    <p>{{ .data.request.UserAgent }}</p>
+                </div>
+            {{ end }}
+
+            {{ if FieldHasContent .data.request.Body }}
+                <div>
+                    <h5>Body</h5>
+                    <details>
+                        <summary>Click to view body...</summary>
+                        <pre>
+              <code>{{ .data.request.Body }}</code>
+            </pre
+                        >
+                    </details>
+                </div>
+            {{ end }}
+        </section>
+
+        <section class="mt-6">
+            <h3 class="title is-3">Response details</h3>
+            {{ if FieldHasContent .data.response.ClientIP }}
+                <div>
+                    <h5>ClientIP</h5>
+                    <p>{{ .data.response.ClientIP }}</p>
+                </div>
+            {{ end }}
+            {{ if FieldHasContent .data.response.Headers }}
+                <div>
+                    <h5>Headers</h5>
+                    <details>
+                        <summary>Click to view headers...</summary>
+                        <pre><code>{{ .data.response.Headers }}</code></pre>
+                    </details>
+                </div>
+            {{ end }}
+            {{ if FieldHasContent .data.response.Path }}
+                <div>
+                    <h5>Path</h5>
+                    <p>{{ .data.response.Path }}</p>
+                </div>
+            {{ end }}
+            <div>
+                <h5>Size</h5>
+                <p>{{ .data.response.Size }}</p>
+            </div>
+            {{ if FieldHasContent .data.response.Status }}
+                <div>
+                    <h5>Status</h5>
+                    <p>{{ .data.response.Status }}</p>
+                </div>
+            {{ end }}
+
+            <div>
+                <h5>Time</h5>
+                <p>{{ .data.response.Time }}</p>
+            </div>
+            {{ if FieldHasContent .data.response.UID }}
+                <div>
+                    <h5>UID</h5>
+                    <p>{{ .data.response.UID }}</p>
+                </div>
+            {{ end }}
+            {{ if FieldHasContent .data.response.Body }}
+                <div>
+                    <h5>Body</h5>
+                    <details>
+                        <summary>Click to view body...</summary>
+                        <pre>
+                <code>{{ .data.response.Body }}</code>
+              </pre
+                        >
+                    </details>
+                </div>
+            {{ end }}
+        </section>
+    </div>
+    {{ template "goscope-components/PageEnd.gohtml" }}
 {{ end }}

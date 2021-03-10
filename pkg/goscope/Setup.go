@@ -3,6 +3,7 @@ package goscope
 import (
 	"html/template"
 	"log"
+	"strings"
 
 	"github.com/averageflow/goscope/v3/web"
 
@@ -22,6 +23,9 @@ var GoScopeFunctionMap = map[string]interface{}{
 		}
 
 		return result
+	},
+	"FieldHasContent": func(fieldContent string) bool {
+		return fieldContent != "" && strings.TrimSpace(fieldContent) != ""
 	},
 }
 
@@ -64,8 +68,10 @@ func Setup(config *InitData) *template.Template {
 	if !Config.HasFrontendDisabled {
 		config.RouteGroup.GET("/", requestListPageHandler)
 		config.RouteGroup.GET("", requestListPageHandler)
+		config.RouteGroup.GET("/requests", requestListPageHandler)
 		config.RouteGroup.GET("/logs", logListPageHandler)
 		config.RouteGroup.GET("/logs/:id", logDetailsPageHandler)
+		config.RouteGroup.GET("/requests/:id", requestDetailsPageHandler)
 	}
 
 	// GoScope API
