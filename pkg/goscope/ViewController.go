@@ -1,6 +1,7 @@
 package goscope
 
 import (
+	"log"
 	"net/http"
 	"strconv"
 
@@ -43,4 +44,25 @@ func logListPageHandler(c *gin.Context) {
 	}
 
 	c.HTML(http.StatusOK, "goscope-views/Logs.gohtml", variables)
+}
+
+func logDetailsPageHandler(c *gin.Context) {
+	var request RecordByURI
+
+	err := c.ShouldBindUri(&request)
+	if err != nil {
+		log.Println(err.Error())
+	}
+
+	logDetails := repository.FetchDetailedLog(DB, request.UID)
+
+	variables := gin.H{
+		"applicationName": Config.ApplicationName,
+		"data": gin.H{
+			"logDetails": logDetails,
+		},
+		"baseURL": Config.BaseURL,
+	}
+
+	c.HTML(http.StatusOK, "goscope-views/LogDetails.gohtml", variables)
 }

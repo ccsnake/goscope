@@ -65,6 +65,7 @@ func Setup(config *InitData) *template.Template {
 		config.RouteGroup.GET("/", requestListPageHandler)
 		config.RouteGroup.GET("", requestListPageHandler)
 		config.RouteGroup.GET("/logs", logListPageHandler)
+		config.RouteGroup.GET("/logs/:id", logDetailsPageHandler)
 	}
 
 	// GoScope API

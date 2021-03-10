@@ -1,0 +1,22 @@
+{{ define "goscope-views/LogDetails.gohtml" }}
+  {{ template "goscope-components/Head.gohtml" }}
+  {{ template "goscope-components/Header.gohtml" . }}
+  <div class="container section">
+    <a href="{{ $.baseURL }}/logs">← Back</a>
+    <section>
+      <h3 class="title is-3">Log details</h3>
+      <p class="mt-6 mb-6">
+        Time: {{ EpochToTimeAgoHappened .data.logDetails.Time }} ago -
+        {{ EpochToHumanReadable .data.logDetails.Time }}
+      </p>
+      <dl>
+        <dd></dd>
+        <dt>Message</dt>
+        <dd>
+          <pre><code>{{ .data.logDetails.Error }}</code></pre>
+        </dd>
+      </dl>
+    </section>
+  </div>
+  {{ template "goscope-components/PageEnd.gohtml" }}
+{{ end }}
