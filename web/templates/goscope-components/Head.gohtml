@@ -9,6 +9,11 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
     </head>
     <style>
+        .input {
+            border:none;
+            background: #dbdbdb;
+        }
+
         .is-family-monospace {
             font-family: Menlo, 'Lucida Console', 'JetBrains Mono', 'Ubuntu Mono', monospace, 'Consolas' !important;
         }
@@ -148,7 +153,29 @@
             a:hover {
                 color: #fff;
             }
+            .input {
+                background-color: #111;
+                color: #fff;
+                border:none;
+            }
+            .placeholder {
+                color: #aaa;
+            }
+            ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+                color: #aaa;
+                opacity: 1; /* Firefox */
+            }
+
+            :-ms-input-placeholder { /* Internet Explorer 10-11 */
+                color: #aaa;
+            }
+
+            ::-ms-input-placeholder { /* Microsoft Edge */
+                color: #aaa;
+            }
         }
+
+
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
