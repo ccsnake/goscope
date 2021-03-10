@@ -7,10 +7,20 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func main() {
-	router := gin.New()
+// Setup your custom functions for the templates here
+var myFunctionMap = map[string]interface{}{
+	"MultiplyNumbers": func(a, b int) int { return a * b },
+}
 
-	templateEngineNew := goscope.Setup(&goscope.InitData{
+func main() {
+	// Initialize an empty gin.Engine
+	router := gin.New()
+	// Add your custom functions to the function map
+	for i := range myFunctionMap {
+		router.FuncMap[i] = myFunctionMap[i]
+	}
+	// Setup GoScope
+	applicationTemplateEngine := goscope.Setup(&goscope.InitData{
 		Router:     router,
 		RouteGroup: router.Group("/goscope"),
 		Config: &goscope.Environment{
@@ -27,17 +37,22 @@ func main() {
 		},
 	})
 
-	if templateEngineNew != nil {
-		_, err := templateEngineNew.ParseFiles("../../web/example.gohtml")
+	// If the application template engine is valid use it for the router
+	if applicationTemplateEngine != nil {
+		// Parse any other template files here
+		_, err := applicationTemplateEngine.ParseFiles("../../web/example.gohtml")
 		if err != nil {
 			panic(err.Error())
 		}
-
-		router.SetHTMLTemplate(templateEngineNew)
+		// Finally set the html renderer of the application to the GoScope + your templates engine
+		router.SetHTMLTemplate(applicationTemplateEngine)
 	}
 
+	// Setup any remaining routes for your application
 	router.GET("/test", func(context *gin.Context) {
 		context.HTML(http.StatusOK, "example.gohtml", nil)
 	})
+
+	// Start the server
 	_ = router.Run(":7011")
 }
