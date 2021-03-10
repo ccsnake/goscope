@@ -163,17 +163,17 @@
                         </p>
                     </div>
                 {{ end }}
-                {{ if FieldHasContent .data.response.Body }}
-                    <div class="m-4">
-                        <h5 class="title is-5">Body</h5>
-                        <details>
-                            <summary>Click to view body...</summary>
-                            <pre><code>{{ .data.response.Body }}</code></pre>
-                        </details>
-                    </div>
-                {{ end }}
             </section>
         </div>
+        {{ if FieldHasContent .data.response.Body }}
+            <div class="m-4">
+                <h5 class="title is-5">Response Body</h5>
+                <details>
+                    <summary>Click to view body...</summary>
+                    <pre><code>{{ .data.response.Body }}</code></pre>
+                </details>
+            </div>
+        {{ end }}
     </div>
 
     {{ template "goscope-components/PageEnd.gohtml" }}
