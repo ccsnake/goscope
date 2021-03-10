@@ -167,11 +167,18 @@
                 const queryString = url.search;
                 const urlParams = new URLSearchParams(queryString);
 
-                urlParams.set("search", searchInput.value)
+                if (searchInput.value !== '') {
+                    urlParams.set('search', searchInput.value)
+                } else {
+                    urlParams.delete('search')
+                }
+
                 urlParams.set("offset", "0")
 
                 let composedURL = window.location.protocol + '//' + window.location.host + window.location.pathname + '?' + urlParams.toString()
                 window.location = composedURL
+
+
             });
         })
 

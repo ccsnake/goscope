@@ -22,36 +22,72 @@ func requestListPageHandler(c *gin.Context) {
 	offsetQuery := c.DefaultQuery("offset", "0")
 	offset, _ := strconv.ParseInt(offsetQuery, 10, 32)
 
-	variables := gin.H{
-		"applicationName": Config.ApplicationName,
-		"entriesPerPage":  Config.GoScopeEntriesPerPage,
-		"data":            repository.FetchRequestList(DB, Config.ApplicationID, Config.GoScopeEntriesPerPage, int(offset)),
-		"baseURL":         Config.BaseURL,
-		"offset":          int(offset),
-	}
+	searchValue := c.Query("search")
 
-	c.HTML(http.StatusOK, "goscope-views/Requests.gohtml", variables)
+	if searchValue != "" {
+		variables := gin.H{
+			"applicationName": Config.ApplicationName,
+			"entriesPerPage":  Config.GoScopeEntriesPerPage,
+			"data":            repository.FetchSearchRequests(DB, Config.ApplicationID, Config.GoScopeEntriesPerPage, Config.GoScopeDatabaseType, searchValue, nil, int(offset)),
+			"baseURL":         Config.BaseURL,
+			"offset":          int(offset),
+			"searchValue":     searchValue,
+		}
+
+		c.HTML(http.StatusOK, "goscope-views/Requests.gohtml", variables)
+	} else {
+		variables := gin.H{
+			"applicationName": Config.ApplicationName,
+			"entriesPerPage":  Config.GoScopeEntriesPerPage,
+			"data":            repository.FetchRequestList(DB, Config.ApplicationID, Config.GoScopeEntriesPerPage, int(offset)),
+			"baseURL":         Config.BaseURL,
+			"offset":          int(offset),
+			"searchValue":     searchValue,
+		}
+
+		c.HTML(http.StatusOK, "goscope-views/Requests.gohtml", variables)
+	}
 }
 
 func logListPageHandler(c *gin.Context) {
 	offsetQuery := c.DefaultQuery("offset", "0")
 	offset, _ := strconv.ParseInt(offsetQuery, 10, 32)
 
-	variables := gin.H{
-		"applicationName": Config.ApplicationName,
-		"entriesPerPage":  Config.GoScopeEntriesPerPage,
-		"data": repository.FetchLogs(
-			DB,
-			Config.ApplicationID,
-			Config.GoScopeEntriesPerPage,
-			Config.GoScopeDatabaseType,
-			int(offset),
-		),
-		"baseURL": Config.BaseURL,
-		"offset":  int(offset),
+	searchValue := c.Query("search")
+	if searchValue != "" {
+		variables := gin.H{
+			"applicationName": Config.ApplicationName,
+			"entriesPerPage":  Config.GoScopeEntriesPerPage,
+			"data": repository.FetchSearchLogs(
+				DB,
+				Config.ApplicationID,
+				Config.GoScopeEntriesPerPage,
+				Config.GoScopeDatabaseType,
+				searchValue,
+				int(offset),
+			),
+			"baseURL":     Config.BaseURL,
+			"offset":      int(offset),
+			"searchValue": searchValue,
+		}
+		c.HTML(http.StatusOK, "goscope-views/Logs.gohtml", variables)
+	} else {
+		variables := gin.H{
+			"applicationName": Config.ApplicationName,
+			"entriesPerPage":  Config.GoScopeEntriesPerPage,
+			"data": repository.FetchLogs(
+				DB,
+				Config.ApplicationID,
+				Config.GoScopeEntriesPerPage,
+				Config.GoScopeDatabaseType,
+				int(offset),
+			),
+			"baseURL":     Config.BaseURL,
+			"offset":      int(offset),
+			"searchValue": searchValue,
+		}
+		c.HTML(http.StatusOK, "goscope-views/Logs.gohtml", variables)
 	}
-
-	c.HTML(http.StatusOK, "goscope-views/Logs.gohtml", variables)
 }
 
 func logDetailsPageHandler(c *gin.Context) {

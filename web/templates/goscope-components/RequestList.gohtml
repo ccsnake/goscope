@@ -1,13 +1,21 @@
 {{ define "goscope-components/RequestList.gohtml" }}
     <section class="has-text-centered">
+        <label>
+            Search
+            <input id="search-input" class="input" type="search" />
+        </label>
+    </section>
+    <section class="has-text-centered">
         {{ if gt $.offset 0 }}
             <a
                 class="p-4"
-                href="{{ $.baseURL }}/?offset={{ SubtractTillZero $.offset 50 }}"
+                href="{{ $.baseURL }}/?offset={{ SubtractTillZero $.offset 50 }}{{ if FieldHasContent $.searchValue }}&search={{ $.searchValue }}{{ end }}"
                 >← prev</a
             >
         {{ end }}
-        <a class="p-4" href="{{ $.baseURL }}/?offset={{ Add $.offset 50 }}"
+        <a
+            class="p-4"
+            href="{{ $.baseURL }}/?offset={{ Add $.offset 50 }}{{ if FieldHasContent $.searchValue }}&search={{ $.searchValue }}{{ end }}"
             >next →</a
         >
     </section>

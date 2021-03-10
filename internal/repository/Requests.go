@@ -131,7 +131,7 @@ func FetchSearchRequests(db *sql.DB, appID string, entriesPerPage int, databaseT
 	for rows.Next() {
 		var request summarizedRequest
 
-		err := rows.Scan(
+		errr := rows.Scan(
 			&request.UID,
 			&request.Method,
 			&request.Path,
@@ -139,8 +139,8 @@ func FetchSearchRequests(db *sql.DB, appID string, entriesPerPage int, databaseT
 			&request.ResponseStatus,
 		)
 
-		if err != nil {
-			log.Println(err.Error())
+		if errr != nil {
+			log.Println(errr.Error())
 		}
 
 		result = append(result, request)
