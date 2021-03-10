@@ -25,7 +25,17 @@
                 <tbody>
                     {{ range .data }}
                         <tr>
-                            <td>{{ .ResponseStatus }}</td>
+                            <td>
+                                <p
+                                    class="
+                                    has-text-centered has-text-weight-bold
+                                {{ if eq .ResponseStatus 200 }}badge-success{{ end }}
+                                {{ if eq .ResponseStatus 200 }}badge-success{{ end }}
+                                    "
+                                >
+                                    {{ .ResponseStatus }}
+                                </p>
+                            </td>
                             <td>{{ .Method }}</td>
                             <td class="is-family-monospace">{{ .Path }}</td>
                             <td>
