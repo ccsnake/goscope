@@ -7,7 +7,7 @@ import (
 )
 
 func FetchDetailedLog(db *sql.DB, requestUID string) exceptionRecord {
-	row := QueryDetailedLog(
+	row := queryDetailedLog(
 		db,
 		requestUID,
 	)
@@ -28,7 +28,7 @@ func FetchSearchLogs(db *sql.DB, appID string, entriesPerPage int, databaseType 
 
 	searchWildcard := fmt.Sprintf("%%%s%%", searchString)
 
-	rows, err := QuerySearchLogs(db, appID, entriesPerPage, databaseType, searchWildcard, offset)
+	rows, err := querySearchLogs(db, appID, entriesPerPage, databaseType, searchWildcard, offset)
 	if err != nil {
 		log.Println(err.Error())
 		return result
@@ -61,7 +61,7 @@ func FetchSearchLogs(db *sql.DB, appID string, entriesPerPage int, databaseType 
 func FetchLogs(db *sql.DB, appID string, entriesPerPage int, databaseType string, offset int) []exceptionRecord {
 	var result []exceptionRecord
 
-	rows, err := QueryGetLogs(db, appID, entriesPerPage, databaseType, offset)
+	rows, err := queryGetLogs(db, appID, entriesPerPage, databaseType, offset)
 	if err != nil {
 		log.Println(err.Error())
 		return result
@@ -91,7 +91,7 @@ func FetchLogs(db *sql.DB, appID string, entriesPerPage int, databaseType string
 	return result
 }
 
-func QueryDetailedLog(db *sql.DB, requestUID string) *sql.Row {
+func queryDetailedLog(db *sql.DB, requestUID string) *sql.Row {
 	query := `SELECT uid, error, time FROM logs WHERE uid = ?;`
 
 	row := db.QueryRow(query, requestUID)

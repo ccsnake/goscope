@@ -15,7 +15,7 @@ func FetchDetailedRequest(db *sql.DB, requestUID string) detailedRequest {
 
 	var result detailedRequest
 
-	row := QueryDetailedRequest(db, requestUID)
+	row := queryDetailedRequest(db, requestUID)
 
 	err := row.Scan(
 		&result.UID,
@@ -48,7 +48,7 @@ func FetchDetailedResponse(db *sql.DB, responseUUID string) detailedResponse {
 
 	var result detailedResponse
 
-	row := QueryDetailedResponse(db, responseUUID)
+	row := queryDetailedResponse(db, responseUUID)
 
 	err := row.Scan(
 		&result.UID,
@@ -74,7 +74,7 @@ func FetchDetailedResponse(db *sql.DB, responseUUID string) detailedResponse {
 func FetchRequestList(db *sql.DB, appID string, entriesPerPage int, offset int) []summarizedRequest {
 	var result []summarizedRequest
 
-	rows, err := QueryGetRequests(db, appID, entriesPerPage, offset)
+	rows, err := queryGetRequests(db, appID, entriesPerPage, offset)
 	if err != nil {
 		log.Println(err.Error())
 
@@ -114,7 +114,7 @@ func FetchRequestList(db *sql.DB, appID string, entriesPerPage int, offset int) 
 func FetchSearchRequests(db *sql.DB, appID string, entriesPerPage int, databaseType string, search string, filter *RequestFilter, offset int) []summarizedRequest {
 	var result []summarizedRequest
 
-	rows, err := QuerySearchRequests(db, appID, entriesPerPage, databaseType, search, filter, offset)
+	rows, err := querySearchRequests(db, appID, entriesPerPage, databaseType, search, filter, offset)
 	if err != nil {
 		log.Println(err.Error())
 		return result

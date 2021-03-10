@@ -12,7 +12,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var GoScopeFunctionMap = map[string]interface{}{
+var applicationFunctionMap = map[string]interface{}{
 	"EpochToTimeAgoHappened": utils.EpochToTimeAgoHappened,
 	"EpochToHumanReadable":   utils.EpochToHumanReadable,
 	"Add":                    func(a, b int) int { return a + b },
@@ -60,8 +60,8 @@ func Setup(config *InitData) *template.Template {
 	// Catch 404s
 	config.Router.NoRoute(noRouteResponseLogger)
 
-	for i := range GoScopeFunctionMap {
-		config.Router.FuncMap[i] = GoScopeFunctionMap[i]
+	for i := range applicationFunctionMap {
+		config.Router.FuncMap[i] = applicationFunctionMap[i]
 	}
 
 	// SPA routes
@@ -77,7 +77,7 @@ func Setup(config *InitData) *template.Template {
 
 	// GoScope API
 	apiGroup := config.RouteGroup.Group("/api")
-	apiGroup.GET("/application-name", GetAppName)
+	apiGroup.GET("/application-name", getAppName)
 	apiGroup.GET("/logs", getLogListHandler)
 	apiGroup.GET("/requests/:id", showRequestDetailsHandler)
 	apiGroup.GET("/logs/:id", showLogDetailsHandler)

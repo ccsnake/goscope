@@ -11,7 +11,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func QueryDetailedRequest(db *sql.DB, requestUID string) *sql.Row {
+func queryDetailedRequest(db *sql.DB, requestUID string) *sql.Row {
 	query := `
 		SELECT uid,
 		   client_ip,
@@ -34,7 +34,7 @@ func QueryDetailedRequest(db *sql.DB, requestUID string) *sql.Row {
 	return row
 }
 
-func QueryGetRequests(db *sql.DB, appID string, entriesPerPage int, offset int) (*sql.Rows, error) {
+func queryGetRequests(db *sql.DB, appID string, entriesPerPage int, offset int) (*sql.Rows, error) {
 	query := `
 		SELECT requests.uid,
 		   requests.method,
@@ -56,7 +56,7 @@ func QueryGetRequests(db *sql.DB, appID string, entriesPerPage int, offset int) 
 	)
 }
 
-func QuerySearchRequests(db *sql.DB, appID string, entriesPerPage int, connection, search string, //nolint:gocognit,funlen,gocyclo
+func querySearchRequests(db *sql.DB, appID string, entriesPerPage int, connection, search string, //nolint:gocognit,funlen,gocyclo
 	filter *RequestFilter, offset int) (*sql.Rows, error) { //nolint:gocognit,funlen,gocyclo
 	var query string
 
@@ -223,7 +223,7 @@ func QuerySearchRequests(db *sql.DB, appID string, entriesPerPage int, connectio
 	return rows, nil
 }
 
-func QueryDetailedResponse(db *sql.DB, requestUID string) *sql.Row {
+func queryDetailedResponse(db *sql.DB, requestUID string) *sql.Row {
 	query := `
 		SELECT uid,
 		   client_ip,

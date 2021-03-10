@@ -13,7 +13,7 @@ import (
 	"github.com/shirou/gopsutil/mem"
 )
 
-func GetAppName(c *gin.Context) {
+func getAppName(c *gin.Context) {
 	c.Header("Access-Control-Allow-Origin", "*")
 	c.JSON(http.StatusOK, gin.H{
 		"applicationName": Config.ApplicationName,

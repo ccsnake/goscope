@@ -9,7 +9,7 @@ import (
 	"github.com/google/uuid"
 )
 
-func QuerySearchLogs(db *sql.DB, appID string, entriesPerPage int, connection, searchWildcard string, offset int) (*sql.Rows, error) {
+func querySearchLogs(db *sql.DB, appID string, entriesPerPage int, connection, searchWildcard string, offset int) (*sql.Rows, error) {
 	var query string
 	if connection == MySQL || connection == PostgreSQL {
 		query = `
@@ -44,7 +44,7 @@ func QuerySearchLogs(db *sql.DB, appID string, entriesPerPage int, connection, s
 	)
 }
 
-func QueryGetLogs(db *sql.DB, appID string, entriesPerPage int, connection string, offset int) (*sql.Rows, error) {
+func queryGetLogs(db *sql.DB, appID string, entriesPerPage int, connection string, offset int) (*sql.Rows, error) {
 	var query string
 
 	if connection == MySQL || connection == PostgreSQL {
