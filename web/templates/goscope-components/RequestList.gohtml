@@ -1,10 +1,12 @@
 {{ define "goscope-components/RequestList.gohtml" }}
     <section class="has-text-centered">
-        <a
-            class="p-4"
-            href="{{ $.baseURL }}/?offset={{ SubtractTillZero $.offset 50 }}"
-            >← prev</a
-        >
+        {{ if gt $.offset 0 }}
+            <a
+                class="p-4"
+                href="{{ $.baseURL }}/?offset={{ SubtractTillZero $.offset 50 }}"
+                >← prev</a
+            >
+        {{ end }}
         <a class="p-4" href="{{ $.baseURL }}/?offset={{ Add $.offset 50 }}"
             >next →</a
         >
