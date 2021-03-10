@@ -1,5 +1,11 @@
 {{ define "goscope-components/LogList.gohtml" }}
     <section class="has-text-centered">
+        <label>
+            Search
+            <input id="search-input" class="input" type="search" />
+        </label>
+    </section>
+    <section class="has-text-centered">
         {{ if gt $.offset 0 }}
             <a
                 class="p-4"

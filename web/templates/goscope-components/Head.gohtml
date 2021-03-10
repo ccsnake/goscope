@@ -1,155 +1,181 @@
 {{define "goscope-components/Head.gohtml"}}
-<html>
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="theme-color" content="#ffffff">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
-</head>
-<style>
-    .is-family-monospace {
-        font-family: Menlo, 'Lucida Console', 'JetBrains Mono', 'Ubuntu Mono', monospace, 'Consolas' !important;
-    }
-
-    code {
-        font-family: Menlo, 'Lucida Console', 'JetBrains Mono', 'Ubuntu Mono', monospace, 'Consolas' !important;
-    }
-
-    pre {
-        font-family: Menlo, 'Lucida Console', 'JetBrains Mono', 'Ubuntu Mono', monospace, 'Consolas' !important;
-    }
-
-    .badge-success {
-        padding: 4px;
-        border-radius: 4px;
-        color: #fff;
-        background-color: #1f9d55;
-    }
-
-    .badge-info {
-        padding: 4px;
-        border-radius: 4px;
-        color: #fff;
-        background-color: #1c3d5a;
-    }
-
-    .badge-turq {
-        padding: 4px;
-        border-radius: 4px;
-        color: #fff;
-        background-color: #503194;
-    }
-
-    .badge-secondary {
-        border-radius: 4px;
-        padding: 4px;
-        color: #fff;
-        background-color: #494444;
-    }
-
-    .badge-danger {
-        border-radius: 4px;
-        padding: 4px;
-        color: #fff;
-        background-color: #621b18;
-    }
-
-    .badge-warning {
-        border-radius: 4px;
-        padding: 4px;
-        color: #fff;
-        background-color: #684f1d;
-    }
-
-    @media (prefers-color-scheme: dark) {
-        html {
-            background-color: #1f1f1f;
-            color: #f1f1f1;
-        }
-
-        .navbar-menu {
-            background: transparent;
-        }
-
-        .navbar-burger {
-            color: #52caf9;
-        }
-
-        body {
-            background-color: #1f1f1f;
-            color: #f1f1f1;
-        }
-
-        .navbar {
-            background-color: #1f1f1f;
-            color: #f1f1f1;
-        }
-
-        .navbar-item {
-            color: #52caf9;
-        }
-
-        a.navbar-item:focus-within, a.navbar-item:hover {
-            background-color: transparent;
-            color: #3273dc;
-        }
-
-        .pw-header {
-            background-color: #1f1f1f;
-        }
-
-        .title {
-            color: #52caf9;
-        }
-
-        a {
-            color: #52caf9;
-        }
-
-        .box {
-            background-color: #1a1a1a;
-            color: #f1f1f1;
-        }
-
-        pre {
-            color: #f5f5f5;
-            background-color: #1f1f1f;
+    <html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0">
+        <meta name="msapplication-TileColor" content="#da532c">
+        <meta name="theme-color" content="#ffffff">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    </head>
+    <style>
+        .is-family-monospace {
+            font-family: Menlo, 'Lucida Console', 'JetBrains Mono', 'Ubuntu Mono', monospace, 'Consolas' !important;
         }
 
         code {
-            background-color: #1d1d1d;
-            color: #fff;
+            font-family: Menlo, 'Lucida Console', 'JetBrains Mono', 'Ubuntu Mono', monospace, 'Consolas' !important;
         }
 
-        .table {
-            color: #fff;
-            background-color: transparent;
+        pre {
+            font-family: Menlo, 'Lucida Console', 'JetBrains Mono', 'Ubuntu Mono', monospace, 'Consolas' !important;
         }
 
-        .table td, .table th {
-            /* border-color: transparent;*/
-            border-color: #111;
+        .badge-success {
+            padding: 4px;
+            border-radius: 4px;
+            color: #fff;
+            background-color: #1f9d55;
         }
 
-        .table th {
+        .badge-info {
+            padding: 4px;
+            border-radius: 4px;
             color: #fff;
+            background-color: #1c3d5a;
         }
 
-        .table thead td, .table thead th {
+        .badge-turq {
+            padding: 4px;
+            border-radius: 4px;
             color: #fff;
+            background-color: #503194;
         }
 
-        strong {
+        .badge-secondary {
+            border-radius: 4px;
+            padding: 4px;
             color: #fff;
+            background-color: #494444;
         }
 
-        a:hover {
+        .badge-danger {
+            border-radius: 4px;
+            padding: 4px;
             color: #fff;
+            background-color: #621b18;
         }
-    }
-</style>
-<body>
+
+        .badge-warning {
+            border-radius: 4px;
+            padding: 4px;
+            color: #fff;
+            background-color: #684f1d;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            html {
+                background-color: #1f1f1f;
+                color: #f1f1f1;
+            }
+
+            .navbar-menu {
+                background: transparent;
+            }
+
+            .navbar-burger {
+                color: #52caf9;
+            }
+
+            body {
+                background-color: #1f1f1f;
+                color: #f1f1f1;
+            }
+
+            .navbar {
+                background-color: #1f1f1f;
+                color: #f1f1f1;
+            }
+
+            .navbar-item {
+                color: #52caf9;
+            }
+
+            a.navbar-item:focus-within, a.navbar-item:hover {
+                background-color: transparent;
+                color: #3273dc;
+            }
+
+            .pw-header {
+                background-color: #1f1f1f;
+            }
+
+            .title {
+                color: #52caf9;
+            }
+
+            a {
+                color: #52caf9;
+            }
+
+            .box {
+                background-color: #1a1a1a;
+                color: #f1f1f1;
+            }
+
+            pre {
+                color: #f5f5f5;
+                background-color: #1f1f1f;
+            }
+
+            code {
+                background-color: #1d1d1d;
+                color: #fff;
+            }
+
+            .table {
+                color: #fff;
+                background-color: transparent;
+            }
+
+            .table td, .table th {
+                /* border-color: transparent;*/
+                border-color: #111;
+            }
+
+            .table th {
+                color: #fff;
+            }
+
+            .table thead td, .table thead th {
+                color: #fff;
+            }
+
+            strong {
+                color: #fff;
+            }
+
+            a:hover {
+                color: #fff;
+            }
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let searchInput = document.getElementById('search-input')
+
+            const urlParams = new URLSearchParams(window.location.search);
+
+            searchInput.value = urlParams.get('search')
+
+            searchInput.addEventListener("keydown", function (e) {
+                if (e.key !== "Enter") {
+                    return;
+                }
+
+                let url = new URL(window.location)
+                const queryString = url.search;
+                const urlParams = new URLSearchParams(queryString);
+
+                urlParams.set("search", searchInput.value)
+                urlParams.set("offset", "0")
+
+                let composedURL = window.location.protocol + '//' + window.location.host + window.location.pathname + '?' + urlParams.toString()
+                window.location = composedURL
+            });
+        })
+
+    </script>
+    <body>
 
 {{end}}
