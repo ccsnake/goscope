@@ -30,7 +30,7 @@ The application expects a database with a setup that can be recreated by taking 
 
 ### Example
 
-To understand more about the required variables to initialise GoScope, take a look at the [.env](.env) file in the source of this repository. That is a simple example of what you could do. I personally prefer using `.toml` files and loading them via [spf13/viper](https://github.com/spf13/viper), and I have made GoScope flexible for that purpose, whatever config manager you use is up to you.
+To understand more about the required variables to initialise GoScope, take a look at the [.env](examples/.env) file in the source of this repository. That is a simple example of what you could do. I personally prefer using `.toml` files and loading them via [spf13/viper](https://github.com/spf13/viper), and I have made GoScope flexible for that purpose, whatever config manager you use is up to you.
 
 The documentation of this package should also elucidate more on that matter. Take a look at the [type definition](pkg/goscope/Types.go) and see `Environment`.
 
