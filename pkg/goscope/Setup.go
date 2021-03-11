@@ -12,31 +12,47 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var applicationFunctionMap = map[string]interface{}{
-	"EpochToTimeAgoHappened": utils.EpochToTimeAgoHappened,
-	"EpochToHumanReadable":   utils.EpochToHumanReadable,
-	"Add":                    func(a, b int) int { return a + b },
-	"SubtractTillZero": func(a, b int) int {
-		result := a - b
-		if result < 0 {
-			return a
-		}
+func PrepareTemplateEngine(d *InitData) *template.Template {
+	var applicationFunctionMap = map[string]interface{}{
+		"EpochToTimeAgoHappened": utils.EpochToTimeAgoHappened,
+		"EpochToHumanReadable":   utils.EpochToHumanReadable,
+		"Add":                    func(a, b int) int { return a + b },
+		"SubtractTillZero": func(a, b int) int {
+			result := a - b
+			if result < 0 {
+				return a
+			}
 
-		return result
-	},
-	"FieldHasContent": func(fieldContent string) bool {
-		return fieldContent != "" && strings.TrimSpace(fieldContent) != ""
-	},
+			return result
+		},
+		"FieldHasContent": func(fieldContent string) bool {
+			return fieldContent != "" && strings.TrimSpace(fieldContent) != ""
+		},
+	}
+
+	for i := range applicationFunctionMap {
+		d.Router.FuncMap[i] = applicationFunctionMap[i]
+	}
+
+	applicationTemplateEngine := template.Must(template.New("").
+		Funcs(d.Router.FuncMap).
+		ParseFS(
+			web.TemplateFiles,
+			"templates/goscope-components/*",
+			"templates/goscope-views/*",
+		))
+
+	return applicationTemplateEngine
 }
 
-// Setup is the necessary step to enable GoScope in an application.
+// PrepareMiddleware is the necessary step to enable GoScope in an application.
 // It will setup the necessary routes and middlewares for GoScope to work.
-func Setup(config *InitData) *template.Template {
-	if config == nil {
+func PrepareMiddleware(d *InitData) {
+	if d == nil {
 		panic("Please provide a pointer to a valid and instantiated GoScopeInitData.")
 	}
 
-	configSetup(config.Config, config.RouteGroup.BasePath())
+	configSetup(d.Config)
 	databaseSetup(databaseInformation{
 		databaseType:          Config.GoScopeDatabaseType,
 		connection:            Config.GoScopeDatabaseConnection,
@@ -45,8 +61,8 @@ func Setup(config *InitData) *template.Template {
 		maxConnectionLifetime: Config.GoScopeDatabaseMaxConnLifetime,
 	})
 
-	config.Router.Use(gin.Logger())
-	config.Router.Use(gin.Recovery())
+	d.Router.Use(gin.Logger())
+	d.Router.Use(gin.Recovery())
 
 	logger := &loggerGoScope{}
 	gin.DefaultErrorWriter = logger
@@ -55,28 +71,24 @@ func Setup(config *InitData) *template.Template {
 	log.SetOutput(logger)
 
 	// Use the logging middleware
-	config.Router.Use(responseLogger)
+	d.Router.Use(responseLogger)
 
 	// Catch 404s
-	config.Router.NoRoute(noRouteResponseLogger)
-
-	for i := range applicationFunctionMap {
-		config.Router.FuncMap[i] = applicationFunctionMap[i]
-	}
+	d.Router.NoRoute(noRouteResponseLogger)
 
 	// SPA routes
 	if !Config.HasFrontendDisabled {
-		config.RouteGroup.GET("/", requestListPageHandler)
-		config.RouteGroup.GET("", requestListPageHandler)
-		config.RouteGroup.GET("/requests", requestListPageHandler)
-		config.RouteGroup.GET("/logs", logListPageHandler)
-		config.RouteGroup.GET("/logs/:id", logDetailsPageHandler)
-		config.RouteGroup.GET("/requests/:id", requestDetailsPageHandler)
-		config.RouteGroup.GET("/info", systemInfoPageHandler)
+		d.RouteGroup.GET("/", requestListPageHandler)
+		d.RouteGroup.GET("", requestListPageHandler)
+		d.RouteGroup.GET("/requests", requestListPageHandler)
+		d.RouteGroup.GET("/logs", logListPageHandler)
+		d.RouteGroup.GET("/logs/:id", logDetailsPageHandler)
+		d.RouteGroup.GET("/requests/:id", requestDetailsPageHandler)
+		d.RouteGroup.GET("/info", systemInfoPageHandler)
 	}
 
 	// GoScope API
-	apiGroup := config.RouteGroup.Group("/api")
+	apiGroup := d.RouteGroup.Group("/api")
 	apiGroup.GET("/application-name", getAppName)
 	apiGroup.GET("/logs", getLogListHandler)
 	apiGroup.GET("/requests/:id", showRequestDetailsHandler)
@@ -85,10 +97,4 @@ func Setup(config *InitData) *template.Template {
 	apiGroup.POST("/search/requests", searchRequestHandler)
 	apiGroup.POST("/search/logs", searchLogHandler)
 	apiGroup.GET("/info", getSystemInfoHandler)
-
-	templateEngineNew := template.Must(template.New("").
-		Funcs(config.Router.FuncMap).
-		ParseFS(web.TemplateFiles, "templates/goscope-components/*", "templates/goscope-views/*"))
-
-	return templateEngineNew
 }
