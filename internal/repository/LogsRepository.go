@@ -75,7 +75,7 @@ func queryGetLogs(db *sql.DB, appID string, entriesPerPage int, connection strin
 	)
 }
 
-func DumpLog(db *sql.DB, appID string, message string) {
+func DumpLog(db *sql.DB, appID, message string) {
 	fmt.Printf("%v", message)
 
 	uid := uuid.New().String()

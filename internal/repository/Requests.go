@@ -8,12 +8,12 @@ import (
 )
 
 // FetchDetailedRequest fetches all details from a request via its UUID.
-func FetchDetailedRequest(db *sql.DB, requestUID string) detailedRequest {
+func FetchDetailedRequest(db *sql.DB, requestUID string) DetailedRequest {
 	var body string
 
 	var headers string
 
-	var result detailedRequest
+	var result DetailedRequest
 
 	row := queryDetailedRequest(db, requestUID)
 
@@ -41,12 +41,12 @@ func FetchDetailedRequest(db *sql.DB, requestUID string) detailedRequest {
 }
 
 // FetchDetailedResponse fetches all details of a response via its UUID.
-func FetchDetailedResponse(db *sql.DB, responseUUID string) detailedResponse {
+func FetchDetailedResponse(db *sql.DB, responseUUID string) DetailedResponse {
 	var body string
 
 	var headers string
 
-	var result detailedResponse
+	var result DetailedResponse
 
 	row := queryDetailedResponse(db, responseUUID)
 
@@ -71,8 +71,8 @@ func FetchDetailedResponse(db *sql.DB, responseUUID string) detailedResponse {
 }
 
 // FetchRequestList fetches a list of summarized requests.
-func FetchRequestList(db *sql.DB, appID string, entriesPerPage int, offset int) []summarizedRequest {
-	var result []summarizedRequest
+func FetchRequestList(db *sql.DB, appID string, entriesPerPage, offset int) []SummarizedRequest {
+	var result []SummarizedRequest
 
 	rows, err := queryGetRequests(db, appID, entriesPerPage, offset)
 	if err != nil {
@@ -90,7 +90,7 @@ func FetchRequestList(db *sql.DB, appID string, entriesPerPage int, offset int) 
 	defer rows.Close()
 
 	for rows.Next() {
-		var request summarizedRequest
+		var request SummarizedRequest
 
 		err := rows.Scan(
 			&request.UID,
@@ -111,8 +111,9 @@ func FetchRequestList(db *sql.DB, appID string, entriesPerPage int, offset int) 
 }
 
 // FetchSearchRequests fetches a list of summarized requests that match the input parameters of search.
-func FetchSearchRequests(db *sql.DB, appID string, entriesPerPage int, databaseType string, search string, filter *RequestFilter, offset int) []summarizedRequest {
-	var result []summarizedRequest
+func FetchSearchRequests(db *sql.DB, appID string, entriesPerPage int,
+	databaseType, search string, filter *RequestFilter, offset int) []SummarizedRequest {
+	var result []SummarizedRequest
 
 	rows, err := querySearchRequests(db, appID, entriesPerPage, databaseType, search, filter, offset)
 	if err != nil {
@@ -129,7 +130,7 @@ func FetchSearchRequests(db *sql.DB, appID string, entriesPerPage int, databaseT
 	defer rows.Close()
 
 	for rows.Next() {
-		var request summarizedRequest
+		var request SummarizedRequest
 
 		errr := rows.Scan(
 			&request.UID,

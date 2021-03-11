@@ -6,13 +6,13 @@ import (
 	"log"
 )
 
-func FetchDetailedLog(db *sql.DB, requestUID string) exceptionRecord {
+func FetchDetailedLog(db *sql.DB, requestUID string) ExceptionRecord {
 	row := queryDetailedLog(
 		db,
 		requestUID,
 	)
 
-	var request exceptionRecord
+	var request ExceptionRecord
 
 	err := row.Scan(&request.UID, &request.Error, &request.Time)
 	if err != nil {
@@ -23,8 +23,8 @@ func FetchDetailedLog(db *sql.DB, requestUID string) exceptionRecord {
 	return request
 }
 
-func FetchSearchLogs(db *sql.DB, appID string, entriesPerPage int, databaseType string, searchString string, offset int) []exceptionRecord {
-	var result []exceptionRecord
+func FetchSearchLogs(db *sql.DB, appID string, entriesPerPage int, databaseType, searchString string, offset int) []ExceptionRecord {
+	var result []ExceptionRecord
 
 	searchWildcard := fmt.Sprintf("%%%s%%", searchString)
 
@@ -43,7 +43,7 @@ func FetchSearchLogs(db *sql.DB, appID string, entriesPerPage int, databaseType 
 	defer rows.Close()
 
 	for rows.Next() {
-		var request exceptionRecord
+		var request ExceptionRecord
 
 		err := rows.Scan(&request.UID, &request.Error, &request.Time)
 		if err != nil {
@@ -58,8 +58,8 @@ func FetchSearchLogs(db *sql.DB, appID string, entriesPerPage int, databaseType 
 }
 
 // Get a summarized list of application logs from the DB.
-func FetchLogs(db *sql.DB, appID string, entriesPerPage int, databaseType string, offset int) []exceptionRecord {
-	var result []exceptionRecord
+func FetchLogs(db *sql.DB, appID string, entriesPerPage int, databaseType string, offset int) []ExceptionRecord {
+	var result []ExceptionRecord
 
 	rows, err := queryGetLogs(db, appID, entriesPerPage, databaseType, offset)
 	if err != nil {
@@ -76,7 +76,7 @@ func FetchLogs(db *sql.DB, appID string, entriesPerPage int, databaseType string
 	defer rows.Close()
 
 	for rows.Next() {
-		var request exceptionRecord
+		var request ExceptionRecord
 
 		err := rows.Scan(&request.UID, &request.Error, &request.Time)
 		if err != nil {

@@ -34,7 +34,7 @@ func queryDetailedRequest(db *sql.DB, requestUID string) *sql.Row {
 	return row
 }
 
-func queryGetRequests(db *sql.DB, appID string, entriesPerPage int, offset int) (*sql.Rows, error) {
+func queryGetRequests(db *sql.DB, appID string, entriesPerPage, offset int) (*sql.Rows, error) {
 	query := `
 		SELECT requests.uid,
 		   requests.method,
@@ -57,7 +57,7 @@ func queryGetRequests(db *sql.DB, appID string, entriesPerPage int, offset int) 
 }
 
 func querySearchRequests(db *sql.DB, appID string, entriesPerPage int, connection, search string, //nolint:gocognit,funlen,gocyclo
-	filter *RequestFilter, offset int) (*sql.Rows, error) { //nolint:gocognit,funlen,gocyclo
+	filter *RequestFilter, offset int) (*sql.Rows, error) {
 	var query string
 
 	var methodQuery string

@@ -22,6 +22,13 @@ func getAppName(c *gin.Context) {
 
 // getSystemInfoHandler is the controller to show system information of the current host in GoScope API.
 func getSystemInfoHandler(c *gin.Context) {
+	responseBody := getSystemInfo()
+
+	c.Header("Access-Control-Allow-Origin", "*")
+	c.JSON(http.StatusOK, responseBody)
+}
+
+func getSystemInfo() systemInformationResponse {
 	cpuStatus, _ := cpu.Info()
 	firstCPU := cpuStatus[0]
 	memoryStatus, _ := mem.VirtualMemory()
@@ -37,7 +44,7 @@ func getSystemInfoHandler(c *gin.Context) {
 		environment[variable[0]] = variable[1]
 	}
 
-	responseBody := systemInformationResponse{
+	return systemInformationResponse{
 		ApplicationName: Config.ApplicationName,
 		CPU: systemInformationResponseCPU{
 			CoreCount: fmt.Sprintf("%d Cores", firstCPU.Cores),
@@ -64,7 +71,4 @@ func getSystemInfoHandler(c *gin.Context) {
 		},
 		Environment: environment,
 	}
-
-	c.Header("Access-Control-Allow-Origin", "*")
-	c.JSON(http.StatusOK, responseBody)
 }

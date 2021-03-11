@@ -5,13 +5,13 @@ import (
 	"net/http"
 )
 
-type exceptionRecord struct {
+type ExceptionRecord struct {
 	Error string `json:"error"`
 	Time  int    `json:"time"`
 	UID   string `json:"uid"`
 }
 
-type summarizedRequest struct {
+type SummarizedRequest struct {
 	Method         string `json:"method"`
 	Path           string `json:"path"`
 	Time           int    `json:"time"`
@@ -19,7 +19,7 @@ type summarizedRequest struct {
 	ResponseStatus int    `json:"responseStatus"`
 }
 
-type detailedResponse struct {
+type DetailedResponse struct {
 	Body       string `json:"body"`
 	ClientIP   string `json:"clientIP"`
 	Headers    string `json:"headers"`
@@ -31,7 +31,7 @@ type detailedResponse struct {
 	UID        string `json:"uid"`
 }
 
-type detailedRequest struct {
+type DetailedRequest struct {
 	Body      string `json:"body"`
 	ClientIP  string `json:"clientIP"`
 	Headers   string `json:"headers"`

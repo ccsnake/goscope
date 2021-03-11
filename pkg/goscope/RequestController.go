@@ -60,7 +60,15 @@ func searchRequestHandler(c *gin.Context) {
 
 	offsetQuery := c.DefaultQuery("offset", "0")
 	offset, _ := strconv.ParseInt(offsetQuery, 10, 32)
-	result := repository.FetchSearchRequests(DB, Config.ApplicationID, Config.GoScopeEntriesPerPage, Config.GoScopeDatabaseType, request.Query, &request.Filter, int(offset))
+	result := repository.FetchSearchRequests(
+		DB,
+		Config.ApplicationID,
+		Config.GoScopeEntriesPerPage,
+		Config.GoScopeDatabaseType,
+		request.Query,
+		&request.Filter,
+		int(offset),
+	)
 
 	variables := gin.H{
 		"applicationName": Config.ApplicationName,
