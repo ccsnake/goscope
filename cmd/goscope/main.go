@@ -7,11 +7,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// PrepareMiddleware your custom functions for the templates here.
-var myFunctionMap = map[string]interface{}{
-	"MultiplyNumbers": func(a, b int) int { return a * b },
-}
-
 func main() {
 	// Initialize an empty gin.Engine
 	router := gin.New()
@@ -38,6 +33,11 @@ func main() {
 	// If you skip this code of block you should also set the
 	// HasFrontendDisabled option to false to avoid panics when attempting
 	// to load routes that render the HTML templates.
+
+	// add your custom functions for the templates here.
+	var myFunctionMap = map[string]interface{}{
+		"MultiplyNumbers": func(a, b int) int { return a * b },
+	}
 
 	// Optionally add your custom functions to the function map of the router
 	for i := range myFunctionMap {
