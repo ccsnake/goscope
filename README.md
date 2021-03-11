@@ -11,13 +11,13 @@
 
 Watch incoming requests and outgoing responses from your Go Gin application. All is logged into a database for persistence and paginated for performance.
 
-![GoScope Dashboard](showcase/0.png)
-
 The aim of this application is to be a plug and play addition to your application, not a hurdle, thus to setup, you only require a one-liner in your main function.
 
 Once all is set up you can access the web interface by visiting `http://your-app.com/goscope`. 
 
 You should protect this route from external/public access so that you do not leak important application data.
+
+GoScope requires a Go version 1.16 or higher.
 
 ### Setup
 
@@ -30,51 +30,14 @@ The application expects a database with a setup that can be recreated by taking 
 
 ### Example
 
-To understand more about the required variables to initialise GoScope, take a look at the [.env](.env) file in the source of this repository.
+To understand more about the required variables to initialise GoScope, take a look at the [.env](.env) file in the source of this repository. That is a simple example of what you could do. I personally prefer using `.toml` files and loading them via [spf13/viper](https://github.com/spf13/viper), and I have made GoScope flexible for that purpose, whatever config manager you use is up to you.
 
-The documentation of this package should also elucidate more on that matter. Take a look at the [type definition](src/goscopetypes/General.go) and see `GoScopeApplicationEnvironment`.
+The documentation of this package should also elucidate more on that matter. Take a look at the [type definition](pkg/goscope/Types.go) and see `Environment`.
 
-Below is an example implementation code, using `viper` to obtain env variables, please note that you should use plain gin without middlewares, since GoScope will use Gin Gonic's logger and recovery middlewares, but with a customized twist, thus the requirement is that initially you have a clean `gin.Engine` instance.
+Please note that you should use plain gin without middlewares, since GoScope will use Gin Gonic's logger and recovery middlewares, but with a customized twist, thus the requirement is that initially you have a clean `gin.Engine` instance.
 
-```go
-package main
-import (
-    "github.com/gin-gonic/gin"
-    "github.com/averageflow/goscope/v2/src/goscope"
-    "github.com/averageflow/goscope/v2/src/goscopetypes"
-    "github.com/spf13/viper"
-)
+Take a look at the example implementation in [main.go file](cmd/goscope/main.go)
 
-func main(){
-    router := gin.New()
-     
-    // Provide a route group for the GoScope UI, which
-	// can be customized i.e. to use a Auth middleware:
-	//
-	// ui := router.Group("/goscope").Use(gin.BasicAuth(gin.Accounts{
-	//	"secret_user": "secret_password",
-	// }))
-    
-    goscope.Setup(&goscopetypes.GoScopeInitData{
-        Router:     router,
-        RouteGroup: router.Group("/goscope"),
-        Config:     &goscopetypes.GoScopeApplicationEnvironment{
-            ApplicationID:                     viper.GetString("GoScope.ID"),
-            ApplicationName:                   viper.GetString("GoScope.Name"),
-            ApplicationTimezone:               viper.GetString("GoScope.Timezone"),
-            GoScopeDatabaseConnection:         viper.GetString("GoScope.DatabaseConnection"),
-            GoScopeDatabaseType:               viper.GetString("GoScope.DatabaseType"),
-            GoScopeEntriesPerPage:             viper.GetInt("GoScope.EntriesPerPage"),
-            HasFrontendDisabled:               false,
-            GoScopeDatabaseMaxOpenConnections: 10,
-            GoScopeDatabaseMaxIdleConnections: 5,
-            GoScopeDatabaseMaxConnLifetime:    10,
-        },
-    })
-    
-    router.GET("/ping")
-}
-```
 
 ### Contributing
 
@@ -98,12 +61,4 @@ Thus you only need to call your usual `log.Println` or `log.Printf` statements o
 ### System Information
 
 GoScope is constantly improving and currently already can show some system information about the current host. There are plans to expand on this and help is welcome with database info, operating system, etc.
-
-### Showcase
-
-![GoScope Dashboard](showcase/2.png)
-
-![GoScope Dashboard](showcase/3.png)
-
-![GoScope Dashboard](showcase/4.png)
 

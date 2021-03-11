@@ -1,0 +1,95 @@
+{{ define "goscope-components/RequestList.gohtml" }}
+    <section class="has-text-centered">
+        <div class="columns">
+            <section class="has-text-centered mt-4 mb-4 is-two-fifths">
+                {{ if gt $.offset 0 }}
+                    <a
+                        class="has-text-weight-bold p-4"
+                        href="{{ $.baseURL }}/requests?offset={{ SubtractTillZero $.offset 50 }}{{ if FieldHasContent $.searchValue }}&search={{ $.searchValue }}{{ end }}"
+                        >← prev</a
+                    >
+                {{ end }}
+                <a
+                    class="has-text-weight-bold p-4"
+                    href="{{ $.baseURL }}/requests?offset={{ Add $.offset 50 }}{{ if FieldHasContent $.searchValue }}&search={{ $.searchValue }}{{ end }}"
+                    >next →</a
+                >
+            </section>
+            <label class="column is-three-fifths">
+                <input id="search-input" class="input" type="search" />
+            </label>
+        </div>
+    </section>
+    <section class="columns">
+        <div class="column is-full">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Status</th>
+                        <th>Method</th>
+                        <th>Path</th>
+                        <th>Happened</th>
+                        <th>Date</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{ range .data }}
+                        <tr>
+                            <td>
+                                <p
+                                    class="
+                                    has-text-centered has-text-weight-bold
+                                {{ if eq .ResponseStatus 200 }}badge-success{{ end }}
+                                {{ if eq .ResponseStatus 201 }}badge-success{{ end }}
+                                {{ if eq .ResponseStatus 202 }}badge-success{{ end }}
+                                {{ if eq .ResponseStatus 203 }}badge-success{{ end }}
+                                {{ if eq .ResponseStatus 204 }}badge-success{{ end }}
+                                {{ if eq .ResponseStatus 300 }}badge-info{{ end }}
+                                {{ if eq .ResponseStatus 301 }}badge-info{{ end }}
+                                {{ if eq .ResponseStatus 302 }}badge-info{{ end }}
+                                {{ if eq .ResponseStatus 303 }}badge-info{{ end }}
+                                {{ if eq .ResponseStatus 304 }}badge-info{{ end }}
+                                {{ if eq .ResponseStatus 305 }}badge-info{{ end }}
+                                {{ if eq .ResponseStatus 306 }}badge-info{{ end }}
+                                {{ if eq .ResponseStatus 307 }}badge-info{{ end }}
+                                {{ if eq .ResponseStatus 308 }}badge-info{{ end }}
+                                {{ if eq .ResponseStatus 400 }}badge-warning{{ end }}
+                                {{ if eq .ResponseStatus 401 }}badge-warning{{ end }}
+                                {{ if eq .ResponseStatus 402 }}badge-warning{{ end }}
+                                {{ if eq .ResponseStatus 403 }}badge-warning{{ end }}
+                                {{ if eq .ResponseStatus 404 }}badge-warning{{ end }}
+                                {{ if eq .ResponseStatus 418 }}badge-warning{{ end }}
+                                {{ if eq .ResponseStatus 422 }}badge-warning{{ end }}
+                                {{ if eq .ResponseStatus 500 }}badge-danger{{ end }}
+                                {{ if eq .ResponseStatus 501 }}badge-danger{{ end }}
+                                {{ if eq .ResponseStatus 502 }}badge-danger{{ end }}
+                                {{ if eq .ResponseStatus 503 }}badge-danger{{ end }}
+                                    "
+                                >
+                                    {{ .ResponseStatus }}
+                                </p>
+                            </td>
+                            <td class="has-text-weight-bold">{{ .Method }}</td>
+                            <td class="is-family-monospace">{{ .Path }}</td>
+                            <td>
+                                <small
+                                    >{{ EpochToTimeAgoHappened .Time }}
+                                    ago</small
+                                >
+                            </td>
+                            <td>
+                                <small>{{ EpochToHumanReadable .Time }}</small>
+                            </td>
+                            <td>
+                                <a href="{{ $.baseURL }}/requests/{{ .UID }}"
+                                    >View</a
+                                >
+                            </td>
+                        </tr>
+                    {{ end }}
+                </tbody>
+            </table>
+        </div>
+    </section>
+{{ end }}
