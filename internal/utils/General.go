@@ -9,6 +9,12 @@ import (
 	"time"
 )
 
+const (
+	HoursInDay      = 24
+	MinutesInHour   = 60
+	SecondsInMinute = 60
+)
+
 // Check the wanted path is not in the do not log list.
 func CheckExcludedPaths(path string) bool {
 	exactMatches := []string{
@@ -68,15 +74,16 @@ func PrettifyJSON(rawString string) string {
 func EpochToTimeAgoHappened(epoch int) string {
 	date := time.Unix(int64(epoch), 0)
 	diff := time.Since(date)
-	if diff.Seconds() < 60 {
+
+	if diff.Seconds() < SecondsInMinute {
 		return fmt.Sprintf("%.2f s", diff.Seconds())
-	} else if diff.Minutes() < 60 {
+	} else if diff.Minutes() < MinutesInHour {
 		return fmt.Sprintf("%.0f m", diff.Minutes())
-	} else if diff.Hours() < 24 {
+	} else if diff.Hours() < HoursInDay {
 		return fmt.Sprintf("%.0f h", diff.Hours())
 	}
 
-	return fmt.Sprintf("%.0f d", math.Round(diff.Hours()/24))
+	return fmt.Sprintf("%.0f d", math.Round(diff.Hours()/HoursInDay))
 }
 
 func EpochToHumanReadable(epoch int) string {
