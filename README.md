@@ -17,6 +17,8 @@ Once all is set up you can access the web interface by visiting `http://your-app
 
 You should protect this route from external/public access so that you do not leak important application data.
 
+GoScope requires a Go version 1.16 or higher.
+
 ### Setup
 
 
