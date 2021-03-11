@@ -9,6 +9,10 @@ on:
   pull_request:
 jobs:
   gobuild:
+    uses: actions/setup-go@v2
+      with:
+        stable: false
+        go-version: '1.16.1'
     name: gobuild
     runs-on: ubuntu-latest
     steps:
@@ -18,7 +22,4 @@ jobs:
         uses: actions/checkout@v2
       - name: Build
         run: cd cmd/goscope && go build -o app
-uses: actions/setup-go@v2
-  with:
-    stable: false
-    go-version: '1.16.1'
+
