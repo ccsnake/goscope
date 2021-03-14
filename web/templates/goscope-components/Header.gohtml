@@ -27,6 +27,26 @@
                     <a class="navbar-item" href="{{ .baseURL }}/info">System</a>
                 </div>
             </div>
+
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="field is-grouped p-3">
+                        <label>
+                            <input
+                                id="search-input"
+                                class="input"
+                                type="search"
+                            />
+                        </label>
+                        <button
+                            id="search-input-submit"
+                            class="button is-dark has-text-weight-bold"
+                        >
+                            Search
+                        </button>
+                    </div>
+                </div>
+            </div>
         </nav>
     </header>
 {{ end }}

@@ -1,8 +1,10 @@
 package goscope
 
 import (
+	"fmt"
 	"html/template"
 	"log"
+	"net/http"
 	"strings"
 
 	"github.com/averageflow/goscope/v3/web"
@@ -85,6 +87,42 @@ func PrepareMiddleware(d *InitData) {
 		d.RouteGroup.GET("/logs/:id", logDetailsPageHandler)
 		d.RouteGroup.GET("/requests/:id", requestDetailsPageHandler)
 		d.RouteGroup.GET("/info", systemInfoPageHandler)
+
+		d.RouteGroup.GET("/styles/:filename", func(c *gin.Context) {
+			var routeData fileByRoute
+
+			err := c.BindUri(&routeData)
+			if err != nil {
+				log.Println(err.Error())
+				return
+			}
+
+			file, err := web.StyleFiles.ReadFile(fmt.Sprintf("styles/%s", routeData.FileName))
+			if err != nil {
+				log.Println(err.Error())
+				return
+			}
+
+			c.String(http.StatusOK, string(file))
+		})
+
+		d.RouteGroup.GET("/scripts/:filename", func(c *gin.Context) {
+			var routeData fileByRoute
+
+			err := c.BindUri(&routeData)
+			if err != nil {
+				log.Println(err.Error())
+				return
+			}
+
+			file, err := web.ScriptFiles.ReadFile(fmt.Sprintf("scripts/%s", routeData.FileName))
+			if err != nil {
+				log.Println(err.Error())
+				return
+			}
+
+			c.String(http.StatusOK, string(file))
+		})
 	}
 
 	// GoScope API

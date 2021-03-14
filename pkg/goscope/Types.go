@@ -14,6 +14,10 @@ const (
 	SecondsInOneMinute = 60
 )
 
+type fileByRoute struct {
+	FileName string `uri:"filename"`
+}
+
 type systemInformationResponse struct {
 	ApplicationName string                          `json:"applicationName"`
 	CPU             systemInformationResponseCPU    `json:"cpu"`

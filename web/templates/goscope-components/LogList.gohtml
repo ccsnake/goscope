@@ -1,24 +1,17 @@
 {{ define "goscope-components/LogList.gohtml" }}
     <section class="has-text-centered">
-        <div class="columns">
-            <section class="has-text-centered mt-4 mb-4 is-two-fifths">
-                {{ if gt $.offset 0 }}
-                    <a
-                        class="has-text-weight-bold p-4"
-                        href="{{ $.baseURL }}/logs?offset={{ SubtractTillZero $.offset 50 }}{{ if FieldHasContent $.searchValue }}&search={{ $.searchValue }}{{ end }}"
-                        >← prev</a
-                    >
-                {{ end }}
-                <a
-                    class="has-text-weight-bold p-4"
-                    href="{{ $.baseURL }}/logs?offset={{ Add $.offset 50 }}{{ if FieldHasContent $.searchValue }}&search={{ $.searchValue }}{{ end }}"
-                    >next →</a
-                >
-            </section>
-            <label class="column is-three-fifths">
-                <input id="search-input" class="input" type="search" />
-            </label>
-        </div>
+        {{ if gt $.offset 0 }}
+            <a
+                class="has-text-weight-bold p-4"
+                href="{{ $.baseURL }}/logs?offset={{ SubtractTillZero $.offset 50 }}{{ if FieldHasContent $.searchValue }}&search={{ $.searchValue }}{{ end }}"
+                >← prev</a
+            >
+        {{ end }}
+        <a
+            class="has-text-weight-bold p-4"
+            href="{{ $.baseURL }}/logs?offset={{ Add $.offset 50 }}{{ if FieldHasContent $.searchValue }}&search={{ $.searchValue }}{{ end }}"
+            >next →</a
+        >
     </section>
 
     <section class="columns">
