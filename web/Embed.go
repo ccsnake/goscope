@@ -6,7 +6,7 @@ import "embed"
 var TemplateFiles embed.FS //nolint:gochecknoglobals
 
 //go:embed styles/*.css
-var StyleFiles embed.FS
+var StyleFiles embed.FS //nolint:gochecknoglobals
 
 //go:embed scripts/*.js
-var ScriptFiles embed.FS
+var ScriptFiles embed.FS //nolint:gochecknoglobals
