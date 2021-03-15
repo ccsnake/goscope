@@ -31,22 +31,26 @@ func requestListPageHandler(c *gin.Context) {
 				int(offset),
 				int(searchType),
 			),
-			"baseURL":     Config.BaseURL,
-			"offset":      int(offset),
-			"searchValue": searchValue,
-			"searchMode":  searchType,
+			"baseURL":               Config.BaseURL,
+			"offset":                int(offset),
+			"searchValue":           searchValue,
+			"searchMode":            searchType,
+			"advancedSearchEnabled": true,
+			"searchEnabled":         true,
 		}
 
 		c.HTML(http.StatusOK, "goscope-views/Requests.gohtml", variables)
 	} else {
 		variables := gin.H{
-			"applicationName": Config.ApplicationName,
-			"entriesPerPage":  Config.GoScopeEntriesPerPage,
-			"data":            repository.FetchRequestList(DB, Config.ApplicationID, Config.GoScopeEntriesPerPage, int(offset)),
-			"baseURL":         Config.BaseURL,
-			"offset":          int(offset),
-			"searchValue":     searchValue,
-			"searchMode":      searchType,
+			"applicationName":       Config.ApplicationName,
+			"entriesPerPage":        Config.GoScopeEntriesPerPage,
+			"data":                  repository.FetchRequestList(DB, Config.ApplicationID, Config.GoScopeEntriesPerPage, int(offset)),
+			"baseURL":               Config.BaseURL,
+			"offset":                int(offset),
+			"searchValue":           searchValue,
+			"searchMode":            searchType,
+			"advancedSearchEnabled": true,
+			"searchEnabled":         true,
 		}
 
 		c.HTML(http.StatusOK, "goscope-views/Requests.gohtml", variables)
@@ -70,9 +74,11 @@ func logListPageHandler(c *gin.Context) {
 				searchValue,
 				int(offset),
 			),
-			"baseURL":     Config.BaseURL,
-			"offset":      int(offset),
-			"searchValue": searchValue,
+			"baseURL":               Config.BaseURL,
+			"offset":                int(offset),
+			"searchValue":           searchValue,
+			"advancedSearchEnabled": false,
+			"searchEnabled":         true,
 		}
 		c.HTML(http.StatusOK, "goscope-views/Logs.gohtml", variables)
 	} else {
@@ -86,9 +92,11 @@ func logListPageHandler(c *gin.Context) {
 				Config.GoScopeDatabaseType,
 				int(offset),
 			),
-			"baseURL":     Config.BaseURL,
-			"offset":      int(offset),
-			"searchValue": searchValue,
+			"baseURL":               Config.BaseURL,
+			"offset":                int(offset),
+			"searchValue":           searchValue,
+			"advancedSearchEnabled": false,
+			"searchEnabled":         true,
 		}
 		c.HTML(http.StatusOK, "goscope-views/Logs.gohtml", variables)
 	}
@@ -109,7 +117,8 @@ func logDetailsPageHandler(c *gin.Context) {
 		"data": gin.H{
 			"logDetails": logDetails,
 		},
-		"baseURL": Config.BaseURL,
+		"baseURL":       Config.BaseURL,
+		"searchEnabled": false,
 	}
 
 	c.HTML(http.StatusOK, "goscope-views/LogDetails.gohtml", variables)
@@ -132,7 +141,8 @@ func requestDetailsPageHandler(c *gin.Context) {
 			"request":  requestDetails,
 			"response": responseDetails,
 		},
-		"baseURL": Config.BaseURL,
+		"baseURL":       Config.BaseURL,
+		"searchEnabled": false,
 	}
 
 	c.HTML(http.StatusOK, "goscope-views/RequestDetails.gohtml", variables)

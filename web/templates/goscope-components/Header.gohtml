@@ -27,44 +27,51 @@
                     <a class="navbar-item" href="{{ .baseURL }}/info">System</a>
                 </div>
             </div>
-
-            <div class="navbar-end">
-                <div class="navbar-item">
-                    <div class="field is-grouped p-3">
-                        <label>
-                            <select
-                                id="search-mode-select"
-                                name="search-mode-select"
-                                class="select is-dark has-text-weight-bold"
+            {{ if $.searchEnabled }}
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <div class="field is-grouped p-3">
+                            {{ if $.advancedSearchEnabled }}
+                                <label>
+                                    <select
+                                        id="search-mode-select"
+                                        name="search-mode-select"
+                                        class="select is-dark has-text-weight-bold"
+                                    >
+                                        <option value="0" selected>
+                                            Regular
+                                        </option>
+                                        <option value="1">Client IP</option>
+                                        <option value="2">Method</option>
+                                        <option value="3">URL / Path</option>
+                                        <option value="4">Host</option>
+                                        <option value="5">Body</option>
+                                        <option value="6">User Agent</option>
+                                        <option value="7">Time</option>
+                                        <option value="8">
+                                            Response Status
+                                        </option>
+                                        <option value="9">Headers</option>
+                                    </select>
+                                </label>
+                            {{ end }}
+                            <label>
+                                <input
+                                    id="search-input"
+                                    class="input"
+                                    type="search"
+                                />
+                            </label>
+                            <button
+                                id="search-input-submit"
+                                class="button is-dark has-text-weight-bold"
                             >
-                                <option value="0" selected>Regular</option>
-                                <option value="1">Client IP</option>
-                                <option value="2">Method</option>
-                                <option value="3">URL / Path</option>
-                                <option value="4">Host</option>
-                                <option value="5">Body</option>
-                                <option value="6">User Agent</option>
-                                <option value="7">Time</option>
-                                <option value="8">Response Status</option>
-                                <option value="9">Headers</option>
-                            </select>
-                        </label>
-                        <label>
-                            <input
-                                id="search-input"
-                                class="input"
-                                type="search"
-                            />
-                        </label>
-                        <button
-                            id="search-input-submit"
-                            class="button is-dark has-text-weight-bold"
-                        >
-                            Search
-                        </button>
+                                Search
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
+            {{ end }}
         </nav>
     </header>
 {{ end }}

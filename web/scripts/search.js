@@ -32,19 +32,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // For every new page fill the input with the value of the search
     const urlParams = new URLSearchParams(window.location.search);
-    searchInput.value = urlParams.get('search')
-    searchModeSelect.value = urlParams.get('search-mode') ?? 0
 
-    searchInput.addEventListener("keydown", e => {
-        if (e.key !== "Enter") {
-            return;
-        }
-        showLoadingSpinner()
-        navigateToSearch(searchInput.value, searchModeSelect.value)
-    });
+    if (searchModeSelect) {
+        searchModeSelect.value = urlParams.get('search-mode') ?? 0
+    }
 
-    searchButtonSubmit.addEventListener('click', () => {
-        showLoadingSpinner()
-        navigateToSearch(searchInput.value, searchModeSelect.value)
-    })
+    if (searchInput) {
+        searchInput.value = urlParams.get('search')
+
+        searchInput.addEventListener("keydown", e => {
+            if (e.key !== "Enter") {
+                return;
+            }
+            showLoadingSpinner()
+            navigateToSearch(searchInput.value, searchModeSelect?.value ?? 0)
+        });
+
+        searchButtonSubmit.addEventListener('click', () => {
+            showLoadingSpinner()
+            navigateToSearch(searchInput.value, searchModeSelect?.value ?? 0)
+        })
+    }
 })

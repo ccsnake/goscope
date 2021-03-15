@@ -1,18 +1,22 @@
 {{ define "goscope-components/LogList.gohtml" }}
-    <section class="has-text-centered">
+    <section class="has-text-centered mb-4">
         {{ if gt $.offset 0 }}
             <a
                 onclick="showLoadingSpinner()"
                 class="has-text-weight-bold p-4"
                 href="{{ $.baseURL }}/logs?offset={{ SubtractTillZero $.offset 50 }}{{ if FieldHasContent $.searchValue }}&search={{ $.searchValue }}{{ end }}"
-                >← prev</a
+                ><button class="has-text-weight-bold button is-dark">
+                    ← prev
+                </button></a
             >
         {{ end }}
         <a
             onclick="showLoadingSpinner()"
             class="has-text-weight-bold p-4"
             href="{{ $.baseURL }}/logs?offset={{ Add $.offset 50 }}{{ if FieldHasContent $.searchValue }}&search={{ $.searchValue }}{{ end }}"
-            >next →</a
+            ><button class="has-text-weight-bold button is-dark">
+                next →
+            </button></a
         >
     </section>
 
@@ -44,6 +48,12 @@
                                 <a href="{{ $.baseURL }}/logs/{{ .UID }}"
                                     >View</a
                                 >
+                            </td>
+                        </tr>
+                        {{ else }}
+                        <tr>
+                            <td>
+                                <h2 class="p-6 title is-2">No results found</h2>
                             </td>
                         </tr>
                     {{ end }}
