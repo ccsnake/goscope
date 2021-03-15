@@ -17,6 +17,11 @@ const navigateToSearch = searchWord => {
     window.location = `${window.location.protocol}//${window.location.host}${window.location.pathname}?${urlParams.toString()}`.toString()
 };
 
+const showLoadingSpinner = () => {
+    let spinner = document.getElementById('loading-spinner')
+    spinner.classList.toggle('is-hidden');
+}
+
 document.addEventListener("DOMContentLoaded", () => {
     let searchInput = document.getElementById('search-input')
     let searchButtonSubmit = document.getElementById('search-input-submit')
