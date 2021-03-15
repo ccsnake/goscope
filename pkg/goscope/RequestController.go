@@ -64,9 +64,7 @@ func searchRequestHandler(c *gin.Context) {
 		DB,
 		Config.ApplicationID,
 		Config.GoScopeEntriesPerPage,
-		Config.GoScopeDatabaseType,
 		request.Query,
-		&request.Filter,
 		int(offset),
 	)
 

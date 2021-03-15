@@ -56,156 +56,72 @@ func queryGetRequests(db *sql.DB, appID string, entriesPerPage, offset int) (*sq
 	)
 }
 
-func querySearchRequests(db *sql.DB, appID string, entriesPerPage int, connection, search string, //nolint:gocognit,funlen,gocyclo
-	filter *RequestFilter, offset int) (*sql.Rows, error) {
-	var query string
-
-	var methodQuery string
-
-	var searchQuery string
-
-	var methodSQL []string
-
-	hasMethodFilter := false
-	if filter != nil {
-		hasMethodFilter = len(filter.Method) != 0
+func querySearchRequests(db *sql.DB, appID string, entriesPerPage int, search string, //nolint:funlen
+	offset int) (*sql.Rows, error) {
+	if search == "" {
+		return nil, sql.ErrNoRows
 	}
 
-	hasSearch := search != ""
+	var query string
+
+	var searchQuery string
 
 	var searchQueryCols [][2]string
 
 	var searchWildcard string
 
-	if hasSearch {
-		searchWildcard = fmt.Sprintf("%%%s%%", search)
+	searchWildcard = fmt.Sprintf("%%%s%%", search)
 
-		searchQueryCols = [][2]string{
-			{"requests", "uid"},
-			{"requests", "application"},
-			{"requests", "client_ip"},
-			{"requests", "method"},
-			{"requests", "path"},
-			{"requests", "url"},
-			{"requests", "host"},
-			{"requests", "body"},
-			{"requests", "referrer"},
-			{"requests", "user_agent"},
-			{"requests", "time"},
-			{"responses", "uid"},
-			{"responses", "request_uid"},
-			{"responses", "application"},
-			{"responses", "client_ip"},
-			{"responses", "status"},
-			{"responses", "body"},
-			{"responses", "path"},
-			{"responses", "headers"},
-			{"responses", "size"},
-			{"responses", "time"},
-		}
+	searchQueryCols = [][2]string{
+		{"requests", "uid"},
+		{"requests", "application"},
+		{"requests", "client_ip"},
+		{"requests", "method"},
+		{"requests", "path"},
+		{"requests", "url"},
+		{"requests", "host"},
+		{"requests", "body"},
+		// {"requests", "referrer"},
+		{"requests", "user_agent"},
+		{"requests", "time"},
+		{"responses", "uid"},
+		// {"responses", "request_uid"},
+		{"responses", "application"},
+		{"responses", "client_ip"},
+		{"responses", "status"},
+		{"responses", "body"},
+		{"responses", "path"},
+		{"responses", "headers"},
+		// {"responses", "size"},
+		{"responses", "time"},
 	}
 
-	if connection == MySQL || connection == SQLite { //nolint:nestif
-		if hasMethodFilter && filter != nil {
-			for i := range filter.Method {
-				if i == 0 {
-					methodQuery += "AND (`requests`.`method` = ? "
-				} else {
-					methodQuery += "OR `requests`.`method` = ? "
-				}
+	searchQuery += "AND ("
 
-				methodSQL = append(methodSQL, filter.Method[i])
-			}
-
-			methodQuery += ") " //nolint:goconst
+	for i := range searchQueryCols {
+		if i != 0 {
+			searchQuery += "OR "
 		}
 
-		if hasSearch {
-			searchQuery += "AND (" //nolint:goconst
-
-			for i := range searchQueryCols {
-				if i != 0 {
-					searchQuery += "OR " //nolint:goconst
-				}
-
-				searchQuery += fmt.Sprintf("`%s`.`%s` LIKE ? ", searchQueryCols[i][0], searchQueryCols[i][1])
-			}
-
-			searchQuery += ") "
-		}
-
-		query = "SELECT `requests`.`uid`, `requests`.`method`, `requests`.`path`, `requests`.`time`, " +
-			"`responses`.`status` FROM `requests` " +
-			"INNER JOIN `responses` ON `requests`.`uid` = `responses`.`request_uid` " +
-			"WHERE `requests`.`application` = ? " +
-			methodQuery +
-			searchQuery +
-			"ORDER BY `requests`.`time` DESC LIMIT ? OFFSET ?;"
-	} else if connection == PostgreSQL {
-		if hasMethodFilter && filter != nil {
-			for i := range filter.Method {
-				if i == 0 {
-					methodQuery += `AND ("requests"."method" = ? `
-				} else {
-					methodQuery += `OR "requests"."method" = ? `
-				}
-				methodSQL = append(methodSQL, filter.Method[i])
-			}
-			methodQuery += `) `
-		}
-
-		if hasSearch {
-			searchQuery += "AND ("
-			for i := range searchQueryCols {
-				if i != 0 {
-					searchQuery += "OR "
-				}
-				searchQuery += fmt.Sprintf(`"%s"."%s" LIKE ? `, searchQueryCols[i][0], searchQueryCols[i][1])
-			}
-			searchQuery += ") "
-		}
-
-		query = `SELECT "requests"."uid", "requests"."method", "requests"."path",
-			"requests"."time", "responses"."status" FROM "requests"
-			INNER JOIN "responses" ON "requests"."uid" = "responses"."request_uid"
-			WHERE "requests"."application" = ?
-			` + methodQuery + searchQuery + `
-			ORDER BY "requests"."time" DESC LIMIT ? OFFSET ?;`
+		searchQuery += fmt.Sprintf("%s.%s LIKE ? ", searchQueryCols[i][0], searchQueryCols[i][1])
 	}
+
+	searchQuery += ") "
+
+	query = fmt.Sprintf(`
+		SELECT requests.uid, requests.method, requests.path, requests.time, responses.status
+		FROM requests
+		INNER JOIN responses ON requests.uid = responses.request_uid
+		WHERE requests.application = ?
+		%s
+		ORDER BY requests.time DESC LIMIT ? OFFSET ?;
+	`, searchQuery)
 
 	var args []interface{}
 	args = append(args, appID)
 
-	if hasMethodFilter && filter != nil {
-		for i := range methodSQL {
-			args = append(args, methodSQL[i])
-		}
-	}
-
-	if hasSearch {
-		args = append(args,
-			searchWildcard,
-			searchWildcard,
-			searchWildcard,
-			searchWildcard,
-			searchWildcard,
-			searchWildcard,
-			searchWildcard,
-			searchWildcard,
-			searchWildcard,
-			searchWildcard,
-			searchWildcard,
-			searchWildcard,
-			searchWildcard,
-			searchWildcard,
-			searchWildcard,
-			searchWildcard,
-			searchWildcard,
-			searchWildcard,
-			searchWildcard,
-			searchWildcard,
-			searchWildcard,
-		)
+	for range searchQueryCols {
+		args = append(args, searchWildcard)
 	}
 
 	args = append(

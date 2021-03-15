@@ -112,10 +112,10 @@ func FetchRequestList(db *sql.DB, appID string, entriesPerPage, offset int) []Su
 
 // FetchSearchRequests fetches a list of summarized requests that match the input parameters of search.
 func FetchSearchRequests(db *sql.DB, appID string, entriesPerPage int,
-	databaseType, search string, filter *RequestFilter, offset int) []SummarizedRequest {
+	search string, offset int) []SummarizedRequest {
 	var result []SummarizedRequest
 
-	rows, err := querySearchRequests(db, appID, entriesPerPage, databaseType, search, filter, offset)
+	rows, err := querySearchRequests(db, appID, entriesPerPage, search, offset)
 	if err != nil {
 		log.Println(err.Error())
 		return result
