@@ -64,26 +64,20 @@ func querySearchRequests(db *sql.DB, appID string, entriesPerPage int, search st
 	searchWildcard := fmt.Sprintf("%%%s%%", search)
 
 	searchQueryCols := [][2]string{
-		{"requests", "uid"},
-		{"requests", "application"},
 		{"requests", "client_ip"},
 		{"requests", "method"},
+		{"requests", "headers"},
 		{"requests", "path"},
 		{"requests", "url"},
 		{"requests", "host"},
 		{"requests", "body"},
-		// {"requests", "referrer"},
 		{"requests", "user_agent"},
 		{"requests", "time"},
-		{"responses", "uid"},
-		// {"responses", "request_uid"},
-		{"responses", "application"},
 		{"responses", "client_ip"},
 		{"responses", "status"},
 		{"responses", "body"},
 		{"responses", "path"},
 		{"responses", "headers"},
-		// {"responses", "size"},
 		{"responses", "time"},
 	}
 

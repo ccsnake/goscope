@@ -56,8 +56,14 @@ pre {
     color: #fff;
     background-color: #684f1d;
 }
+.select {
+    background-color: #363636;
+    border-color: transparent;
+    color: #fff;
+}
 
 @media (prefers-color-scheme: dark) {
+
     html {
         background-color: #1f1f1f;
         color: #f1f1f1;

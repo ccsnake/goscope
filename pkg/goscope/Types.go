@@ -114,3 +114,16 @@ type SearchRequestPayload struct {
 	Query  string                   `json:"query"`
 	Filter repository.RequestFilter `json:"filter"`
 }
+
+const (
+	RegularSearchFilter   = 1
+	ClientIPSearchFilter  = 2
+	MethodSearchFilter    = 3
+	URLPathSearchFilter   = 4
+	HostSearchFilter      = 5
+	BodySearchFilter      = 6
+	UserAgentSearchFilter = 7
+	TimeSearchFilter      = 8
+	StatusSearchFilter    = 9
+	HeadersSearchFilter   = 10
+)
