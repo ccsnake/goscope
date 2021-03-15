@@ -1,18 +1,22 @@
 {{ define "goscope-components/RequestList.gohtml" }}
-    <section class="has-text-centered">
-        {{ if gt $.offset 0 }}
+    <section class="has-text-centered mb-4">
+        {{ if gt $.Offset 0 }}
             <a
                 onclick="showLoadingSpinner()"
                 class="has-text-weight-bold p-4"
-                href="{{ $.baseURL }}/requests?offset={{ SubtractTillZero $.offset 50 }}{{ if FieldHasContent $.searchValue }}&search={{ $.searchValue }}{{ end }}"
-                >← prev</a
+                href="{{ $.BaseURL }}/requests?offset={{ SubtractTillZero $.Offset 50 }}{{ if FieldHasContent $.SearchValue }}&search-mode={{ $.SearchMode }}&search={{ $.SearchValue }}{{ end }}"
+                ><button class="has-text-weight-bold button is-dark">
+                    ← prev
+                </button></a
             >
         {{ end }}
         <a
             onclick="showLoadingSpinner()"
             class="has-text-weight-bold p-4"
-            href="{{ $.baseURL }}/requests?offset={{ Add $.offset 50 }}{{ if FieldHasContent $.searchValue }}&search={{ $.searchValue }}{{ end }}"
-            >next →</a
+            href="{{ $.BaseURL }}/requests?offset={{ Add $.Offset 50 }}{{ if FieldHasContent $.SearchValue }}&search-mode={{ $.SearchMode }}&search={{ $.SearchValue }}{{ end }}"
+            ><button class="has-text-weight-bold button is-dark">
+                next →
+            </button></a
         >
     </section>
     <section class="columns">
@@ -29,7 +33,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {{ range .data }}
+                    {{ range .Data }}
                         <tr>
                             <td>
                                 <p
@@ -77,9 +81,15 @@
                                 <small>{{ EpochToHumanReadable .Time }}</small>
                             </td>
                             <td>
-                                <a href="{{ $.baseURL }}/requests/{{ .UID }}"
+                                <a href="{{ $.BaseURL }}/requests/{{ .UID }}"
                                     >View</a
                                 >
+                            </td>
+                        </tr>
+                        {{ else }}
+                        <tr>
+                            <td>
+                                <h2 class="p-6 title is-2">No results found</h2>
                             </td>
                         </tr>
                     {{ end }}

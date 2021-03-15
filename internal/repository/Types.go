@@ -55,3 +55,16 @@ type DumpResponsePayload struct {
 	Body    *bytes.Buffer
 	Status  int
 }
+
+const (
+	RegularSearchFilter   = 0
+	ClientIPSearchFilter  = 1
+	MethodSearchFilter    = 2
+	URLPathSearchFilter   = 3
+	HostSearchFilter      = 4
+	BodySearchFilter      = 5
+	UserAgentSearchFilter = 6
+	TimeSearchFilter      = 7
+	StatusSearchFilter    = 8
+	HeadersSearchFilter   = 9
+)

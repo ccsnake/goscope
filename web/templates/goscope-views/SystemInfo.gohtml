@@ -15,7 +15,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {{ range $i, $value :=  .data.Environment }}
+                            {{ range $i, $value :=  .Data.Environment }}
                                 <tr>
                                     <td>
                                         <p class="is-family-monospace">
@@ -40,11 +40,11 @@
                     <dl>
                         <dt class="mt-3">Core Count</dt>
                         <dd>
-                            <code>{{ .data.CPU.CoreCount }}</code>
+                            <code>{{ .Data.CPU.CoreCount }}</code>
                         </dd>
                         <dt class="mt-3">Model</dt>
                         <dd>
-                            <code>{{ .data.CPU.ModelName }}</code>
+                            <code>{{ .Data.CPU.ModelName }}</code>
                         </dd>
                     </dl>
                 </div>
@@ -54,13 +54,13 @@
                         <dt class="mt-3">Status</dt>
                         <dd>
                             <code
-                                >{{ .data.Memory.Available }} available of
-                                {{ .data.Memory.Total }}</code
+                                >{{ .Data.Memory.Available }} available of
+                                {{ .Data.Memory.Total }}</code
                             >
                         </dd>
                         <dt class="mt-3">Swap usage</dt>
                         <dd>
-                            <code>{{ .data.Memory.UsedSwap }}</code>
+                            <code>{{ .Data.Memory.UsedSwap }}</code>
                         </dd>
                     </dl>
                 </div>
@@ -69,19 +69,19 @@
                     <dl>
                         <dt class="mt-3">Free space</dt>
                         <dd>
-                            <code>{{ .data.Disk.FreeSpace }}</code>
+                            <code>{{ .Data.Disk.FreeSpace }}</code>
                         </dd>
                         <dt class="mt-3">Partition type</dt>
                         <dd>
-                            <code>{{ .data.Disk.PartitionType }}</code>
+                            <code>{{ .Data.Disk.PartitionType }}</code>
                         </dd>
                         <dt class="mt-3">Mount Path</dt>
                         <dd>
-                            <code>{{ .data.Disk.MountPath }}</code>
+                            <code>{{ .Data.Disk.MountPath }}</code>
                         </dd>
                         <dt class="mt-3">Total Space</dt>
                         <dd>
-                            <code>{{ .data.Disk.TotalSpace }}</code>
+                            <code>{{ .Data.Disk.TotalSpace }}</code>
                         </dd>
                     </dl>
                 </div>
@@ -91,27 +91,27 @@
                     <dl>
                         <dt class="mt-3">Kernel Arch</dt>
                         <dd>
-                            <code>{{ .data.Host.KernelArch }}</code>
+                            <code>{{ .Data.Host.KernelArch }}</code>
                         </dd>
                         <dt class="mt-3">Kernel Version</dt>
                         <dd>
-                            <code>{{ .data.Host.KernelVersion }}</code>
+                            <code>{{ .Data.Host.KernelVersion }}</code>
                         </dd>
                         <dt class="mt-3">Hostname</dt>
                         <dd>
-                            <code>{{ .data.Host.Hostname }}</code>
+                            <code>{{ .Data.Host.Hostname }}</code>
                         </dd>
                         <dt class="mt-3">Host OS</dt>
                         <dd>
-                            <code>{{ .data.Host.HostOS }}</code>
+                            <code>{{ .Data.Host.HostOS }}</code>
                         </dd>
                         <dt class="mt-3">Platform</dt>
                         <dd>
-                            <code>{{ .data.Host.HostPlatform }}</code>
+                            <code>{{ .Data.Host.HostPlatform }}</code>
                         </dd>
                         <dt class="mt-3">Uptime</dt>
                         <dd>
-                            <code>{{ .data.Host.Uptime }}</code>
+                            <code>{{ .Data.Host.Uptime }}</code>
                         </dd>
                     </dl>
                 </div>
