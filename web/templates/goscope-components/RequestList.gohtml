@@ -4,14 +4,14 @@
             <a
                 onclick="showLoadingSpinner()"
                 class="has-text-weight-bold p-4"
-                href="{{ $.baseURL }}/requests?offset={{ SubtractTillZero $.offset 50 }}{{ if FieldHasContent $.searchValue }}&search={{ $.searchValue }}{{ end }}"
+                href="{{ $.baseURL }}/requests?offset={{ SubtractTillZero $.offset 50 }}{{ if FieldHasContent $.searchValue }}&search-mode={{ $.searchMode }}&search={{ $.searchValue }}{{ end }}"
                 >← prev</a
             >
         {{ end }}
         <a
             onclick="showLoadingSpinner()"
             class="has-text-weight-bold p-4"
-            href="{{ $.baseURL }}/requests?offset={{ Add $.offset 50 }}{{ if FieldHasContent $.searchValue }}&search={{ $.searchValue }}{{ end }}"
+            href="{{ $.baseURL }}/requests?offset={{ Add $.offset 50 }}{{ if FieldHasContent $.searchValue }}&search-mode={{ $.searchMode }}&search={{ $.searchValue }}{{ end }}"
             >next →</a
         >
     </section>

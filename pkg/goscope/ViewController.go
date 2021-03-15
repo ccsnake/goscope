@@ -34,6 +34,7 @@ func requestListPageHandler(c *gin.Context) {
 			"baseURL":     Config.BaseURL,
 			"offset":      int(offset),
 			"searchValue": searchValue,
+			"searchMode":  searchType,
 		}
 
 		c.HTML(http.StatusOK, "goscope-views/Requests.gohtml", variables)
@@ -45,6 +46,7 @@ func requestListPageHandler(c *gin.Context) {
 			"baseURL":         Config.BaseURL,
 			"offset":          int(offset),
 			"searchValue":     searchValue,
+			"searchMode":      searchType,
 		}
 
 		c.HTML(http.StatusOK, "goscope-views/Requests.gohtml", variables)
