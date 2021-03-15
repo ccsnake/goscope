@@ -2,61 +2,61 @@
     {{ template "goscope-components/Head.gohtml" . }}
     {{ template "goscope-components/Header.gohtml" . }}
     <div class="container section">
-        <a href="{{ $.baseURL }}/requests">← Back</a>
+        <a href="{{ $.BaseURL }}/requests">← Back</a>
         <div class="mt-4 columns">
             <section class="column">
                 <h3 class="title is-3">Request details</h3>
-                {{ if FieldHasContent .data.request.ClientIP }}
+                {{ if FieldHasContent .Data.request.ClientIP }}
                     <div class="m-4">
                         <h5 class="title is-5">Client IP</h5>
                         <p class="mt-3 is-family-monospace">
-                            {{ .data.request.ClientIP }}
+                            {{ .Data.request.ClientIP }}
                         </p>
                     </div>
                 {{ end }}
 
-                {{ if FieldHasContent .data.request.Headers }}
+                {{ if FieldHasContent .Data.request.Headers }}
                     <div class="m-4">
                         <h5 class="title is-5">Headers</h5>
                         <details class="mt-3">
                             <summary>Click to view headers...</summary>
-                            <pre><code>{{ .data.request.Headers }}</code></pre>
+                            <pre><code>{{ .Data.request.Headers }}</code></pre>
                         </details>
                     </div>
                 {{ end }}
 
-                {{ if FieldHasContent .data.request.Host }}
+                {{ if FieldHasContent .Data.request.Host }}
                     <div class="m-4">
                         <h5 class="title is-5">Host</h5>
                         <p class="mt-3 is-family-monospace">
-                            {{ .data.request.Host }}
+                            {{ .Data.request.Host }}
                         </p>
                     </div>
                 {{ end }}
 
-                {{ if FieldHasContent .data.request.Method }}
+                {{ if FieldHasContent .Data.request.Method }}
                     <div class="m-4">
                         <h5 class="title is-5">Method</h5>
                         <p class="mt-3 is-family-monospace">
-                            {{ .data.request.Method }}
+                            {{ .Data.request.Method }}
                         </p>
                     </div>
                 {{ end }}
 
-                {{ if FieldHasContent .data.request.Path }}
+                {{ if FieldHasContent .Data.request.Path }}
                     <div class="m-4">
                         <h5 class="title is-5">Path</h5>
                         <p class="mt-3 is-family-monospace">
-                            {{ .data.request.Path }}
+                            {{ .Data.request.Path }}
                         </p>
                     </div>
                 {{ end }}
 
-                {{ if FieldHasContent .data.request.Referrer }}
+                {{ if FieldHasContent .Data.request.Referrer }}
                     <div class="m-4">
                         <h5 class="title is-5">Referrer</h5>
                         <p class="mt-3 is-family-monospace">
-                            {{ .data.request.Referrer }}
+                            {{ .Data.request.Referrer }}
                         </p>
                     </div>
                 {{ end }}
@@ -64,44 +64,44 @@
                 <div class="m-4">
                     <h5 class="title is-5">Time</h5>
                     <p class="mt-3">
-                        {{ EpochToTimeAgoHappened .data.request.Time }} ago -
-                        {{ EpochToHumanReadable .data.request.Time }}
+                        {{ EpochToTimeAgoHappened .Data.request.Time }} ago -
+                        {{ EpochToHumanReadable .Data.request.Time }}
                     </p>
                 </div>
 
-                {{ if FieldHasContent .data.request.UID }}
+                {{ if FieldHasContent .Data.request.UID }}
                     <div class="m-4">
                         <h5 class="title is-5">UID</h5>
                         <p class="mt-3 is-family-monospace">
-                            {{ .data.request.UID }}
+                            {{ .Data.request.UID }}
                         </p>
                     </div>
                 {{ end }}
 
-                {{ if FieldHasContent .data.request.URL }}
+                {{ if FieldHasContent .Data.request.URL }}
                     <div class="m-4">
                         <h5 class="title is-5">URL</h5>
                         <p class="mt-3 is-family-monospace">
-                            {{ .data.request.URL }}
+                            {{ .Data.request.URL }}
                         </p>
                     </div>
                 {{ end }}
 
-                {{ if FieldHasContent .data.request.UserAgent }}
+                {{ if FieldHasContent .Data.request.UserAgent }}
                     <div class="m-4">
                         <h5 class="title is-5">UserAgent</h5>
                         <p class="mt-3 is-family-monospace">
-                            {{ .data.request.UserAgent }}
+                            {{ .Data.request.UserAgent }}
                         </p>
                     </div>
                 {{ end }}
 
-                {{ if FieldHasContent .data.request.Body }}
+                {{ if FieldHasContent .Data.request.Body }}
                     <div class="m-4">
                         <h5 class="title is-5">Body</h5>
                         <details class="mt-3">
                             <summary>Click to view body...</summary>
-                            <pre><code>{{ .data.request.Body }}</code></pre>
+                            <pre><code>{{ .Data.request.Body }}</code></pre>
                         </details>
                     </div>
                 {{ end }}
@@ -109,68 +109,68 @@
 
             <section class="column">
                 <h3 class="title is-3">Response details</h3>
-                {{ if FieldHasContent .data.response.ClientIP }}
+                {{ if FieldHasContent .Data.response.ClientIP }}
                     <div class="m-4">
                         <h5 class="title is-5">Client IP</h5>
                         <p class="mt-3 is-family-monospace">
-                            {{ .data.response.ClientIP }}
+                            {{ .Data.response.ClientIP }}
                         </p>
                     </div>
                 {{ end }}
-                {{ if FieldHasContent .data.response.Headers }}
+                {{ if FieldHasContent .Data.response.Headers }}
                     <div class="m-4">
                         <h5 class="title is-5">Headers</h5>
                         <details class="mt-3">
                             <summary>Click to view headers...</summary>
-                            <pre><code>{{ .data.response.Headers }}</code></pre>
+                            <pre><code>{{ .Data.response.Headers }}</code></pre>
                         </details>
                     </div>
                 {{ end }}
-                {{ if FieldHasContent .data.response.Path }}
+                {{ if FieldHasContent .Data.response.Path }}
                     <div class="m-4">
                         <h5 class="title is-5">Path</h5>
                         <p class="mt-3 is-family-monospace">
-                            {{ .data.response.Path }}
+                            {{ .Data.response.Path }}
                         </p>
                     </div>
                 {{ end }}
                 <div class="m-4">
                     <h5 class="title is-5">Size</h5>
                     <p class="mt-3 is-family-monospace">
-                        {{ .data.response.Size }}
+                        {{ .Data.response.Size }}
                     </p>
                 </div>
-                {{ if FieldHasContent .data.response.Status }}
+                {{ if FieldHasContent .Data.response.Status }}
                     <div class="m-4">
                         <h5 class="title is-5">Status</h5>
                         <p class="mt-3 is-family-monospace">
-                            {{ .data.response.Status }}
+                            {{ .Data.response.Status }}
                         </p>
                     </div>
                 {{ end }}
                 <div class="m-4">
                     <h5 class="title is-5">Time</h5>
                     <p class="mt-3">
-                        {{ EpochToTimeAgoHappened .data.response.Time }} ago -
-                        {{ EpochToHumanReadable .data.response.Time }}
+                        {{ EpochToTimeAgoHappened .Data.response.Time }} ago -
+                        {{ EpochToHumanReadable .Data.response.Time }}
                     </p>
                 </div>
-                {{ if FieldHasContent .data.response.UID }}
+                {{ if FieldHasContent .Data.response.UID }}
                     <div class="m-4">
                         <h5 class="title is-5">UID</h5>
                         <p class="mt-3 is-family-monospace">
-                            {{ .data.response.UID }}
+                            {{ .Data.response.UID }}
                         </p>
                     </div>
                 {{ end }}
             </section>
         </div>
-        {{ if FieldHasContent .data.response.Body }}
+        {{ if FieldHasContent .Data.response.Body }}
             <div class="m-4">
                 <h5 class="title is-5">Response Body</h5>
                 <details>
                     <summary>Click to view body...</summary>
-                    <pre><code>{{ .data.response.Body }}</code></pre>
+                    <pre><code>{{ .Data.response.Body }}</code></pre>
                 </details>
             </div>
         {{ end }}

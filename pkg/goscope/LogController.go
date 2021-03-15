@@ -14,10 +14,10 @@ func getLogListHandler(c *gin.Context) {
 	offsetQuery := c.DefaultQuery("offset", "0")
 	offset, _ := strconv.ParseInt(offsetQuery, 10, 32)
 
-	variables := gin.H{
-		"applicationName": Config.ApplicationName,
-		"entriesPerPage":  Config.GoScopeEntriesPerPage,
-		"data": repository.FetchLogs(
+	variables := PageStateData{
+		ApplicationName: Config.ApplicationName,
+		EntriesPerPage:  Config.GoScopeEntriesPerPage,
+		Data: repository.FetchLogs(
 			DB,
 			Config.ApplicationID,
 			Config.GoScopeEntriesPerPage,
@@ -40,9 +40,9 @@ func showLogDetailsHandler(c *gin.Context) {
 
 	logDetails := repository.FetchDetailedLog(DB, request.UID)
 
-	variables := gin.H{
-		"applicationName": Config.ApplicationName,
-		"data": gin.H{
+	variables := PageStateData{
+		ApplicationName: Config.ApplicationName,
+		Data: gin.H{
 			"logDetails": logDetails,
 		},
 	}
@@ -70,10 +70,10 @@ func searchLogHandler(c *gin.Context) {
 		int(offset),
 	)
 
-	variables := gin.H{
-		"applicationName": Config.ApplicationName,
-		"entriesPerPage":  Config.GoScopeEntriesPerPage,
-		"data":            result,
+	variables := PageStateData{
+		ApplicationName: Config.ApplicationName,
+		EntriesPerPage:  Config.GoScopeEntriesPerPage,
+		Data:            result,
 	}
 
 	c.Header("Access-Control-Allow-Origin", "*")

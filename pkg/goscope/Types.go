@@ -112,3 +112,15 @@ type SearchRequestPayload struct {
 	Query      string `json:"query"`
 	SearchType int    `json:"searchType"`
 }
+
+type PageStateData struct {
+	ApplicationName       string      `json:"applicationName"`
+	EntriesPerPage        int         `json:"entriesPerPage"`
+	Data                  interface{} `json:"data"`
+	BaseURL               string      `json:"baseURL"`
+	Offset                int         `json:"offset"`
+	SearchValue           string      `json:"searchValue"`
+	SearchMode            int         `json:"searchMode"`
+	AdvancedSearchEnabled bool        `json:"advancedSearchEnabled"`
+	SearchEnabled         bool        `json:"searchEnabled"`
+}

@@ -15,10 +15,10 @@ func getRequestListHandler(c *gin.Context) {
 	offsetQuery := c.DefaultQuery("offset", "0")
 	offset, _ := strconv.ParseInt(offsetQuery, 10, 32)
 
-	variables := gin.H{
-		"applicationName": Config.ApplicationName,
-		"entriesPerPage":  Config.GoScopeEntriesPerPage,
-		"data":            repository.FetchRequestList(DB, Config.ApplicationID, Config.GoScopeEntriesPerPage, int(offset)),
+	variables := PageStateData{
+		ApplicationName: Config.ApplicationName,
+		EntriesPerPage:  Config.GoScopeEntriesPerPage,
+		Data:            repository.FetchRequestList(DB, Config.ApplicationID, Config.GoScopeEntriesPerPage, int(offset)),
 	}
 
 	c.Header("Access-Control-Allow-Origin", "*")
@@ -37,9 +37,9 @@ func showRequestDetailsHandler(c *gin.Context) {
 	requestDetails := repository.FetchDetailedRequest(DB, request.UID)
 	responseDetails := repository.FetchDetailedResponse(DB, request.UID)
 
-	variables := gin.H{
-		"applicationName": Config.ApplicationName,
-		"data": gin.H{
+	variables := PageStateData{
+		ApplicationName: Config.ApplicationName,
+		Data: gin.H{
 			"request":  requestDetails,
 			"response": responseDetails,
 		},
@@ -69,10 +69,10 @@ func searchRequestHandler(c *gin.Context) {
 		request.SearchType,
 	)
 
-	variables := gin.H{
-		"applicationName": Config.ApplicationName,
-		"entriesPerPage":  Config.GoScopeEntriesPerPage,
-		"data":            result,
+	variables := PageStateData{
+		ApplicationName: Config.ApplicationName,
+		EntriesPerPage:  Config.GoScopeEntriesPerPage,
+		Data:            result,
 	}
 
 	c.Header("Access-Control-Allow-Origin", "*")

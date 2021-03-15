@@ -20,6 +20,11 @@ const navigateToSearch = (searchWord, searchMode) => {
     window.location = `${window.location.protocol}//${window.location.host}${window.location.pathname}?${urlParams.toString()}`.toString()
 };
 
+const toggleNavigationShow = () => {
+    document.getElementById('navbarBasicExample').classList.toggle('is-active')
+    document.getElementById('navbarBurger').classList.toggle('is-active')
+}
+
 const showLoadingSpinner = () => {
     let spinner = document.getElementById('loading-spinner')
     spinner.classList.toggle('is-hidden');
@@ -34,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const urlParams = new URLSearchParams(window.location.search);
 
     if (searchModeSelect) {
-        searchModeSelect.value = urlParams.get('search-mode') ?? 0
+        searchModeSelect.value = urlParams.get('search-mode') ?? 8
     }
 
     if (searchInput) {
@@ -45,12 +50,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 return;
             }
             showLoadingSpinner()
-            navigateToSearch(searchInput.value, searchModeSelect?.value ?? 0)
+            navigateToSearch(searchInput.value, searchModeSelect?.value ?? 8)
         });
 
         searchButtonSubmit.addEventListener('click', () => {
             showLoadingSpinner()
-            navigateToSearch(searchInput.value, searchModeSelect?.value ?? 0)
+            navigateToSearch(searchInput.value, searchModeSelect?.value ?? 8)
         })
     }
 })

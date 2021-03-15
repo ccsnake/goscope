@@ -122,10 +122,14 @@
   
 ### POST /goscope/api/search/requests?offset=0
 
+To learn more about the search types look in [the correct enum](internal/repository/Types.go)
+
 Request Body:
+
 ```json
 {
-  "query": "test"
+  "query": "test",
+  "searchType": "0"
 }
 ```
 Response Body:

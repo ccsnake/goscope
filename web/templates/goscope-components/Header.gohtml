@@ -4,8 +4,8 @@
             <div class="navbar-brand">
                 <a
                     class="navbar-item has-text-weight-bold"
-                    href="{{ .baseURL }}/"
-                    >{{ .applicationName }}</a
+                    href="{{ .BaseURL }}/"
+                    >{{ .ApplicationName }}</a
                 >
                 <a
                     id="navbarBurger"
@@ -13,7 +13,7 @@
                     class="navbar-burger"
                     aria-label="menu"
                     aria-expanded="false"
-                    onclick="document.getElementById('navbarBasicExample').classList.toggle('is-active');document.getElementById('navbarBurger').classList.toggle('is-active')"
+                    onclick="toggleNavigationShow()"
                 >
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
@@ -22,16 +22,16 @@
             </div>
             <div id="navbarBasicExample" class="navbar-menu">
                 <div class="navbar-start has-text-weight-bold">
-                    <a class="navbar-item" href="{{ .baseURL }}/">Requests</a>
-                    <a class="navbar-item" href="{{ .baseURL }}/logs">Logs</a>
-                    <a class="navbar-item" href="{{ .baseURL }}/info">System</a>
+                    <a class="navbar-item" href="{{ .BaseURL }}/">Requests</a>
+                    <a class="navbar-item" href="{{ .BaseURL }}/logs">Logs</a>
+                    <a class="navbar-item" href="{{ .BaseURL }}/info">System</a>
                 </div>
             </div>
-            {{ if $.searchEnabled }}
+            {{ if $.SearchEnabled }}
                 <div class="navbar-end">
                     <div class="navbar-item">
                         <div class="field is-grouped p-3">
-                            {{ if $.advancedSearchEnabled }}
+                            {{ if $.AdvancedSearchEnabled }}
                                 <label>
                                     <select
                                         id="search-mode-select"
