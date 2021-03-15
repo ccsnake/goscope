@@ -56,23 +56,14 @@ func queryGetRequests(db *sql.DB, appID string, entriesPerPage, offset int) (*sq
 	)
 }
 
-func querySearchRequests(db *sql.DB, appID string, entriesPerPage int, search string, //nolint:funlen
-	offset int) (*sql.Rows, error) {
+func querySearchRequests(db *sql.DB, appID string, entriesPerPage int, search string, offset int) (*sql.Rows, error) {
 	if search == "" {
 		return nil, sql.ErrNoRows
 	}
 
-	var query string
+	searchWildcard := fmt.Sprintf("%%%s%%", search)
 
-	var searchQuery string
-
-	var searchQueryCols [][2]string
-
-	var searchWildcard string
-
-	searchWildcard = fmt.Sprintf("%%%s%%", search)
-
-	searchQueryCols = [][2]string{
+	searchQueryCols := [][2]string{
 		{"requests", "uid"},
 		{"requests", "application"},
 		{"requests", "client_ip"},
@@ -96,6 +87,8 @@ func querySearchRequests(db *sql.DB, appID string, entriesPerPage int, search st
 		{"responses", "time"},
 	}
 
+	var searchQuery string
+
 	searchQuery += "AND ("
 
 	for i := range searchQueryCols {
@@ -108,7 +101,8 @@ func querySearchRequests(db *sql.DB, appID string, entriesPerPage int, search st
 
 	searchQuery += ") "
 
-	query = fmt.Sprintf(`
+	// nolint:gosec
+	query := fmt.Sprintf(`
 		SELECT requests.uid, requests.method, requests.path, requests.time, responses.status
 		FROM requests
 		INNER JOIN responses ON requests.uid = responses.request_uid
@@ -117,7 +111,7 @@ func querySearchRequests(db *sql.DB, appID string, entriesPerPage int, search st
 		ORDER BY requests.time DESC LIMIT ? OFFSET ?;
 	`, searchQuery)
 
-	var args []interface{}
+	var args []interface{} //nolint:prealloc
 	args = append(args, appID)
 
 	for range searchQueryCols {
