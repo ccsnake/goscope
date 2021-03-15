@@ -103,6 +103,7 @@ func PrepareMiddleware(d *InitData) {
 				return
 			}
 
+			c.Header("Content-Type", "text/css; charset=utf-8")
 			c.String(http.StatusOK, string(file))
 		})
 
@@ -121,6 +122,7 @@ func PrepareMiddleware(d *InitData) {
 				return
 			}
 
+			c.Header("Content-Type", "application/javascript; charset=utf-8")
 			c.String(http.StatusOK, string(file))
 		})
 	}
