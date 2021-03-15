@@ -14,6 +14,9 @@ func requestListPageHandler(c *gin.Context) {
 	offsetQuery := c.DefaultQuery("offset", "0")
 	offset, _ := strconv.ParseInt(offsetQuery, 10, 32)
 
+	searchTypeQuery := c.DefaultQuery("search-mode", "1")
+	searchType, _ := strconv.ParseInt(searchTypeQuery, 10, 32)
+
 	searchValue := c.Query("search")
 
 	if searchValue != "" {
@@ -26,6 +29,7 @@ func requestListPageHandler(c *gin.Context) {
 				Config.GoScopeEntriesPerPage,
 				searchValue,
 				int(offset),
+				int(searchType),
 			),
 			"baseURL":     Config.BaseURL,
 			"offset":      int(offset),

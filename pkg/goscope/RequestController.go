@@ -66,6 +66,7 @@ func searchRequestHandler(c *gin.Context) {
 		Config.GoScopeEntriesPerPage,
 		request.Query,
 		int(offset),
+		request.SearchType,
 	)
 
 	variables := gin.H{

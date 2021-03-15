@@ -56,34 +56,81 @@ func queryGetRequests(db *sql.DB, appID string, entriesPerPage, offset int) (*sq
 	)
 }
 
-func querySearchRequests(db *sql.DB, appID string, entriesPerPage int, search string, offset int) (*sql.Rows, error) {
-	if search == "" {
-		return nil, sql.ErrNoRows
+func buildSearchQueryFromType(searchType int) (query string, args [][2]string) {
+	searchQuery := "AND ("
+
+	var searchQueryCols [][2]string
+
+	switch searchType {
+	case ClientIPSearchFilter:
+		searchQueryCols = [][2]string{
+			{"requests", "client_ip"},
+			{"responses", "client_ip"},
+		}
+
+	case MethodSearchFilter:
+		searchQueryCols = [][2]string{
+			{"requests", "method"},
+		}
+
+	case URLPathSearchFilter:
+		searchQueryCols = [][2]string{
+			{"requests", "path"},
+			{"requests", "url"},
+		}
+
+	case HostSearchFilter:
+		searchQueryCols = [][2]string{
+			{"requests", "host"},
+		}
+
+	case BodySearchFilter:
+		searchQueryCols = [][2]string{
+			{"requests", "body"},
+			{"responses", "body"},
+		}
+
+	case UserAgentSearchFilter:
+		searchQueryCols = [][2]string{
+			{"requests", "user_agent"},
+		}
+
+	case TimeSearchFilter:
+		searchQueryCols = [][2]string{
+			{"requests", "time"},
+			{"responses", "time"},
+		}
+
+	case StatusSearchFilter:
+		searchQueryCols = [][2]string{
+			{"responses", "status"},
+		}
+
+	case HeadersSearchFilter:
+		searchQueryCols = [][2]string{
+			{"requests", "headers"},
+			{"responses", "headers"},
+		}
+
+	default:
+		searchQueryCols = [][2]string{
+			{"requests", "client_ip"},
+			{"requests", "method"},
+			{"requests", "headers"},
+			{"requests", "path"},
+			{"requests", "url"},
+			{"requests", "host"},
+			{"requests", "body"},
+			{"requests", "user_agent"},
+			{"requests", "time"},
+			{"responses", "client_ip"},
+			{"responses", "status"},
+			{"responses", "body"},
+			{"responses", "path"},
+			{"responses", "headers"},
+			{"responses", "time"},
+		}
 	}
-
-	searchWildcard := fmt.Sprintf("%%%s%%", search)
-
-	searchQueryCols := [][2]string{
-		{"requests", "client_ip"},
-		{"requests", "method"},
-		{"requests", "headers"},
-		{"requests", "path"},
-		{"requests", "url"},
-		{"requests", "host"},
-		{"requests", "body"},
-		{"requests", "user_agent"},
-		{"requests", "time"},
-		{"responses", "client_ip"},
-		{"responses", "status"},
-		{"responses", "body"},
-		{"responses", "path"},
-		{"responses", "headers"},
-		{"responses", "time"},
-	}
-
-	var searchQuery string
-
-	searchQuery += "AND ("
 
 	for i := range searchQueryCols {
 		if i != 0 {
@@ -94,6 +141,18 @@ func querySearchRequests(db *sql.DB, appID string, entriesPerPage int, search st
 	}
 
 	searchQuery += ") "
+
+	return searchQuery, searchQueryCols
+}
+
+func querySearchRequests(db *sql.DB, appID string, entriesPerPage int, search string, offset, searchType int) (*sql.Rows, error) {
+	if search == "" {
+		return nil, sql.ErrNoRows
+	}
+
+	searchWildcard := fmt.Sprintf("%%%s%%", search)
+
+	searchQuery, searchQueryCols := buildSearchQueryFromType(searchType)
 
 	// nolint:gosec
 	query := fmt.Sprintf(`

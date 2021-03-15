@@ -4,8 +4,6 @@ import (
 	"bytes"
 	"io"
 
-	"github.com/averageflow/goscope/v3/internal/repository"
-
 	"github.com/gin-gonic/gin"
 )
 
@@ -111,19 +109,6 @@ type InitData struct {
 }
 
 type SearchRequestPayload struct {
-	Query  string                   `json:"query"`
-	Filter repository.RequestFilter `json:"filter"`
+	Query      string `json:"query"`
+	SearchType int    `json:"searchType"`
 }
-
-const (
-	RegularSearchFilter   = 1
-	ClientIPSearchFilter  = 2
-	MethodSearchFilter    = 3
-	URLPathSearchFilter   = 4
-	HostSearchFilter      = 5
-	BodySearchFilter      = 6
-	UserAgentSearchFilter = 7
-	TimeSearchFilter      = 8
-	StatusSearchFilter    = 9
-	HeadersSearchFilter   = 10
-)
