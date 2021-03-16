@@ -12,7 +12,7 @@
             </button></a
         >
         <div class="mt-4 columns">
-            <section class="column">
+            <div class="column is-half">
                 <h3 class="title is-3">Request details</h3>
                 {{ if FieldHasContent .Data.request.ClientIP }}
                     <div class="m-4">
@@ -113,9 +113,9 @@
                         </details>
                     </div>
                 {{ end }}
-            </section>
+            </div>
 
-            <section class="column">
+            <div class="column">
                 <h3 class="title is-3">Response details</h3>
                 {{ if FieldHasContent .Data.response.ClientIP }}
                     <div class="m-4">
@@ -171,7 +171,7 @@
                         </p>
                     </div>
                 {{ end }}
-            </section>
+            </div>
         </div>
         {{ if FieldHasContent .Data.response.Body }}
             <div class="m-4">

@@ -1,188 +1,199 @@
 .input {
     border: none;
     background: #dbdbdb;
-}
+    }
 
 .is-family-monospace {
     font-family: 'Lucida Console', Menlo, 'JetBrains Mono', 'Ubuntu Mono', monospace, 'Consolas' !important;
-}
+    }
 
 code {
     font-family: 'Lucida Console', Menlo, 'JetBrains Mono', 'Ubuntu Mono', monospace, 'Consolas' !important;
-}
+    }
 
 pre {
     font-family: 'Lucida Console', Menlo, 'JetBrains Mono', 'Ubuntu Mono', monospace, 'Consolas' !important;
-}
+    }
 
 .badge-success {
     padding: 4px;
     border-radius: 4px;
     color: #fff;
     background-color: #1f9d55;
-}
+    }
 
 .badge-info {
     padding: 4px;
     border-radius: 4px;
     color: #fff;
     background-color: #1c3d5a;
-}
+    }
 
 .badge-turq {
     padding: 4px;
     border-radius: 4px;
     color: #fff;
     background-color: #503194;
-}
+    }
 
 .badge-secondary {
     border-radius: 4px;
     padding: 4px;
     color: #fff;
     background-color: #494444;
-}
+    }
 
 .badge-danger {
     border-radius: 4px;
     padding: 4px;
     color: #fff;
     background-color: #621b18;
-}
+    }
 
 .badge-warning {
     border-radius: 4px;
     padding: 4px;
     color: #fff;
     background-color: #684f1d;
-}
-
+    }
+.custom-select {
+    min-width: 10rem;
+    }
 .select {
     background-color: #363636;
     border-color: transparent;
     color: #fff;
-}
-
+    }
 
 html {
     background-color: #1f1f1f;
     color: #f1f1f1;
-}
+    }
 
 .navbar-menu {
     background: transparent;
-}
+    }
 
 .navbar-burger {
     color: #52caf9;
-}
+    }
 
 body {
     background-color: #1f1f1f;
     color: #f1f1f1;
-}
+    }
 
 .navbar {
     background-color: #1f1f1f;
     color: #f1f1f1;
-}
+    height: 4rem;
+    align-items: center;
+    }
 
 .navbar-item {
     color: #52caf9;
-}
+    font-size: 1.5rem;
+    }
 
 a.navbar-item:focus-within, a.navbar-item:hover {
     background-color: transparent;
     color: #3273dc;
-}
+    }
 
 .pw-header {
     background-color: #1f1f1f;
-}
+    }
 
 .title {
     color: #52caf9;
-}
+    }
 
 a {
     color: #52caf9;
-}
+    }
 
 .box {
     background-color: #1a1a1a;
     color: #f1f1f1;
-}
+    }
 
 pre {
     color: #f5f5f5;
     background-color: #1f1f1f;
-}
+    }
 
 code {
     background-color: #1d1d1d;
     color: #fff;
-}
+    }
 
 .table {
     color: #fff;
     background-color: transparent;
-}
+    width: 100%;
+    }
 
 .table td, .table th {
     /* border-color: transparent;*/
     border-color: #111;
-}
+
+    }
 
 .table th {
     color: #fff;
-}
+    }
 
 .table thead td, .table thead th {
     color: #fff;
-}
+    }
+.table tbody tr td{
+    color: #fff;
+    height: 3rem;
+    vertical-align: inherit;
+    }
 
 strong {
     color: #fff;
-}
+    }
 
 a:hover {
     color: #fff;
-}
+    }
 
 .input {
     background-color: #111;
     color: #fff;
     border: none;
-}
+    }
 
 .placeholder {
     color: #aaa;
-}
+    }
 
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
     color: #aaa;
     opacity: 1; /* Firefox */
-}
+    }
 
 :-ms-input-placeholder { /* Internet Explorer 10-11 */
     color: #aaa;
-}
+    }
 
 ::-ms-input-placeholder { /* Microsoft Edge */
     color: #aaa;
-}
+    }
 
 tr {
     background-color: #111;
-}
+    }
 tr:nth-child(even) {
-background-color: #1d1d1d;
-}
+    background-color: #1d1d1d;
+    }
 
 .dark-card {
     background-color: #111;
     border-radius: 8px;
-}
+    }
 .is-dark {
     background-color: #1a1a1a !important;
-}
+    }
