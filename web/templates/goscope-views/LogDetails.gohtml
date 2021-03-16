@@ -2,7 +2,15 @@
     {{ template "goscope-components/Head.gohtml" . }}
     {{ template "goscope-components/Header.gohtml" . }}
     <div class="container section">
-        <a href="{{ $.BaseURL }}/logs">← Back</a>
+        <a
+            class="has-text-weight-bold p-4 is-family-monospace"
+            href="{{ $.BaseURL }}/logs"
+            ><button
+                class="has-text-weight-bold button is-dark is-family-monospace"
+            >
+                ← Back
+            </button></a
+        >
         <section class="mt-4">
             <h3 class="title is-3">Log details</h3>
             <div class="m-4">

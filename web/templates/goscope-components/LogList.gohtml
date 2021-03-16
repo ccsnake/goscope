@@ -3,18 +3,22 @@
         {{ if gt $.Offset 0 }}
             <a
                 onclick="showLoadingSpinner()"
-                class="has-text-weight-bold p-4"
+                class="has-text-weight-bold p-4 is-family-monospace"
                 href="{{ $.BaseURL }}/logs?offset={{ SubtractTillZero $.Offset 50 }}{{ if FieldHasContent $.SearchValue }}&search={{ $.SearchValue }}{{ end }}"
-                ><button class="has-text-weight-bold button is-dark">
+                ><button
+                    class="has-text-weight-bold button is-dark is-family-monospace"
+                >
                     ← prev
                 </button></a
             >
         {{ end }}
         <a
             onclick="showLoadingSpinner()"
-            class="has-text-weight-bold p-4"
+            class="has-text-weight-bold p-4 is-family-monospace"
             href="{{ $.BaseURL }}/logs?offset={{ Add $.Offset 50 }}{{ if FieldHasContent $.SearchValue }}&search={{ $.SearchValue }}{{ end }}"
-            ><button class="has-text-weight-bold button is-dark">
+            ><button
+                class="has-text-weight-bold button is-dark is-family-monospace"
+            >
                 next →
             </button></a
         >
@@ -46,8 +50,8 @@
                             </td>
                             <td>
                                 <a href="{{ $.BaseURL }}/logs/{{ .UID }}"
-                                    >View</a
-                                >
+                                    ><i data-feather="eye"></i
+                                ></a>
                             </td>
                         </tr>
                         {{ else }}

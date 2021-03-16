@@ -3,18 +3,22 @@
         {{ if gt $.Offset 0 }}
             <a
                 onclick="showLoadingSpinner()"
-                class="has-text-weight-bold p-4"
+                class="has-text-weight-bold p-4 is-family-monospace"
                 href="{{ $.BaseURL }}/requests?offset={{ SubtractTillZero $.Offset 50 }}{{ if FieldHasContent $.SearchValue }}&search-mode={{ $.SearchMode }}&search={{ $.SearchValue }}{{ end }}"
-                ><button class="has-text-weight-bold button is-dark">
+                ><button
+                    class="has-text-weight-bold button is-dark is-family-monospace"
+                >
                     ← prev
                 </button></a
             >
         {{ end }}
         <a
             onclick="showLoadingSpinner()"
-            class="has-text-weight-bold p-4"
+            class="has-text-weight-bold p-4 is-family-monospace"
             href="{{ $.BaseURL }}/requests?offset={{ Add $.Offset 50 }}{{ if FieldHasContent $.SearchValue }}&search-mode={{ $.SearchMode }}&search={{ $.SearchValue }}{{ end }}"
-            ><button class="has-text-weight-bold button is-dark">
+            ><button
+                class="has-text-weight-bold button is-dark is-family-monospace"
+            >
                 next →
             </button></a
         >
@@ -38,7 +42,7 @@
                             <td>
                                 <p
                                     class="
-                                    has-text-centered has-text-weight-bold
+                                    has-text-centered has-text-weight-bold is-family-monospace
                                 {{ if eq .ResponseStatus 200 }}badge-success{{ end }}
                                 {{ if eq .ResponseStatus 201 }}badge-success{{ end }}
                                 {{ if eq .ResponseStatus 202 }}badge-success{{ end }}
@@ -69,7 +73,11 @@
                                     {{ .ResponseStatus }}
                                 </p>
                             </td>
-                            <td class="has-text-weight-bold">{{ .Method }}</td>
+                            <td
+                                class="has-text-weight-bold is-family-monospace"
+                            >
+                                {{ .Method }}
+                            </td>
                             <td class="is-family-monospace">{{ .Path }}</td>
                             <td>
                                 <small
@@ -82,8 +90,8 @@
                             </td>
                             <td>
                                 <a href="{{ $.BaseURL }}/requests/{{ .UID }}"
-                                    >View</a
-                                >
+                                    ><i data-feather="eye"></i
+                                ></a>
                             </td>
                         </tr>
                         {{ else }}

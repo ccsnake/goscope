@@ -31,6 +31,7 @@ const showLoadingSpinner = () => {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+    feather.replace()
     let searchInput = document.getElementById('search-input')
     let searchModeSelect = document.getElementById('search-mode-select')
     let searchButtonSubmit = document.getElementById('search-input-submit')
