@@ -43,7 +43,7 @@
             {{ range .Data }}
                 <tr>
                     <td>
-                        <p
+                        <span
                                 class="
                                     has-text-centered has-text-weight-bold is-family-monospace
                                 {{ if eq .ResponseStatus 200 }}badge-success{{ end }}
@@ -74,7 +74,7 @@
                                     "
                         >
                             {{ .ResponseStatus }}
-                        </p>
+                        </span>
                     </td>
                     <td
                             class="has-text-weight-bold is-family-monospace"
