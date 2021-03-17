@@ -1,6 +1,6 @@
 /* || General styles */
 html, body {
-    background-color: #1D1D1D;
+    background-color: #020202;
     color: #f1f1f1;
     }
 
@@ -8,7 +8,7 @@ strong {
     color: #fff;
     }
 a {
-    color: #52caf9;
+    color: #2292A4;
     }
 
 a:hover {
@@ -22,7 +22,7 @@ pre {
 
 code {
     background-color: #1d1d1d;
-    color: white;
+    color: #DCE1E9;
     }
 /*section {*/
 /*    white-space: pre-line;*/
@@ -31,40 +31,40 @@ code {
 /* || Header and Main Navigation */
 
 .pw-header {
-    background-color: #1D1D1D;
+    background-color: #020202;
     }
 
 .navbar-menu {
-    background: #1D1D1D;
+    background: #020202;
     }
 
 .navbar-burger {
-    color: #52caf9;
+    color: #2292A4;
     }
 
 .navbar {
-    background-color: #1D1D1D;
-    color: #f1f1f1;
+    background-color: #020202;
+    color: #22a474;
     height: 4rem;
     align-items: center;
     }
 
 .navbar-item {
-    color: white;
+    color: #22a474;
     font-size: 1.5rem;
     }
 
 a.navbar-item:focus-within, a.navbar-item:hover {
     background-color: transparent;
-    color: white;
-    border-bottom: 2px solid white;
+    color: #22a474;
+    border-bottom: 2px solid #2292A4;
     }
 
 .custom-select {
     min-width: 10rem;
     }
 .select {
-    background-color: #363636;
+    background-color: #020202;
     border-color: transparent;
     color: #fff;
     }
@@ -95,6 +95,13 @@ a.navbar-item:focus-within, a.navbar-item:hover {
     }
 
 /*|| Table*/
+.system-page dt {
+    font-weight: bold;
+    text-transform: uppercase;
+    }
+.system-page dd {
+    margin: 8px;
+    }
 
 .table {
     /*display: table;*/
@@ -131,9 +138,8 @@ tr:nth-child(even) {
     background-color: #1d1d1d;
     }
 
-
 .title {
-    color: #52caf9;
+    color: #2292A4;
     }
 /*|| Badge*/
 
@@ -149,14 +155,14 @@ tr:nth-child(even) {
     padding: 4px;
     border-radius: 4px;
     color: #fff;
-    background-color: #1f9d55;
+    background-color: #22a474;
     }
 
 .badge-info {
     padding: 4px;
     border-radius: 4px;
     color: #fff;
-    background-color: #1c3d5a;
+    background-color: #2292A4;
     }
 
 .badge-turq {
@@ -177,14 +183,14 @@ tr:nth-child(even) {
     border-radius: 4px;
     padding: 4px;
     color: #fff;
-    background-color: #621b18;
+    background-color: #a43322;
     }
 
 .badge-warning {
     border-radius: 4px;
     padding: 4px;
     color: #fff;
-    background-color: #684f1d;
+    background-color: #a47422;
     }
 
 .dark-card {
