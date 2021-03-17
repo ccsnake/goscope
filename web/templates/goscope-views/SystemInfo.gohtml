@@ -1,131 +1,129 @@
 {{ define "goscope-views/SystemInfo.gohtml" }}
     {{ template "goscope-components/Head.gohtml" . }}
     {{ template "goscope-components/Header.gohtml" . }}
-    <div class="container section">
-        <section>
-            <div class="columns mb-6">
-                <div class="column is-full p-4 dark-card">
-                    <h5 class="title is-5">Environment</h5>
-                    <details>
-                        <summary>Click to view variables...</summary>
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Variable</th>
-                                    <th>Value</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {{ range $i, $value :=  .Data.Environment }}
-                                    <tr>
-                                        <td>
-                                            <p class="is-family-monospace">
-                                                {{ $i }}
-                                            </p>
-                                        </td>
-                                        <td>
-                                            <p class="is-family-monospace">
-                                                {{ $value }}
-                                            </p>
-                                        </td>
-                                    </tr>
-                                {{ end }}
-                            </tbody>
-                        </table>
-                    </details>
-                </div>
+    <div class="container section ">
+        <div class="columns mb-6">
+            <div class="column is-full p-4 dark-card">
+                <h5 class="title is-5">Environment</h5>
+                <details class="container">
+                    <summary>Click to view variables...</summary>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Variable</th>
+                            <th>Value</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {{ range $i, $value :=  .Data.Environment }}
+                            <tr>
+                                <td>
+                                    <p>
+                                        {{ $i }}
+                                    </p>
+                                </td>
+                                <td>
+                                    <p>
+                                        {{ $value }}
+                                    </p>
+                                </td>
+                            </tr>
+                        {{ end }}
+                        </tbody>
+                    </table>
+                </details>
             </div>
-
-            <div class="columns is-multiline">
-                <div class="column is-half dark-card p-4">
-                    <h5 class="title is-5">CPU</h5>
-                    <dl>
-                        <dt class="mt-3">Core Count</dt>
-                        <dd>
-                            <code>{{ .Data.CPU.CoreCount }}</code>
-                        </dd>
-                        <dt class="mt-3">Model</dt>
-                        <dd>
-                            <code>{{ .Data.CPU.ModelName }}</code>
-                        </dd>
-                    </dl>
-                </div>
-                <div class="column is-half dark-card p-4">
-                    <h5 class="title is-5">Memory</h5>
-                    <dl>
-                        <dt class="mt-3">Status</dt>
-                        <dd>
-                            <code
-                                >{{ .Data.Memory.Available }} available of
-                                {{ .Data.Memory.Total }}</code
-                            >
-                        </dd>
-                        <dt class="mt-3">Swap usage</dt>
-                        <dd>
-                            <code>{{ .Data.Memory.UsedSwap }}</code>
-                        </dd>
-                    </dl>
-                </div>
-                <div class="column is-half dark-card p-4">
-                    <h5 class="title is-5">Disk</h5>
-                    <dl>
-                        <dt class="mt-3">Free space</dt>
-                        <dd>
-                            <code>{{ .Data.Disk.FreeSpace }}</code>
-                        </dd>
-                        <dt class="mt-3">Partition type</dt>
-                        <dd>
-                            <code>{{ .Data.Disk.PartitionType }}</code>
-                        </dd>
-                        <dt class="mt-3">Mount Path</dt>
-                        <dd>
-                            <code>{{ .Data.Disk.MountPath }}</code>
-                        </dd>
-                        <dt class="mt-3">Total Space</dt>
-                        <dd>
-                            <code>{{ .Data.Disk.TotalSpace }}</code>
-                        </dd>
-                    </dl>
-                </div>
-                <div class="column is-half dark-card p-4">
-                    <h5 class="title is-5">Host</h5>
-                    <dl>
-                        <dt class="mt-3">Kernel Arch</dt>
-                        <dd>
-                            <code>{{ .Data.Host.KernelArch }}</code>
-                        </dd>
-                        <dt class="mt-3">Kernel Version</dt>
-                        <dd>
-                            <code>{{ .Data.Host.KernelVersion }}</code>
-                        </dd>
-                        <dt class="mt-3">Hostname</dt>
-                        <dd>
-                            <code>{{ .Data.Host.Hostname }}</code>
-                        </dd>
-                        <dt class="mt-3">Host OS</dt>
-                        <dd>
-                            <code>{{ .Data.Host.HostOS }}</code>
-                        </dd>
-                        <dt class="mt-3">Platform</dt>
-                        <dd>
-                            <code>{{ .Data.Host.HostPlatform }}</code>
-                        </dd>
-                        <dt class="mt-3">Uptime</dt>
-                        <dd>
-                            <code>{{ .Data.Host.Uptime }}</code>
-                        </dd>
-                    </dl>
-                </div>
+        </div>
+        <div class="columns is-multiline">
+            <div class="column is-half dark-card p-4">
+                <h5 class="title is-5">CPU</h5>
+                <dl>
+                    <dt class="mt-3">Core Count</dt>
+                    <dd>
+                        <code>{{ .Data.CPU.CoreCount }}</code>
+                    </dd>
+                    <dt class="mt-3">Model</dt>
+                    <dd>
+                        <code>{{ .Data.CPU.ModelName }}</code>
+                    </dd>
+                </dl>
             </div>
-        </section>
+            <div class="column is-half dark-card p-4">
+                <h5 class="title is-5">Memory</h5>
+                <dl>
+                    <dt class="mt-3">Status</dt>
+                    <dd>
+                        <code
+                        >{{ .Data.Memory.Available }} available of
+                            {{ .Data.Memory.Total }}</code
+                        >
+                    </dd>
+                    <dt class="mt-3">Swap usage</dt>
+                    <dd>
+                        <code>{{ .Data.Memory.UsedSwap }}</code>
+                    </dd>
+                </dl>
+            </div>
+            <div class="column is-half dark-card p-4">
+                <h5 class="title is-5">Disk</h5>
+                <dl>
+                    <dt class="mt-3">Free space</dt>
+                    <dd>
+                        <code>{{ .Data.Disk.FreeSpace }}</code>
+                    </dd>
+                    <dt class="mt-3">Partition type</dt>
+                    <dd>
+                        <code>{{ .Data.Disk.PartitionType }}</code>
+                    </dd>
+                    <dt class="mt-3">Mount Path</dt>
+                    <dd>
+                        <code>{{ .Data.Disk.MountPath }}</code>
+                    </dd>
+                    <dt class="mt-3">Total Space</dt>
+                    <dd>
+                        <code>{{ .Data.Disk.TotalSpace }}</code>
+                    </dd>
+                </dl>
+            </div>
+            <div class="column is-half dark-card p-4">
+                <h5 class="title is-5">Host</h5>
+                <dl>
+                    <dt class="mt-3">Kernel Arch</dt>
+                    <dd>
+                        <code>{{ .Data.Host.KernelArch }}</code>
+                    </dd>
+                    <dt class="mt-3">Kernel Version</dt>
+                    <dd>
+                        <code>{{ .Data.Host.KernelVersion }}</code>
+                    </dd>
+                    <dt class="mt-3">Hostname</dt>
+                    <dd>
+                        <code>{{ .Data.Host.Hostname }}</code>
+                    </dd>
+                    <dt class="mt-3">Host OS</dt>
+                    <dd>
+                        <code>{{ .Data.Host.HostOS }}</code>
+                    </dd>
+                    <dt class="mt-3">Platform</dt>
+                    <dd>
+                        <code>{{ .Data.Host.HostPlatform }}</code>
+                    </dd>
+                    <dt class="mt-3">Uptime</dt>
+                    <dd>
+                        <code>{{ .Data.Host.Uptime }}</code>
+                    </dd>
+                </dl>
+            </div>
+        </div>
     </div>
     <footer class="container section has-text-centered">
         GoScope is on
         <a
-            target="_blank"
-            rel="noopener noreferrer"
-            href="https://github.com/averageflow/goscope"
-            >GitHub</a
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://github.com/averageflow/goscope"
+        >GitHub
+        </a
         >
         with MIT License.
     </footer>

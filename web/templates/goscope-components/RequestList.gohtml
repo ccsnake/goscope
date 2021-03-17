@@ -3,11 +3,11 @@
         {{ if gt $.Offset 0 }}
             <a
                     onclick="showLoadingSpinner()"
-                    class="has-text-weight-bold p-4 is-family-monospace"
+                    class="has-text-weight-bold p-4"
                     href="{{ $.BaseURL }}/requests?offset={{ SubtractTillZero $.Offset 50 }}{{ if FieldHasContent $.SearchValue }}&search-mode={{ $.SearchMode }}&search={{ $.SearchValue }}{{ end }}"
             >
                 <button
-                        class="has-text-weight-bold button is-dark is-family-monospace"
+                        class="has-text-weight-bold button is-dark"
                 >
                     ← prev
                 </button>
@@ -16,36 +16,37 @@
         {{ end }}
         <a
                 onclick="showLoadingSpinner()"
-                class="has-text-weight-bold p-4 is-family-monospace"
+                class="has-text-weight-bold p-4"
                 href="{{ $.BaseURL }}/requests?offset={{ Add $.Offset 50 }}{{ if FieldHasContent $.SearchValue }}&search-mode={{ $.SearchMode }}&search={{ $.SearchValue }}{{ end }}"
         >
             <button
-                    class="has-text-weight-bold button is-dark is-family-monospace"
+                    class="has-text-weight-bold button is-dark"
             >
                 next →
             </button>
         </a
         >
     </section>
-    <section >
-        <table class="table">
-            <thead>
-            <tr>
-                <th>Status</th>
-                <th>Method</th>
-                <th>Path</th>
-                <th>Happened</th>
-                <th>Date</th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            {{ range .Data }}
-                <tr>
-                    <td>
+    <section>
+        <div class="table-container">
+            <table class="table is-fullwidth">
+                <thead>
+                <tr class="has-text-left">
+                    <th>Status</th>
+                    <th>Method</th>
+                    <th colspan="4">Path</th>
+                    <th colspan="2">Happened</th>
+                    <th colspan="3">Date</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {{ range .Data }}
+                    <tr class="has-text-left ">
+                        <td>
                         <span
                                 class="
-                                    has-text-centered has-text-weight-bold is-family-monospace
+                                 has-text-weight-bold
                                 {{ if eq .ResponseStatus 200 }}badge-success{{ end }}
                                 {{ if eq .ResponseStatus 201 }}badge-success{{ end }}
                                 {{ if eq .ResponseStatus 202 }}badge-success{{ end }}
@@ -75,39 +76,43 @@
                         >
                             {{ .ResponseStatus }}
                         </span>
-                    </td>
-                    <td
-                            class="has-text-weight-bold is-family-monospace"
-                    >
+                        </td>
+                        <td
+                                class="has-text-weight-bold"
+                        >
+                        <span class="method-badge">
+
                         {{ .Method }}
-                    </td>
-                    <td class="is-family-monospace">{{ .Path }}</td>
-                    <td>
-                        <small
-                        >{{ EpochToTimeAgoHappened .Time }}
-                            ago
-                        </small
-                        >
-                    </td>
-                    <td>
-                        <small>{{ EpochToHumanReadable .Time }}</small>
-                    </td>
-                    <td>
-                        <a href="{{ $.BaseURL }}/requests/{{ .UID }}"
-                        >
-                            <i data-feather="eye"></i
+                        </span>
+                        </td>
+                        <td colspan="4">{{ .Path }}</td>
+                        <td colspan="2">
+                            <small
+                            >{{ EpochToTimeAgoHappened .Time }}
+                                ago
+                            </small
                             >
-                        </a>
-                    </td>
-                </tr>
-            {{ else }}
-                <tr>
-                    <td>
-                        <h2 class="p-6 title is-2">No results found</h2>
-                    </td>
-                </tr>
-            {{ end }}
-            </tbody>
-        </table>
+                        </td>
+                        <td colspan="3">
+                            <small>{{ EpochToHumanReadable .Time }}</small>
+                        </td>
+                        <td class="has-text-centered">
+                            <a href="{{ $.BaseURL }}/requests/{{ .UID }}"
+                            >
+                                <i data-feather="eye"></i
+                                >
+                            </a>
+                        </td>
+                    </tr>
+                {{ else }}
+                    <tr>
+                        <td>
+                            <h2 class="p-6 title is-2">No results found</h2>
+                        </td>
+                    </tr>
+                {{ end }}
+                </tbody>
+            </table>
+        </div>
     </section>
 {{ end }}

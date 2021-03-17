@@ -3,13 +3,15 @@
     {{ template "goscope-components/Header.gohtml" . }}
     <div class="container section">
         <a
-            class="has-text-weight-bold p-4 is-family-monospace"
-            href="{{ $.BaseURL }}/logs"
-            ><button
-                class="has-text-weight-bold button is-dark is-family-monospace"
+                class="has-text-weight-bold p-4"
+                href="{{ $.BaseURL }}/logs"
+        >
+            <button
+                    class="has-text-weight-bold button is-dark"
             >
                 ← Back
-            </button></a
+            </button>
+        </a
         >
         <section class="mt-4">
             <h3 class="title is-3">Log details</h3>

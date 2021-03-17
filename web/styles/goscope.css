@@ -1,10 +1,6 @@
 /* || General styles */
-html {
-    background-color: #161F27;
-    color: #f1f1f1;
-    }
-body {
-    background-color: #161F27;
+html, body {
+    background-color: #1D1D1D;
     color: #f1f1f1;
     }
 
@@ -22,30 +18,24 @@ a:hover {
 pre {
     color: #f5f5f5;
     background-color: #1f1f1f;
-
-    }
-.is-family-monospace {
-    font-family: 'Lucida Console', Menlo, 'JetBrains Mono', 'Ubuntu Mono', monospace, 'Consolas' !important;
     }
 
 code {
     background-color: #1d1d1d;
-    color: #fff;
-    font-family: 'Lucida Console', Menlo, 'JetBrains Mono', 'Ubuntu Mono', monospace, 'Consolas' !important;
+    color: white;
     }
+/*section {*/
+/*    white-space: pre-line;*/
+/*    }*/
 
 /* || Header and Main Navigation */
 
 .pw-header {
-    background-color: #161F27;
-    }
-
-.title {
-    color: #52caf9;
+    background-color: #1D1D1D;
     }
 
 .navbar-menu {
-    background: #202B38;
+    background: #1D1D1D;
     }
 
 .navbar-burger {
@@ -53,20 +43,21 @@ code {
     }
 
 .navbar {
-    background-color: #1f1f1f;
+    background-color: #1D1D1D;
     color: #f1f1f1;
     height: 4rem;
     align-items: center;
     }
 
 .navbar-item {
-    color: #52caf9;
+    color: white;
     font-size: 1.5rem;
     }
 
 a.navbar-item:focus-within, a.navbar-item:hover {
     background-color: transparent;
-    color: #3273dc;
+    color: white;
+    border-bottom: 2px solid white;
     }
 
 .custom-select {
@@ -84,34 +75,40 @@ a.navbar-item:focus-within, a.navbar-item:hover {
     color: #fff;
     }
 .placeholder {
-    color: #aaa;
+    color: #fff;
+    background-color: #111;
     }
 
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: #aaa;
-    opacity: 1; /* Firefox */
+    color: #fff;
+    background-color: #111; /* Firefox */
     }
 
 :-ms-input-placeholder { /* Internet Explorer 10-11 */
-    color: #aaa;
+    color: #fff;
+    background-color: #111;
     }
 
 ::-ms-input-placeholder { /* Microsoft Edge */
-    color: #aaa;
+    color: #fff;
+    background-color: #111;
     }
 
 /*|| Table*/
 
 .table {
+    /*display: table;*/
+    /*border-collapse: collapse;*/
     color: #fff;
     background-color: transparent;
+    table-layout: fixed;
     width: 100%;
     }
 
 .table td, .table th {
     /* border-color: transparent;*/
     border-color: #111;
-
+    word-wrap: break-word;
     }
 
 .table th {
@@ -126,11 +123,6 @@ a.navbar-item:focus-within, a.navbar-item:hover {
     height: 3rem;
     vertical-align: inherit;
     }
-.table tbody tr:hover {
-    border-left: 1px solid #52caf9;
-    border-right: 1px solid #52caf9;
-
-    }
 
 tr {
     background-color: #111;
@@ -139,7 +131,19 @@ tr:nth-child(even) {
     background-color: #1d1d1d;
     }
 
+
+.title {
+    color: #52caf9;
+    }
 /*|| Badge*/
+
+.method-badge {
+    padding: 4px;
+    border-radius: 4px;
+    color: #fff;
+    background-color: #494444;
+
+    }
 
 .badge-success {
     padding: 4px;
