@@ -151,6 +151,10 @@ code {
     height: 3rem;
     vertical-align: inherit;
     }
+.table tbody tr:hover{
+    border-left: 1px solid #52caf9;
+    border-right: 1px solid #52caf9;
+    }
 
 strong {
     color: #fff;
