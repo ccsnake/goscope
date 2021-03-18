@@ -30,6 +30,7 @@ func PrepareTemplateEngine(d *InitData) *template.Template {
 		"FieldHasContent": func(fieldContent string) bool {
 			return fieldContent != "" && strings.TrimSpace(fieldContent) != ""
 		},
+		"ResponseStatusColor": utils.ResponseStatusColor,
 	}
 
 	for i := range applicationFunctionMap {

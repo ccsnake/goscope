@@ -1,102 +1,59 @@
 {{ define "goscope-components/RequestList.gohtml" }}
-    <section class="has-text-centered mb-4">
-        {{ if gt $.Offset 0 }}
-            <a
-                onclick="showLoadingSpinner()"
-                class="has-text-weight-bold p-4 is-family-monospace"
-                href="{{ $.BaseURL }}/requests?offset={{ SubtractTillZero $.Offset 50 }}{{ if FieldHasContent $.SearchValue }}&search-mode={{ $.SearchMode }}&search={{ $.SearchValue }}{{ end }}"
-                ><button
-                    class="has-text-weight-bold button is-dark is-family-monospace"
-                >
-                    ← prev
-                </button></a
-            >
-        {{ end }}
-        <a
-            onclick="showLoadingSpinner()"
-            class="has-text-weight-bold p-4 is-family-monospace"
-            href="{{ $.BaseURL }}/requests?offset={{ Add $.Offset 50 }}{{ if FieldHasContent $.SearchValue }}&search-mode={{ $.SearchMode }}&search={{ $.SearchValue }}{{ end }}"
-            ><button
-                class="has-text-weight-bold button is-dark is-family-monospace"
-            >
-                next →
-            </button></a
-        >
-    </section>
-    <section class="columns">
-        <div class="column is-full">
-            <table class="table">
+    {{ template "goscope-components/PaginationRequest.gohtml" . }}
+    <section>
+        <div class="table-container">
+            <table class="table is-fullwidth">
                 <thead>
-                    <tr>
+                    <tr class="has-text-left">
                         <th>Status</th>
                         <th>Method</th>
-                        <th>Path</th>
-                        <th>Happened</th>
-                        <th>Date</th>
+                        <th colspan="4">Path</th>
+                        <th colspan="2">Happened</th>
+                        <th colspan="3">Date</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     {{ range .Data }}
-                        <tr>
+                        <tr class="has-text-left ">
                             <td>
-                                <p
-                                    class="
-                                    has-text-centered has-text-weight-bold is-family-monospace
-                                {{ if eq .ResponseStatus 200 }}badge-success{{ end }}
-                                {{ if eq .ResponseStatus 201 }}badge-success{{ end }}
-                                {{ if eq .ResponseStatus 202 }}badge-success{{ end }}
-                                {{ if eq .ResponseStatus 203 }}badge-success{{ end }}
-                                {{ if eq .ResponseStatus 204 }}badge-success{{ end }}
-                                {{ if eq .ResponseStatus 300 }}badge-info{{ end }}
-                                {{ if eq .ResponseStatus 301 }}badge-info{{ end }}
-                                {{ if eq .ResponseStatus 302 }}badge-info{{ end }}
-                                {{ if eq .ResponseStatus 303 }}badge-info{{ end }}
-                                {{ if eq .ResponseStatus 304 }}badge-info{{ end }}
-                                {{ if eq .ResponseStatus 305 }}badge-info{{ end }}
-                                {{ if eq .ResponseStatus 306 }}badge-info{{ end }}
-                                {{ if eq .ResponseStatus 307 }}badge-info{{ end }}
-                                {{ if eq .ResponseStatus 308 }}badge-info{{ end }}
-                                {{ if eq .ResponseStatus 400 }}badge-warning{{ end }}
-                                {{ if eq .ResponseStatus 401 }}badge-warning{{ end }}
-                                {{ if eq .ResponseStatus 402 }}badge-warning{{ end }}
-                                {{ if eq .ResponseStatus 403 }}badge-warning{{ end }}
-                                {{ if eq .ResponseStatus 404 }}badge-warning{{ end }}
-                                {{ if eq .ResponseStatus 418 }}badge-warning{{ end }}
-                                {{ if eq .ResponseStatus 422 }}badge-warning{{ end }}
-                                {{ if eq .ResponseStatus 500 }}badge-danger{{ end }}
-                                {{ if eq .ResponseStatus 501 }}badge-danger{{ end }}
-                                {{ if eq .ResponseStatus 502 }}badge-danger{{ end }}
-                                {{ if eq .ResponseStatus 503 }}badge-danger{{ end }}
-                                    "
+                                <span
+                                    class="has-text-weight-bold {{ ResponseStatusColor .ResponseStatus }}"
                                 >
                                     {{ .ResponseStatus }}
-                                </p>
+                                </span>
+                            </td>
+                            <td class="has-text-weight-bold">
+                                <span class="method-badge">
+                                    {{ .Method }}
+                                </span>
                             </td>
                             <td
-                                class="has-text-weight-bold is-family-monospace"
+                                colspan="4"
+                                class="is-family-monospace is-size-5"
                             >
-                                {{ .Method }}
+                                {{ .Path }}
                             </td>
-                            <td class="is-family-monospace">{{ .Path }}</td>
-                            <td>
+                            <td colspan="2" class="is-family-code is-size-5">
                                 <small
-                                    >{{ EpochToTimeAgoHappened .Time }}
-                                    ago</small
-                                >
+                                    >{{ EpochToTimeAgoHappened .Time }} ago
+                                </small>
                             </td>
-                            <td>
+                            <td
+                                colspan="3"
+                                class="is-family-monospace is-size-5"
+                            >
                                 <small>{{ EpochToHumanReadable .Time }}</small>
                             </td>
-                            <td>
-                                <a href="{{ $.BaseURL }}/requests/{{ .UID }}"
-                                    ><i data-feather="eye"></i
-                                ></a>
+                            <td class="has-text-centered">
+                                <a href="{{ $.BaseURL }}/requests/{{ .UID }}">
+                                    <i data-feather="eye"></i>
+                                </a>
                             </td>
                         </tr>
                         {{ else }}
                         <tr>
-                            <td>
+                            <td colspan="12">
                                 <h2 class="p-6 title is-2">No results found</h2>
                             </td>
                         </tr>
@@ -105,4 +62,5 @@
             </table>
         </div>
     </section>
+    {{ template "goscope-components/PaginationRequest.gohtml" . }}
 {{ end }}

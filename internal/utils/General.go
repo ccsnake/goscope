@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"math"
+	"net/http"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -89,4 +91,72 @@ func EpochToTimeAgoHappened(epoch int) string {
 func EpochToHumanReadable(epoch int) string {
 	date := time.Unix(int64(epoch), 0)
 	return date.Format(time.RFC1123Z)
+}
+
+const (
+	successBadge = "badge-success"
+	infoBadge    = "badge-info"
+	warningBadge = "badge-warning"
+	dangerBadge  = "badge-danger"
+)
+
+// nolint:gocyclo // simple function returning css class
+func ResponseStatusColor(responseStatus interface{}) string {
+	response, err := strconv.ParseInt(fmt.Sprintf("%v", responseStatus), 10, 32)
+	if err != nil {
+		return "badge-info"
+	}
+
+	switch response {
+	case http.StatusOK:
+		return successBadge
+	case http.StatusCreated:
+		return successBadge
+	case http.StatusAccepted:
+		return successBadge
+	case http.StatusNonAuthoritativeInfo:
+		return successBadge
+	case http.StatusNoContent:
+		return successBadge
+	case http.StatusMultipleChoices:
+		return infoBadge
+	case http.StatusMovedPermanently:
+		return infoBadge
+	case http.StatusFound:
+		return infoBadge
+	case http.StatusSeeOther:
+		return infoBadge
+	case http.StatusNotModified:
+		return infoBadge
+	case http.StatusUseProxy:
+		return infoBadge
+	case http.StatusTemporaryRedirect:
+		return infoBadge
+	case http.StatusPermanentRedirect:
+		return infoBadge
+	case http.StatusBadRequest:
+		return warningBadge
+	case http.StatusUnauthorized:
+		return warningBadge
+	case http.StatusPaymentRequired:
+		return warningBadge
+	case http.StatusForbidden:
+		return warningBadge
+	case http.StatusNotFound:
+		return warningBadge
+	case http.StatusTeapot:
+		return warningBadge
+	case http.StatusUnprocessableEntity:
+		return warningBadge
+	case http.StatusInternalServerError:
+		return dangerBadge
+	case http.StatusNotImplemented:
+		return dangerBadge
+	case http.StatusBadGateway:
+		return dangerBadge
+	case http.StatusServiceUnavailable:
+		return dangerBadge
+	default:
+		return infoBadge
+	}
 }

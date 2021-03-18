@@ -1,0 +1,22 @@
+{{ define "goscope-components/PaginationRequest.gohtml" }}
+    <section class="has-text-centered my-4">
+        {{ if gt $.Offset 0 }}
+            <a
+                onclick="showLoadingSpinner()"
+                class="has-text-weight-bold p-4"
+                href="{{ $.BaseURL }}/requests?offset={{ SubtractTillZero $.Offset 50 }}{{ if FieldHasContent $.SearchValue }}&search-mode={{ $.SearchMode }}&search={{ $.SearchValue }}{{ end }}"
+            >
+                <button class="has-text-weight-bold button is-dark">
+                    ← prev
+                </button>
+            </a>
+        {{ end }}
+        <a
+            onclick="showLoadingSpinner()"
+            class="has-text-weight-bold p-4"
+            href="{{ $.BaseURL }}/requests?offset={{ Add $.Offset 50 }}{{ if FieldHasContent $.SearchValue }}&search-mode={{ $.SearchMode }}&search={{ $.SearchValue }}{{ end }}"
+        >
+            <button class="has-text-weight-bold button is-dark">next →</button>
+        </a>
+    </section>
+{{ end }}
