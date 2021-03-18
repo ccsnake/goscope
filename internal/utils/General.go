@@ -93,64 +93,70 @@ func EpochToHumanReadable(epoch int) string {
 	return date.Format(time.RFC1123Z)
 }
 
-func ResponseStatusColor(responseStatus interface{}) string {
+const (
+	successBadge = "badge-success"
+	infoBadge    = "badge-info"
+	warningBadge = "badge-warning"
+	dangerBadge  = "badge-danger"
+)
 
+// nolint:gocyclo .
+func ResponseStatusColor(responseStatus interface{}) string {
 	response, err := strconv.ParseInt(fmt.Sprintf("%v", responseStatus), 10, 32)
 	if err != nil {
 		return "badge-info"
 	}
+
 	switch response {
 	case http.StatusOK:
-		return "badge-success"
+		return successBadge
 	case http.StatusCreated:
-		return "badge-success"
+		return successBadge
 	case http.StatusAccepted:
-		return "badge-success"
+		return successBadge
 	case http.StatusNonAuthoritativeInfo:
-		return "badge-success"
+		return successBadge
 	case http.StatusNoContent:
-		return "badge-success"
+		return successBadge
 	case http.StatusMultipleChoices:
-		return "badge-info"
+		return infoBadge
 	case http.StatusMovedPermanently:
-		return "badge-info"
+		return infoBadge
 	case http.StatusFound:
-		return "badge-info"
+		return infoBadge
 	case http.StatusSeeOther:
-		return "badge-info"
+		return infoBadge
 	case http.StatusNotModified:
-		return "badge-info"
+		return infoBadge
 	case http.StatusUseProxy:
-		return "badge-info"
+		return infoBadge
 	case http.StatusTemporaryRedirect:
-		return "badge-info"
+		return infoBadge
 	case http.StatusPermanentRedirect:
-		return "badge-info"
+		return infoBadge
 	case http.StatusBadRequest:
-		return "badge-warning"
+		return warningBadge
 	case http.StatusUnauthorized:
-		return "badge-warning"
+		return warningBadge
 	case http.StatusPaymentRequired:
-		return "badge-warning"
+		return warningBadge
 	case http.StatusForbidden:
-		return "badge-warning"
+		return warningBadge
 	case http.StatusNotFound:
-		return "badge-warning"
+		return warningBadge
 	case http.StatusTeapot:
-		return "badge-warning"
+		return warningBadge
 	case http.StatusUnprocessableEntity:
-		return "badge-warning"
+		return warningBadge
 	case http.StatusInternalServerError:
-		return "badge-danger"
+		return dangerBadge
 	case http.StatusNotImplemented:
-		return "badge-danger"
+		return dangerBadge
 	case http.StatusBadGateway:
-		return "badge-danger"
+		return dangerBadge
 	case http.StatusServiceUnavailable:
-		return "badge-danger"
-
+		return dangerBadge
 	default:
-		return "badge-info"
-
+		return infoBadge
 	}
 }
