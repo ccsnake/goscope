@@ -5,6 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"math"
+	"net/http"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -89,4 +91,66 @@ func EpochToTimeAgoHappened(epoch int) string {
 func EpochToHumanReadable(epoch int) string {
 	date := time.Unix(int64(epoch), 0)
 	return date.Format(time.RFC1123Z)
+}
+
+func ResponseStatusColor(responseStatus interface{}) string {
+
+	response, err := strconv.ParseInt(fmt.Sprintf("%v", responseStatus), 10, 32)
+	if err != nil {
+		return "badge-info"
+	}
+	switch response {
+	case http.StatusOK:
+		return "badge-success"
+	case http.StatusCreated:
+		return "badge-success"
+	case http.StatusAccepted:
+		return "badge-success"
+	case http.StatusNonAuthoritativeInfo:
+		return "badge-success"
+	case http.StatusNoContent:
+		return "badge-success"
+	case http.StatusMultipleChoices:
+		return "badge-info"
+	case http.StatusMovedPermanently:
+		return "badge-info"
+	case http.StatusFound:
+		return "badge-info"
+	case http.StatusSeeOther:
+		return "badge-info"
+	case http.StatusNotModified:
+		return "badge-info"
+	case http.StatusUseProxy:
+		return "badge-info"
+	case http.StatusTemporaryRedirect:
+		return "badge-info"
+	case http.StatusPermanentRedirect:
+		return "badge-info"
+	case http.StatusBadRequest:
+		return "badge-warning"
+	case http.StatusUnauthorized:
+		return "badge-warning"
+	case http.StatusPaymentRequired:
+		return "badge-warning"
+	case http.StatusForbidden:
+		return "badge-warning"
+	case http.StatusNotFound:
+		return "badge-warning"
+	case http.StatusTeapot:
+		return "badge-warning"
+	case http.StatusUnprocessableEntity:
+		return "badge-warning"
+	case http.StatusInternalServerError:
+		return "badge-danger"
+	case http.StatusNotImplemented:
+		return "badge-danger"
+	case http.StatusBadGateway:
+		return "badge-danger"
+	case http.StatusServiceUnavailable:
+		return "badge-danger"
+
+	default:
+		return "badge-info"
+
+	}
 }

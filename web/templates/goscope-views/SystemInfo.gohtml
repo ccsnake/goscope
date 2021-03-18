@@ -9,26 +9,26 @@
                     <summary>Click to view variables...</summary>
                     <table class="table">
                         <thead>
-                        <tr>
-                            <th>Variable</th>
-                            <th>Value</th>
-                        </tr>
+                            <tr>
+                                <th>Variable</th>
+                                <th>Value</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        {{ range $i, $value :=  .Data.Environment }}
-                            <tr>
-                                <td>
-                                    <p>
-                                        {{ $i }}
-                                    </p>
-                                </td>
-                                <td class="is-family-monospace">
-                                    <p>
-                                        {{ $value }}
-                                    </p>
-                                </td>
-                            </tr>
-                        {{ end }}
+                            {{ range $i, $value :=  .Data.Environment }}
+                                <tr>
+                                    <td>
+                                        <p>
+                                            {{ $i }}
+                                        </p>
+                                    </td>
+                                    <td class="is-family-monospace">
+                                        <p>
+                                            {{ $value }}
+                                        </p>
+                                    </td>
+                                </tr>
+                            {{ end }}
                         </tbody>
                     </table>
                 </details>
@@ -54,7 +54,7 @@
                     <dt class="mt-3">Status</dt>
                     <dd>
                         <code
-                        >{{ .Data.Memory.Available }} available of
+                            >{{ .Data.Memory.Available }} available of
                             {{ .Data.Memory.Total }}</code
                         >
                     </dd>
@@ -119,12 +119,11 @@
     <footer class="container section has-text-centered">
         GoScope is on
         <a
-                target="_blank"
-                rel="noopener noreferrer"
-                href="https://github.com/averageflow/goscope"
-        >GitHub
-        </a
-        >
+            target="_blank"
+            rel="noopener noreferrer"
+            href="https://github.com/averageflow/goscope"
+            >GitHub
+        </a>
         with MIT License.
     </footer>
     {{ template "goscope-components/PageEnd.gohtml" }}
