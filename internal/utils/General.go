@@ -100,7 +100,7 @@ const (
 	dangerBadge  = "badge-danger"
 )
 
-// nolint:gocyclo .
+// nolint:gocyclo // simple function returning css class
 func ResponseStatusColor(responseStatus interface{}) string {
 	response, err := strconv.ParseInt(fmt.Sprintf("%v", responseStatus), 10, 32)
 	if err != nil {
