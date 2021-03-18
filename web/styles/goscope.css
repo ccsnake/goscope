@@ -5,14 +5,14 @@ html, body {
     }
 
 strong {
-    color: #fff;
+    color: #F5F5F5;
     }
 a {
     color: #2292A4;
     }
 
 a:hover {
-    color: #fff;
+    color: #F5F5F5;
     }
 
 pre {
@@ -24,9 +24,6 @@ code {
     background-color: #1d1d1d;
     color: #DCE1E9;
     }
-/*section {*/
-/*    white-space: pre-line;*/
-/*    }*/
 
 /* || Header and Main Navigation */
 
@@ -44,19 +41,19 @@ code {
 
 .navbar {
     background-color: #020202;
-    color: #22a474;
+    color: #2292A4;
     height: 4rem;
     align-items: center;
     }
 
 .navbar-item {
-    color: #22a474;
+    color: #2292A4;
     font-size: 1.5rem;
     }
 
 a.navbar-item:focus-within, a.navbar-item:hover {
     background-color: transparent;
-    color: #22a474;
+    color: #2292A4;
     border-bottom: 2px solid #2292A4;
     }
 
@@ -66,31 +63,31 @@ a.navbar-item:focus-within, a.navbar-item:hover {
 .select {
     background-color: #020202;
     border-color: transparent;
-    color: #fff;
+    color: #F5F5F5;
     }
 
 .input {
     border: none;
     background-color: #111;
-    color: #fff;
+    color: #F5F5F5;
     }
 .placeholder {
-    color: #fff;
+    color: #F5F5F5;
     background-color: #111;
     }
 
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-    color: #fff;
+    color: #F5F5F5;
     background-color: #111; /* Firefox */
     }
 
 :-ms-input-placeholder { /* Internet Explorer 10-11 */
-    color: #fff;
+    color: #F5F5F5;
     background-color: #111;
     }
 
 ::-ms-input-placeholder { /* Microsoft Edge */
-    color: #fff;
+    color: #F5F5F5;
     background-color: #111;
     }
 
@@ -106,7 +103,7 @@ a.navbar-item:focus-within, a.navbar-item:hover {
 .table {
     /*display: table;*/
     /*border-collapse: collapse;*/
-    color: #fff;
+    color: #F5F5F5;
     background-color: transparent;
     table-layout: fixed;
     width: 100%;
@@ -119,14 +116,15 @@ a.navbar-item:focus-within, a.navbar-item:hover {
     }
 
 .table th {
-    color: #fff;
+    color: #F5F5F5;
     }
 
 .table thead td, .table thead th {
-    color: #fff;
+    color: #2292A4;
+    font-size: 1.2rem;
     }
 .table tbody tr td {
-    color: #fff;
+    color: #F5F5F5;
     height: 3rem;
     vertical-align: inherit;
     }
@@ -146,7 +144,7 @@ tr:nth-child(even) {
 .method-badge {
     padding: 4px;
     border-radius: 4px;
-    color: #fff;
+    color: #F5F5F5;
     background-color: #494444;
 
     }
@@ -154,42 +152,42 @@ tr:nth-child(even) {
 .badge-success {
     padding: 4px;
     border-radius: 4px;
-    color: #fff;
+    color: #F5F5F5;
     background-color: #22a474;
     }
 
 .badge-info {
     padding: 4px;
     border-radius: 4px;
-    color: #fff;
+    color: #F5F5F5;
     background-color: #2292A4;
     }
 
 .badge-turq {
     padding: 4px;
     border-radius: 4px;
-    color: #fff;
+    color: #F5F5F5;
     background-color: #503194;
     }
 
 .badge-secondary {
     border-radius: 4px;
     padding: 4px;
-    color: #fff;
+    color: #F5F5F5;
     background-color: #494444;
     }
 
 .badge-danger {
     border-radius: 4px;
     padding: 4px;
-    color: #fff;
+    color: #F5F5F5;
     background-color: #a43322;
     }
 
 .badge-warning {
     border-radius: 4px;
     padding: 4px;
-    color: #fff;
+    color: #F5F5F5;
     background-color: #a47422;
     }
 
@@ -203,7 +201,7 @@ tr:nth-child(even) {
 
 /*css-loader*/
 .overlay {
-    background: #fff;
+    background: #F5F5F5;
     position: absolute;
     left: 0;
     right: 0;
