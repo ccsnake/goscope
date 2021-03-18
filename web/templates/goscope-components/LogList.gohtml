@@ -1,33 +1,6 @@
 {{ define "goscope-components/LogList.gohtml" }}
     <div class="container">
-        <section class="has-text-centered mb-4">
-            {{ if gt $.Offset 0 }}
-                <a
-                        onclick="showLoadingSpinner()"
-                        class="has-text-weight-bold p-4 "
-                        href="{{ $.BaseURL }}/logs?offset={{ SubtractTillZero $.Offset 50 }}{{ if FieldHasContent $.SearchValue }}&search={{ $.SearchValue }}{{ end }}"
-                >
-                    <button
-                            class="has-text-weight-bold button is-dark "
-                    >
-                        ← prev
-                    </button>
-                </a
-                >
-            {{ end }}
-            <a
-                    onclick="showLoadingSpinner()"
-                    class="has-text-weight-bold p-4 "
-                    href="{{ $.BaseURL }}/logs?offset={{ Add $.Offset 50 }}{{ if FieldHasContent $.SearchValue }}&search={{ $.SearchValue }}{{ end }}"
-            >
-                <button
-                        class="has-text-weight-bold button is-dark "
-                >
-                    next →
-                </button>
-            </a
-            >
-        </section>
+        {{ template "goscope-components/PaginationLog.gohtml" . }}
         <section>
             <div class="table-container">
                 <table class="table is-fullwidth">
@@ -39,7 +12,7 @@
                         <th></th>
                     </tr>
                     </thead>
-                    <tbody>
+                    <tbody  class="is-family-code is-size-5">
                     {{ range .Data }}
                         <tr class="has-text-left">
                             <td colspan="6">{{ .Error }}</td>
@@ -72,5 +45,6 @@
                 </table>
             </div>
         </section>
+        {{ template "goscope-components/PaginationLog.gohtml" . }}
     </div>
 {{ end }}

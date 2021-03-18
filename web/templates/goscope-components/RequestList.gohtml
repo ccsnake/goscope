@@ -1,32 +1,5 @@
 {{ define "goscope-components/RequestList.gohtml" }}
-    <section class="has-text-centered mb-4">
-        {{ if gt $.Offset 0 }}
-            <a
-                    onclick="showLoadingSpinner()"
-                    class="has-text-weight-bold p-4"
-                    href="{{ $.BaseURL }}/requests?offset={{ SubtractTillZero $.Offset 50 }}{{ if FieldHasContent $.SearchValue }}&search-mode={{ $.SearchMode }}&search={{ $.SearchValue }}{{ end }}"
-            >
-                <button
-                        class="has-text-weight-bold button is-dark"
-                >
-                    ← prev
-                </button>
-            </a
-            >
-        {{ end }}
-        <a
-                onclick="showLoadingSpinner()"
-                class="has-text-weight-bold p-4"
-                href="{{ $.BaseURL }}/requests?offset={{ Add $.Offset 50 }}{{ if FieldHasContent $.SearchValue }}&search-mode={{ $.SearchMode }}&search={{ $.SearchValue }}{{ end }}"
-        >
-            <button
-                    class="has-text-weight-bold button is-dark"
-            >
-                next →
-            </button>
-        </a
-        >
-    </section>
+    {{ template "goscope-components/PaginationRequest.gohtml" . }}
     <section>
         <div class="table-container">
             <table class="table is-fullwidth">
@@ -85,15 +58,15 @@
                         {{ .Method }}
                         </span>
                         </td>
-                        <td colspan="4">{{ .Path }}</td>
-                        <td colspan="2">
+                        <td colspan="4" class="is-family-monospace is-size-5">{{ .Path }}</td>
+                        <td colspan="2" class="is-family-code is-size-5">
                             <small
                             >{{ EpochToTimeAgoHappened .Time }}
                                 ago
                             </small
                             >
                         </td>
-                        <td colspan="3">
+                        <td colspan="3" class="is-family-monospace is-size-5">
                             <small>{{ EpochToHumanReadable .Time }}</small>
                         </td>
                         <td class="has-text-centered">
@@ -115,4 +88,5 @@
             </table>
         </div>
     </section>
+    {{ template "goscope-components/PaginationRequest.gohtml" . }}
 {{ end }}

@@ -48,7 +48,7 @@ code {
 
 .navbar-item {
     color: #2292A4;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     }
 
 a.navbar-item:focus-within, a.navbar-item:hover {
@@ -121,7 +121,7 @@ a.navbar-item:focus-within, a.navbar-item:hover {
 
 .table thead td, .table thead th {
     color: #2292A4;
-    font-size: 1.2rem;
+    font-size: 1rem;
     }
 .table tbody tr td {
     color: #F5F5F5;
