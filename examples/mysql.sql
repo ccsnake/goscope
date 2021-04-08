@@ -24,7 +24,7 @@ CREATE TABLE `requests` (
   `host` varchar(255) DEFAULT NULL,
   `headers` text,
   `body` longtext,
-  `referrer` varchar(255) DEFAULT NULL,
+  `referrer` text DEFAULT NULL,
   `user_agent` varchar(255) DEFAULT NULL,
   `time` bigint(20) NOT NULL,
   PRIMARY KEY (`uid`)
