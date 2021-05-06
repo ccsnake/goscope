@@ -1,22 +1,27 @@
 {{ define "goscope-components/PaginationLog.gohtml" }}
-    <section class="has-text-centered my-4">
-        {{ if gt $.Offset 0 }}
+    {{ $entries := len .Data }}
+    {{ if gt $entries 0 }}
+        <section class="has-text-centered my-4">
+            {{ if gt $.Offset 0 }}
+                <a
+                    onclick="showLoadingSpinner()"
+                    class="has-text-weight-bold p-4 "
+                    href="{{ $.BaseURL }}/logs?offset={{ SubtractTillZero $.Offset 50 }}{{ if FieldHasContent $.SearchValue }}&search={{ $.SearchValue }}{{ end }}"
+                >
+                    <button class="has-text-weight-bold button is-dark ">
+                        ← prev
+                    </button>
+                </a>
+            {{ end }}
             <a
                 onclick="showLoadingSpinner()"
                 class="has-text-weight-bold p-4 "
-                href="{{ $.BaseURL }}/logs?offset={{ SubtractTillZero $.Offset 50 }}{{ if FieldHasContent $.SearchValue }}&search={{ $.SearchValue }}{{ end }}"
+                href="{{ $.BaseURL }}/logs?offset={{ Add $.Offset 50 }}{{ if FieldHasContent $.SearchValue }}&search={{ $.SearchValue }}{{ end }}"
             >
                 <button class="has-text-weight-bold button is-dark ">
-                    ← prev
+                    next →
                 </button>
             </a>
-        {{ end }}
-        <a
-            onclick="showLoadingSpinner()"
-            class="has-text-weight-bold p-4 "
-            href="{{ $.BaseURL }}/logs?offset={{ Add $.Offset 50 }}{{ if FieldHasContent $.SearchValue }}&search={{ $.SearchValue }}{{ end }}"
-        >
-            <button class="has-text-weight-bold button is-dark ">next →</button>
-        </a>
-    </section>
+        </section>
+    {{ end }}
 {{ end }}

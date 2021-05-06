@@ -3,6 +3,19 @@ html,
 body {
     background-color: #020202;
     color: #f1f1f1;
+    font-family: Ubuntu, -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif !important;
+}
+
+select {
+    font-family: Ubuntu, -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif !important;
+}
+
+.is-family-monospace {
+    font-family: 'Ubuntu Mono', monospace!important;
+}
+
+code {
+    font-family: 'Ubuntu Mono', monospace!important;
 }
 
 strong {

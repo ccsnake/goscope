@@ -58,6 +58,17 @@ GoScope hooks into the logging mechanism of your application by using a custom `
 This prints to the console for ease of development and saves the logs into the database, for further displaying in the web environment.
 Thus you only need to call your usual `log.Println` or `log.Printf` statements or any variants of the log writing package, and that will seamlessly be picked up by GoScope.
 
+Alternatively you can use syslog style log functions, which follow the standard:
+- Emergency (0 - EMERGENCY) - `goscope.LogEmergency(value)`
+- Alert (1 - ALERT) - `goscope.LogAlert(value)`
+- Critical (2 - CRITICAL) - `goscope.LogCritical(value)`
+- Error (3 - ERROR) - `goscope.LogError(value)`
+- Warning (4 - WARNING) - `goscope.LogWarning(value)`
+- Notice (5 - NOTICE) - `goscope.LogNotice(value)`
+- Informational (6 - INFO) - `goscope.LogInfo(value)`
+- Debug (7 - DEBUG) - `goscope.LogDebug(value)`
+
+
 ### System Information
 
 GoScope is constantly improving and currently already can show some system information about the current host. There are plans to expand on this and help is welcome with database info, operating system, etc.

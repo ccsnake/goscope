@@ -79,3 +79,35 @@ func searchLogHandler(c *gin.Context) {
 	c.Header("Access-Control-Allow-Origin", "*")
 	c.JSON(http.StatusOK, variables)
 }
+
+func LogEmergency(value interface{}) {
+	log.Printf("[EMERGENCY]  %v  [LEVEL 0]", value)
+}
+
+func LogAlert(value interface{}) {
+	log.Printf("[ALERT]  %v  [LEVEL-1]", value)
+}
+
+func LogCritical(value interface{}) {
+	log.Printf("[CRITICAL]  %v  [LEVEL-2]", value)
+}
+
+func LogError(value interface{}) {
+	log.Printf("[ERROR]  %v  [LEVEL-3]", value)
+}
+
+func LogWarning(value interface{}) {
+	log.Printf("[WARNING]  %v  [LEVEL-4]", value)
+}
+
+func LogNotice(value interface{}) {
+	log.Printf("[NOTICE]  %v  [LEVEL-5]", value)
+}
+
+func LogInfo(value interface{}) {
+	log.Printf("[INFO]  %v  [LEVEL-6]", value)
+}
+
+func LogDebug(value interface{}) {
+	log.Printf("[DEBUG]  %v  [LEVEL-7]", value)
+}
