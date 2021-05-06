@@ -6,9 +6,7 @@
             aria-label="main navigation"
         >
             <div class="navbar-brand">
-                <a
-                    class="navbar-item has-text-weight-bold"
-                    href="{{ .BaseURL }}/"
+                <a class="navbar-item " href="{{ .BaseURL }}/"
                     >{{ .ApplicationName }}</a
                 >
                 <a
@@ -25,7 +23,7 @@
                 </a>
             </div>
             <div id="navbarBasicExample" class="navbar-menu">
-                <div class="navbar-start has-text-weight-bold">
+                <div class="navbar-start ">
                     <a class="navbar-item" href="{{ .BaseURL }}/">Requests </a>
                     <a class="navbar-item" href="{{ .BaseURL }}/logs">Logs </a>
                     <a class="navbar-item" href="{{ .BaseURL }}/info"
