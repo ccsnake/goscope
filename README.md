@@ -19,7 +19,7 @@ You should protect this route from external/public access so that you do not lea
 
 GoScope requires a Go version 1.16 or higher.
 
-![examples/showcase/0-min.png](examples/showcase/0-min.png)
+![examples/showcase/0-min.png](examples/showcase/0.png)
 
 ### Setup
 
@@ -77,8 +77,8 @@ GoScope is constantly improving and currently already can show some system infor
 
 ### Showcase
 
-![examples/showcase/0-min.png](examples/showcase/1-min.png)
-![examples/showcase/0-min.png](examples/showcase/2-min.png)
-![examples/showcase/0-min.png](examples/showcase/3-min.png)
-![examples/showcase/0-min.png](examples/showcase/4-min.png)
-![examples/showcase/0-min.png](examples/showcase/5-min.png)
+![examples/showcase/0-min.png](examples/showcase/1.png)
+![examples/showcase/0-min.png](examples/showcase/2.png)
+![examples/showcase/0-min.png](examples/showcase/3.png)
+![examples/showcase/0-min.png](examples/showcase/4.png)
+![examples/showcase/0-min.png](examples/showcase/5.png)
