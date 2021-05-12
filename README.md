@@ -1,4 +1,4 @@
-# <img src="frontend/public/logo.svg" alt=" " width="50" height="50"/> GoScope
+# GoScope
 
 [![Build](https://img.shields.io/github/workflow/status/averageflow/goscope/golangci-lint?label=GolangCI%20Lint)](#)
 [![Build](https://img.shields.io/github/workflow/status/averageflow/goscope/gobuild?label=Go%20Build)](#)
@@ -18,6 +18,8 @@ Once all is set up you can access the web interface by visiting `http://your-app
 You should protect this route from external/public access so that you do not leak important application data.
 
 GoScope requires a Go version 1.16 or higher.
+
+![examples/showcase/0-min.png](examples/showcase/0-min.png)
 
 ### Setup
 
@@ -73,3 +75,10 @@ Alternatively you can use syslog style log functions, which follow the standard:
 
 GoScope is constantly improving and currently already can show some system information about the current host. There are plans to expand on this and help is welcome with database info, operating system, etc.
 
+### Showcase
+
+![examples/showcase/0-min.png](examples/showcase/1-min.png)
+![examples/showcase/0-min.png](examples/showcase/2-min.png)
+![examples/showcase/0-min.png](examples/showcase/3-min.png)
+![examples/showcase/0-min.png](examples/showcase/4-min.png)
+![examples/showcase/0-min.png](examples/showcase/5-min.png)
