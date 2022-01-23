@@ -2,9 +2,11 @@ package goscope
 
 import (
 	"bytes"
+	"html/template"
 	"io"
+	"net/http"
 
-	"github.com/gin-gonic/gin"
+	"github.com/labstack/echo/v4"
 )
 
 const (
@@ -13,7 +15,7 @@ const (
 )
 
 type fileByRoute struct {
-	FileName string `uri:"filename"`
+	FileName string `uri:"filename" param:"filename"`
 }
 
 type systemInformationResponse struct {
@@ -58,11 +60,11 @@ type BodyLogWriterResponse struct {
 }
 
 type RecordByURI struct {
-	UID string `uri:"id" binding:"required"`
+	UID string `uri:"id" binding:"required" param:"id"`
 }
 
 type BodyLogWriter struct {
-	gin.ResponseWriter
+	http.ResponseWriter
 	Body *bytes.Buffer
 }
 
@@ -100,12 +102,20 @@ type Environment struct {
 }
 
 type InitData struct {
-	// Router represents the gin.Engine to attach the routes to
-	Router *gin.Engine
-	// RouteGroup represents the gin.RouterGroup to attach the GoScope routes to
-	RouteGroup *gin.RouterGroup
+	// Router represents the echo.Engine to attach the routes to
+	Router *echo.Echo
+	// RouteGroup represents the echo.RouterGroup to attach the GoScope routes to
+	RouteGroup *echo.Group
 	// Config represents the required variables to initialize GoScope
 	Config *Environment
+
+	FuncMap template.FuncMap
+}
+
+func (i *InitData) SetHTMLTemplate(t *template.Template) {
+	i.Router.Renderer = &TemplateRenderer{
+		templates: t,
+	}
 }
 
 type SearchRequestPayload struct {

@@ -4,10 +4,10 @@ import (
 	"database/sql"
 	"encoding/json"
 	"fmt"
+	"github.com/labstack/echo/v4"
 	"log"
 	"time"
 
-	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )
 
@@ -206,36 +206,36 @@ func queryDetailedResponse(db *sql.DB, requestUID string) *sql.Row {
 	return row
 }
 
-func DumpRequestResponse(c *gin.Context, appID string, db *sql.DB, responsePayload DumpResponsePayload, body string) {
+func DumpRequestResponse(c echo.Context, appID string, db *sql.DB, responsePayload DumpResponsePayload, body string) {
 	now := time.Now().Unix()
 	requestUID := uuid.New().String()
-	headers, _ := json.Marshal(c.Request.Header)
+	headers, _ := json.Marshal(c.Request().Header)
 	query := `
 		INSERT INTO requests (uid, application, client_ip, method, path, host, time,
                       headers, body, referrer, url, user_agent)
 		VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
 	`
 
-	requestPath := c.FullPath()
+	requestPath := c.Path()
 	if requestPath == "" {
 		// Use URL as fallback when path is not recognized as route
-		requestPath = c.Request.URL.String()
+		requestPath = c.Request().URL.String()
 	}
 
 	_, err := db.Exec(
 		query,
 		requestUID,
 		appID,
-		c.ClientIP(),
-		c.Request.Method,
+		c.RealIP(),
+		c.Request().Method,
 		requestPath,
-		c.Request.Host,
+		c.Request().Host,
 		now,
 		string(headers),
 		body,
-		c.Request.Referer(),
-		c.Request.RequestURI,
-		c.Request.UserAgent(),
+		c.Request().Referer(),
+		c.Request().RequestURI,
+		c.Request().UserAgent(),
 	)
 
 	if err != nil {
@@ -254,11 +254,11 @@ func DumpRequestResponse(c *gin.Context, appID string, db *sql.DB, responsePaylo
 		responseUID,
 		requestUID,
 		appID,
-		c.ClientIP(),
+		c.RealIP(),
 		responsePayload.Status,
 		now,
 		responsePayload.Body.String(),
-		c.FullPath(),
+		c.Path(),
 		string(headers),
 		responsePayload.Body.Len(),
 	)

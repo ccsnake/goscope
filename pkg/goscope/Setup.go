@@ -1,18 +1,32 @@
 package goscope
 
 import (
+	"errors"
 	"fmt"
+	"github.com/labstack/echo/v4"
 	"html/template"
-	"log"
+	"io"
 	"net/http"
 	"strings"
 
 	"github.com/averageflow/goscope/v3/web"
 
 	"github.com/averageflow/goscope/v3/internal/utils"
-
-	"github.com/gin-gonic/gin"
 )
+
+type TemplateRenderer struct {
+	templates *template.Template
+}
+
+func (t *TemplateRenderer) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
+
+	// Add global methods if data is a map
+	if viewContext, isMap := data.(map[string]interface{}); isMap {
+		viewContext["reverse"] = c.Echo().Reverse
+	}
+
+	return t.templates.ExecuteTemplate(w, name, data)
+}
 
 func PrepareTemplateEngine(d *InitData) *template.Template {
 	var applicationFunctionMap = map[string]interface{}{
@@ -34,108 +48,112 @@ func PrepareTemplateEngine(d *InitData) *template.Template {
 	}
 
 	for i := range applicationFunctionMap {
-		d.Router.FuncMap[i] = applicationFunctionMap[i]
+		d.FuncMap[i] = applicationFunctionMap[i]
 	}
 
 	applicationTemplateEngine := template.Must(template.New("").
-		Funcs(d.Router.FuncMap).
+		Funcs(d.FuncMap).
 		ParseFS(
 			web.TemplateFiles,
 			"templates/goscope-components/*",
 			"templates/goscope-views/*",
 		))
+	d.Router.Renderer = &TemplateRenderer{templates: applicationTemplateEngine}
 
 	return applicationTemplateEngine
 }
 
 // PrepareMiddleware is the necessary step to enable GoScope in an application.
-// It will setup the necessary routes and middlewares for GoScope to work.
-func PrepareMiddleware(d *InitData) {
-	if d == nil {
+func PrepareMiddleware(d *InitData) (*Scope, error) {
+	if d == nil || d.Config == nil {
 		panic("Please provide a pointer to a valid and instantiated GoScopeInitData.")
 	}
 
-	configSetup(d.Config)
-	databaseSetup(databaseInformation{
-		databaseType:          Config.GoScopeDatabaseType,
-		connection:            Config.GoScopeDatabaseConnection,
-		maxOpenConnections:    Config.GoScopeDatabaseMaxOpenConnections,
-		maxIdleConnections:    Config.GoScopeDatabaseMaxIdleConnections,
-		maxConnectionLifetime: Config.GoScopeDatabaseMaxConnLifetime,
-	})
+	s := &Scope{Config: d.Config}
 
-	d.Router.Use(gin.Logger())
-	d.Router.Use(gin.Recovery())
+	if err := s.setupDB(); err != nil {
+		return nil, fmt.Errorf("failed to setup database: %w", err)
+	}
 
-	logger := &loggerGoScope{}
-	gin.DefaultErrorWriter = logger
+	//d.Router.Use(middleware.Logger())
+	//d.Router.Use(middleware.Recover())
 
-	log.SetFlags(log.Lshortfile)
-	log.SetOutput(logger)
+	//gin.DefaultErrorWriter = logger
 
 	// Use the logging middleware
-	d.Router.Use(responseLogger)
+	d.Router.Use(s.responseLogger)
 
 	// Catch 404s
-	d.Router.NoRoute(noRouteResponseLogger)
+	//d.Router.NoRoute(noRouteResponseLogger)
+	d.Router.HTTPErrorHandler = func(err error, context echo.Context) {
+		if errors.Is(err, echo.ErrNotFound) {
+			_ = s.noRouteResponseLogger(context)
+		} else {
+			d.Router.DefaultHTTPErrorHandler(err, context)
+		}
+	}
 
+	fmt.Printf("GoScope is ready to serve requests.\n")
+	fmt.Printf("GoScope is using %s as the database.\n", d.Config.GoScopeDatabaseType)
+	// HasFrontend is true if the user has provided a frontend.
+	fmt.Printf("GoScope is using %v as the frontend.\n", d.Config.HasFrontendDisabled)
 	// SPA routes
-	if !Config.HasFrontendDisabled {
-		d.RouteGroup.GET("/", requestListPageHandler)
-		d.RouteGroup.GET("", requestListPageHandler)
-		d.RouteGroup.GET("/requests", requestListPageHandler)
-		d.RouteGroup.GET("/logs", logListPageHandler)
-		d.RouteGroup.GET("/logs/:id", logDetailsPageHandler)
-		d.RouteGroup.GET("/requests/:id", requestDetailsPageHandler)
-		d.RouteGroup.GET("/info", systemInfoPageHandler)
+	if !s.Config.HasFrontendDisabled {
+		fmt.Printf("### SPA routes enabled\n")
+		d.RouteGroup.GET("/", s.requestListPageHandler)
+		d.RouteGroup.GET("", s.requestListPageHandler)
+		d.RouteGroup.GET("/requests", s.requestListPageHandler)
+		d.RouteGroup.GET("/logs", s.logListPageHandler)
+		d.RouteGroup.GET("/logs/:id", s.logDetailsPageHandler)
+		d.RouteGroup.GET("/requests/:id", s.requestDetailsPageHandler)
+		d.RouteGroup.GET("/info", s.systemInfoPageHandler)
 
-		d.RouteGroup.GET("/styles/:filename", func(c *gin.Context) {
+		d.RouteGroup.GET("/styles/:filename", func(c echo.Context) error {
 			var routeData fileByRoute
 
-			err := c.BindUri(&routeData)
+			err := c.Bind(&routeData)
 			if err != nil {
-				log.Println(err.Error())
-				return
+				return err
 			}
 
 			file, err := web.StyleFiles.ReadFile(fmt.Sprintf("styles/%s", routeData.FileName))
 			if err != nil {
-				log.Println(err.Error())
-				return
+				return err
 			}
 
-			c.Header("Content-Type", "text/css; charset=utf-8")
-			c.String(http.StatusOK, string(file))
+			c.Response().Header().Set("Content-Type", "text/css; charset=utf-8")
+			return c.String(http.StatusOK, string(file))
 		})
 
-		d.RouteGroup.GET("/scripts/:filename", func(c *gin.Context) {
+		d.RouteGroup.GET("/scripts/:filename", func(c echo.Context) error {
 			var routeData fileByRoute
 
-			err := c.BindUri(&routeData)
+			err := c.Bind(&routeData)
 			if err != nil {
-				log.Println(err.Error())
-				return
+				c.Logger().Errorf("%s", err.Error())
+				return err
 			}
 
 			file, err := web.ScriptFiles.ReadFile(fmt.Sprintf("scripts/%s", routeData.FileName))
 			if err != nil {
-				log.Println(err.Error())
-				return
+				c.Logger().Errorf("%s", err.Error())
+				return err
 			}
 
-			c.Header("Content-Type", "application/javascript; charset=utf-8")
-			c.String(http.StatusOK, string(file))
+			c.Response().Header().Set("Content-Type", "application/javascript; charset=utf-8")
+			return c.String(http.StatusOK, string(file))
 		})
 	}
 
 	// GoScope API
 	apiGroup := d.RouteGroup.Group("/api")
-	apiGroup.GET("/application-name", getAppName)
-	apiGroup.GET("/logs", getLogListHandler)
-	apiGroup.GET("/requests/:id", showRequestDetailsHandler)
-	apiGroup.GET("/logs/:id", showLogDetailsHandler)
-	apiGroup.GET("/requests", getRequestListHandler)
-	apiGroup.POST("/search/requests", searchRequestHandler)
-	apiGroup.POST("/search/logs", searchLogHandler)
-	apiGroup.GET("/info", getSystemInfoHandler)
+	apiGroup.GET("/application-name", s.getAppName)
+	apiGroup.GET("/logs", s.getLogListHandler)
+	apiGroup.GET("/requests/:id", s.showRequestDetailsHandler)
+	apiGroup.GET("/logs/:id", s.showLogDetailsHandler)
+	apiGroup.GET("/requests", s.getRequestListHandler)
+	apiGroup.POST("/search/requests", s.searchRequestHandler)
+	apiGroup.POST("/search/logs", s.searchLogHandler)
+	apiGroup.GET("/info", s.getSystemInfoHandler)
+	return s, nil
 }

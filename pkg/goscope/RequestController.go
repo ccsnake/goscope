@@ -1,80 +1,84 @@
 package goscope
 
 import (
-	"log"
+	"github.com/labstack/echo/v4"
 	"net/http"
 	"strconv"
 
 	"github.com/averageflow/goscope/v3/internal/repository"
-	"github.com/gin-gonic/gin"
-	"github.com/gin-gonic/gin/binding"
 )
 
 // getRequestListHandler is the controller for the requests list page in GoScope API.
-func getRequestListHandler(c *gin.Context) {
-	offsetQuery := c.DefaultQuery("offset", "0")
+func (s *Scope) getRequestListHandler(c echo.Context) error {
+	offsetQuery := c.QueryParam("offset")
+	if offsetQuery == "" {
+		offsetQuery = "0"
+	}
 	offset, _ := strconv.ParseInt(offsetQuery, 10, 32)
 
 	variables := PageStateData{
-		ApplicationName: Config.ApplicationName,
-		EntriesPerPage:  Config.GoScopeEntriesPerPage,
-		Data:            repository.FetchRequestList(DB, Config.ApplicationID, Config.GoScopeEntriesPerPage, int(offset)),
+		ApplicationName: s.Config.ApplicationName,
+		EntriesPerPage:  s.Config.GoScopeEntriesPerPage,
+		Data:            repository.FetchRequestList(s.DB, s.Config.ApplicationID, s.Config.GoScopeEntriesPerPage, int(offset)),
 	}
 
-	c.Header("Access-Control-Allow-Origin", "*")
-	c.JSON(http.StatusOK, variables)
+	c.Response().Header().Set("Access-Control-Allow-Origin", "*")
+	return c.JSON(http.StatusOK, variables)
 }
 
 // showRequestDetailsHandler is the controller for a detailed request/response page in GoScope API.
-func showRequestDetailsHandler(c *gin.Context) {
+func (s *Scope) showRequestDetailsHandler(c echo.Context) error {
 	var request RecordByURI
 
-	err := c.ShouldBindUri(&request)
+	err := c.Bind(&request)
 	if err != nil {
-		log.Println(err.Error())
+		c.Logger().Errorf("Error while binding request: %s", err.Error())
+		return err
 	}
 
-	requestDetails := repository.FetchDetailedRequest(DB, request.UID)
-	responseDetails := repository.FetchDetailedResponse(DB, request.UID)
+	requestDetails := repository.FetchDetailedRequest(s.DB, request.UID)
+	responseDetails := repository.FetchDetailedResponse(s.DB, request.UID)
 
 	variables := PageStateData{
-		ApplicationName: Config.ApplicationName,
-		Data: gin.H{
+		ApplicationName: s.Config.ApplicationName,
+		Data: echo.Map{
 			"request":  requestDetails,
 			"response": responseDetails,
 		},
 	}
 
-	c.Header("Access-Control-Allow-Origin", "*")
-	c.JSON(http.StatusOK, variables)
+	c.Response().Header().Set("Access-Control-Allow-Origin", "*")
+	return c.JSON(http.StatusOK, variables)
 }
 
 // searchRequestHandler is the controller for the search requests list page in GoScope API.
-func searchRequestHandler(c *gin.Context) {
+func (s *Scope) searchRequestHandler(c echo.Context) error {
 	var request SearchRequestPayload
-	err := c.ShouldBindBodyWith(&request, binding.JSON)
-
-	if err != nil {
-		log.Println(err.Error())
+	if err := c.Bind(&request); err != nil {
+		c.Logger().Errorf("Error while binding request: %s", err.Error())
+		return err
 	}
 
-	offsetQuery := c.DefaultQuery("offset", "0")
+	offsetQuery := c.QueryParam("offset")
+	if offsetQuery == "" {
+		offsetQuery = "0"
+	}
 	offset, _ := strconv.ParseInt(offsetQuery, 10, 32)
 	result := repository.FetchSearchRequests(
-		DB,
-		Config.ApplicationID,
-		Config.GoScopeEntriesPerPage,
+		s.DB,
+		s.Config.ApplicationID,
+		s.Config.GoScopeEntriesPerPage,
 		request.Query,
 		int(offset),
 		request.SearchType,
 	)
 
 	variables := PageStateData{
-		ApplicationName: Config.ApplicationName,
-		EntriesPerPage:  Config.GoScopeEntriesPerPage,
+		ApplicationName: s.Config.ApplicationName,
+		EntriesPerPage:  s.Config.GoScopeEntriesPerPage,
 		Data:            result,
 	}
 
-	c.Header("Access-Control-Allow-Origin", "*")
-	c.JSON(http.StatusOK, variables)
+	c.Response().Header().Set("Access-Control-Allow-Origin", "*")
+	return c.JSON(http.StatusOK, variables)
 }

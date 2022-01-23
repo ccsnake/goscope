@@ -1,28 +1,34 @@
 package goscope
 
 import (
-	"log"
+	"github.com/labstack/echo/v4"
 	"net/http"
 	"strconv"
 
 	"github.com/averageflow/goscope/v3/internal/repository"
-
-	"github.com/gin-gonic/gin"
 )
 
-func requestListPageHandler(c *gin.Context) {
-	offsetQuery := c.DefaultQuery("offset", "0")
+func (s *Scope) requestListPageHandler(c echo.Context) error {
+	offsetQuery := c.Param("offset")
+	if offsetQuery == "" {
+		offsetQuery = "0"
+	}
+
 	offset, _ := strconv.ParseInt(offsetQuery, 10, 32)
 
-	searchTypeQuery := c.DefaultQuery("search-mode", "1")
+	searchTypeQuery := c.Param("search-mode")
+	if searchTypeQuery == "" {
+		searchTypeQuery = "1"
+	}
+
 	searchType, _ := strconv.ParseInt(searchTypeQuery, 10, 32)
 
-	searchValue := c.Query("search")
+	searchValue := c.QueryParam("search")
 
 	variables := PageStateData{
-		ApplicationName:       Config.ApplicationName,
-		EntriesPerPage:        Config.GoScopeEntriesPerPage,
-		BaseURL:               Config.BaseURL,
+		ApplicationName:       s.Config.ApplicationName,
+		EntriesPerPage:        s.Config.GoScopeEntriesPerPage,
+		BaseURL:               s.Config.BaseURL,
 		Offset:                int(offset),
 		SearchValue:           searchValue,
 		SearchMode:            int(searchType),
@@ -32,35 +38,39 @@ func requestListPageHandler(c *gin.Context) {
 
 	if searchValue != "" {
 		variables.Data = repository.FetchSearchRequests(
-			DB,
-			Config.ApplicationID,
-			Config.GoScopeEntriesPerPage,
+			s.DB,
+			s.Config.ApplicationID,
+			s.Config.GoScopeEntriesPerPage,
 			searchValue,
 			int(offset),
 			int(searchType),
 		)
 	} else {
 		variables.Data = repository.FetchRequestList(
-			DB,
-			Config.ApplicationID,
-			Config.GoScopeEntriesPerPage,
+			s.DB,
+			s.Config.ApplicationID,
+			s.Config.GoScopeEntriesPerPage,
 			int(offset),
 		)
 	}
 
-	c.HTML(http.StatusOK, "goscope-views/Requests.gohtml", variables)
+	return c.Render(http.StatusOK, "goscope-views/Requests.gohtml", variables)
 }
 
-func logListPageHandler(c *gin.Context) {
-	offsetQuery := c.DefaultQuery("offset", "0")
+func (s *Scope) logListPageHandler(c echo.Context) error {
+	offsetQuery := c.QueryParam("offset")
+	if offsetQuery == "" {
+		offsetQuery = "0"
+	}
+
 	offset, _ := strconv.ParseInt(offsetQuery, 10, 32)
 
-	searchValue := c.Query("search")
+	searchValue := c.QueryParam("search")
 
 	variables := PageStateData{
-		ApplicationName: Config.ApplicationName,
-		EntriesPerPage:  Config.GoScopeEntriesPerPage,
-		BaseURL:         Config.BaseURL,
+		ApplicationName: s.Config.ApplicationName,
+		EntriesPerPage:  s.Config.GoScopeEntriesPerPage,
+		BaseURL:         s.Config.BaseURL,
 		Offset:          int(offset),
 		SearchValue:     searchValue,
 		SearchEnabled:   true,
@@ -68,76 +78,76 @@ func logListPageHandler(c *gin.Context) {
 
 	if searchValue != "" {
 		variables.Data = repository.FetchSearchLogs(
-			DB,
-			Config.ApplicationID,
-			Config.GoScopeEntriesPerPage,
-			Config.GoScopeDatabaseType,
+			s.DB,
+			s.Config.ApplicationID,
+			s.Config.GoScopeEntriesPerPage,
+			s.Config.GoScopeDatabaseType,
 			searchValue,
 			int(offset),
 		)
 	} else {
 		variables.Data = repository.FetchLogs(
-			DB,
-			Config.ApplicationID,
-			Config.GoScopeEntriesPerPage,
-			Config.GoScopeDatabaseType,
+			s.DB,
+			s.Config.ApplicationID,
+			s.Config.GoScopeEntriesPerPage,
+			s.Config.GoScopeDatabaseType,
 			int(offset),
 		)
 	}
 
-	c.HTML(http.StatusOK, "goscope-views/Logs.gohtml", variables)
+	return c.Render(http.StatusOK, "goscope-views/Logs.gohtml", variables)
 }
 
-func logDetailsPageHandler(c *gin.Context) {
+func (s *Scope) logDetailsPageHandler(c echo.Context) error {
 	var request RecordByURI
 
-	err := c.ShouldBindUri(&request)
+	err := c.Bind(&request)
 	if err != nil {
-		log.Println(err.Error())
+		return err
 	}
 
-	logDetails := repository.FetchDetailedLog(DB, request.UID)
+	logDetails := repository.FetchDetailedLog(s.DB, request.UID)
 
 	variables := PageStateData{
-		ApplicationName: Config.ApplicationName,
-		Data: gin.H{
+		ApplicationName: s.Config.ApplicationName,
+		Data: echo.Map{
 			"logDetails": logDetails,
 		},
-		BaseURL: Config.BaseURL,
+		BaseURL: s.Config.BaseURL,
 	}
 
-	c.HTML(http.StatusOK, "goscope-views/LogDetails.gohtml", variables)
+	return c.Render(http.StatusOK, "goscope-views/LogDetails.gohtml", variables)
 }
 
-func requestDetailsPageHandler(c *gin.Context) {
+func (s *Scope) requestDetailsPageHandler(c echo.Context) error {
 	var request RecordByURI
 
-	err := c.ShouldBindUri(&request)
+	err := c.Bind(&request)
 	if err != nil {
-		log.Println(err.Error())
+		return err
 	}
 
-	requestDetails := repository.FetchDetailedRequest(DB, request.UID)
-	responseDetails := repository.FetchDetailedResponse(DB, request.UID)
+	requestDetails := repository.FetchDetailedRequest(s.DB, request.UID)
+	responseDetails := repository.FetchDetailedResponse(s.DB, request.UID)
 
 	variables := PageStateData{
-		ApplicationName: Config.ApplicationName,
-		Data: gin.H{
+		ApplicationName: s.Config.ApplicationName,
+		Data: echo.Map{
 			"request":  requestDetails,
 			"response": responseDetails,
 		},
-		BaseURL: Config.BaseURL,
+		BaseURL: s.Config.BaseURL,
 	}
 
-	c.HTML(http.StatusOK, "goscope-views/RequestDetails.gohtml", variables)
+	return c.Render(http.StatusOK, "goscope-views/RequestDetails.gohtml", variables)
 }
 
-func systemInfoPageHandler(c *gin.Context) {
-	responseBody := getSystemInfo()
+func (s *Scope) systemInfoPageHandler(c echo.Context) error {
+	responseBody := s.getSystemInfo()
 
-	c.HTML(http.StatusOK, "goscope-views/SystemInfo.gohtml", PageStateData{
-		ApplicationName: Config.ApplicationName,
+	return c.Render(http.StatusOK, "goscope-views/SystemInfo.gohtml", PageStateData{
+		ApplicationName: s.Config.ApplicationName,
 		Data:            responseBody,
-		BaseURL:         Config.BaseURL,
+		BaseURL:         s.Config.BaseURL,
 	})
 }

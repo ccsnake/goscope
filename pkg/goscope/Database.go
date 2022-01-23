@@ -2,7 +2,7 @@ package goscope
 
 import (
 	"database/sql"
-	"log"
+	"fmt"
 	"time"
 
 	// Import MySQL driver.
@@ -13,8 +13,6 @@ import (
 	_ "github.com/lib/pq"
 )
 
-var DB *sql.DB //nolint:gochecknoglobals
-
 type databaseInformation struct {
 	databaseType          string
 	connection            string
@@ -23,18 +21,16 @@ type databaseInformation struct {
 	maxConnectionLifetime int
 }
 
-func databaseSetup(d databaseInformation) {
+func databaseSetup(d databaseInformation) (*sql.DB, error) {
 	db, err := sql.Open(d.databaseType, d.connection)
 	if err != nil {
-		log.Println(err.Error())
-		panic(err.Error())
+		return nil, fmt.Errorf("error opening database: %w", err)
 	}
 
 	err = db.Ping()
 
 	if err != nil {
-		log.Println(err.Error())
-		panic(err.Error())
+		return nil, fmt.Errorf("scope:could not connect to database: %v", err)
 	}
 
 	// Set the maximum number of concurrently open connections (in-use + idle)
@@ -50,5 +46,5 @@ func databaseSetup(d databaseInformation) {
 	// Set maximum connection lifetime
 	db.SetConnMaxLifetime(time.Duration(d.maxConnectionLifetime) * time.Minute)
 
-	DB = db
+	return db, nil
 }

@@ -2,33 +2,33 @@ package goscope
 
 import (
 	"fmt"
+	"github.com/labstack/echo/v4"
 	"net/http"
 	"os"
 	"strings"
 
-	"github.com/gin-gonic/gin"
 	"github.com/shirou/gopsutil/cpu"
 	"github.com/shirou/gopsutil/disk"
 	"github.com/shirou/gopsutil/host"
 	"github.com/shirou/gopsutil/mem"
 )
 
-func getAppName(c *gin.Context) {
-	c.Header("Access-Control-Allow-Origin", "*")
-	c.JSON(http.StatusOK, gin.H{
-		"applicationName": Config.ApplicationName,
+func (s *Scope) getAppName(c echo.Context) error {
+	c.Response().Header().Set("Access-Control-Allow-Origin", "*")
+	return c.JSON(http.StatusOK, echo.Map{
+		"applicationName": s.Config.ApplicationName,
 	})
 }
 
 // getSystemInfoHandler is the controller to show system information of the current host in GoScope API.
-func getSystemInfoHandler(c *gin.Context) {
-	responseBody := getSystemInfo()
+func (s *Scope) getSystemInfoHandler(c echo.Context) error {
+	responseBody := s.getSystemInfo()
 
-	c.Header("Access-Control-Allow-Origin", "*")
-	c.JSON(http.StatusOK, responseBody)
+	c.Response().Header().Set("Access-Control-Allow-Origin", "*")
+	return c.JSON(http.StatusOK, responseBody)
 }
 
-func getSystemInfo() systemInformationResponse {
+func (s *Scope) getSystemInfo() systemInformationResponse {
 	cpuStatus, _ := cpu.Info()
 	firstCPU := cpuStatus[0]
 	memoryStatus, _ := mem.VirtualMemory()
@@ -45,7 +45,7 @@ func getSystemInfo() systemInformationResponse {
 	}
 
 	return systemInformationResponse{
-		ApplicationName: Config.ApplicationName,
+		ApplicationName: s.Config.ApplicationName,
 		CPU: systemInformationResponseCPU{
 			CoreCount: fmt.Sprintf("%d Cores", firstCPU.Cores),
 			ModelName: firstCPU.ModelName,

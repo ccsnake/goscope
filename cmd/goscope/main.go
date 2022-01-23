@@ -1,25 +1,26 @@
 package main
 
 import (
+	"github.com/labstack/echo/v4"
 	"net/http"
 
 	"github.com/averageflow/goscope/v3/pkg/goscope"
-	"github.com/gin-gonic/gin"
 )
 
 func main() {
 	// Initialize an empty gin.Engine
-	router := gin.New()
+	router := echo.New()
 
 	goScopeConfig := goscope.InitData{
 		Router:     router,
 		RouteGroup: router.Group("/goscope"),
+		FuncMap:    map[string]interface{}{},
 		Config: &goscope.Environment{
 			ApplicationID:                     "go-scope",
 			ApplicationName:                   "go-scope",
-			ApplicationTimezone:               "Europe/Amsterdam",
-			GoScopeDatabaseConnection:         "root:root@tcp(127.0.0.1:3306)/go_scope",
-			GoScopeDatabaseType:               "mysql",
+			ApplicationTimezone:               "asia/Shanghai",
+			GoScopeDatabaseConnection:         "./goscope.sqlite",
+			GoScopeDatabaseType:               "sqlite3",
 			GoScopeEntriesPerPage:             50,
 			HasFrontendDisabled:               false,
 			GoScopeDatabaseMaxOpenConnections: 10,
@@ -41,7 +42,7 @@ func main() {
 
 	// Optionally add your custom functions to the function map of the router
 	for i := range myFunctionMap {
-		router.FuncMap[i] = myFunctionMap[i]
+		goScopeConfig.FuncMap[i] = myFunctionMap[i]
 	}
 
 	applicationTemplateEngine := goscope.PrepareTemplateEngine(&goScopeConfig)
@@ -53,17 +54,22 @@ func main() {
 			panic(err.Error())
 		}
 		// Finally set the html renderer of the application to the GoScope + your templates engine
-		router.SetHTMLTemplate(applicationTemplateEngine)
+		goScopeConfig.SetHTMLTemplate(applicationTemplateEngine)
 	}
 
 	// Required call to the PrepareMiddleware of GoScope
-	goscope.PrepareMiddleware(&goScopeConfig)
+	s, err := goscope.PrepareMiddleware(&goScopeConfig)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	defer s.Close()
 
 	// PrepareMiddleware any remaining routes for your application
-	router.GET("/test", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "example.gohtml", nil)
+	router.GET("/test", func(ctx echo.Context) error {
+		return ctx.Render(http.StatusOK, "example.gohtml", nil)
 	})
 
 	// Start the server
-	_ = router.Run(":7011")
+	_ = router.Start(":7011")
 }
